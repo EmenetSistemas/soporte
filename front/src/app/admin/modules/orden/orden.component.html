@@ -1,0 +1,168 @@
+<div class="row">
+    <div class="col-xxl-3 col-lg-4 col-12">
+        <div *ngIf="pkOrden != 0" class="pagetitle">
+            <h1>Orden {{status[detalleOrden.status-1]}} #{{pkOrden}}</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes de servicio</li>
+                    <li class="breadcrumb-item active">Detalle orden de servicio</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div *ngIf="pkOrden == 0" class="pagetitle">
+            <h1>Generar orden de servicio</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" [routerLink]="'/'">Dashboard</li>
+                    <li class="breadcrumb-item active">Generar orden de servicio</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section dashboard sticky-100">
+            <div class="row">
+                <div *ngIf="pkOrden != 0" class="col-12">
+                    <div class="card">
+                        <div class="card-body" style="margin-bottom: -20px !important;">
+                            <div id="totalBloqueCerrar" class="accordion accordion-flush">
+                                <div class="accordion-item">
+                                    <h2 id="flush-headingOne" class="accordion-header">
+                                        <button type="button" data-bs-toggle="collapse" data-bs-target="#totalBloque"
+                                            aria-expanded="false" aria-controls="flush-collapseOne"
+                                            class="accordion-button collapsed">
+                                            <h5 class="card-title title-categorias-ipad t-center" align="center">Detalle
+                                            </h5>
+                                        </button>
+                                    </h2>
+                                    <div id="totalBloque" aria-labelledby="flush-headingOne"
+                                        data-bs-parent="#totalBloqueCerrar" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <div id="accordionExample-ipad" class="accordion accordion-flush">
+                                                <div class="t-center">
+                                                    <div *ngIf="detalleOrden.usuarioModificacion && detalleOrden.fechaModificacion">
+                                                        <label style="color: gray;">Última actualización</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioModificacion}}</label>
+                                                        <br><label>{{detalleOrden.fechaModificacion}}</label>
+
+                                                        <hr>
+                                                    </div>
+
+                                                    <div *ngIf="detalleOrden.usuarioRegistro && detalleOrden.fechaRegistro">
+                                                        <label style="color: gray;">Recibe</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioRegistro}}</label>
+                                                        <br><label>{{detalleOrden.fechaRegistro}}</label>
+                                                    </div>
+                                                    <div *ngIf="detalleOrden.usuarioCancelacion && detalleOrden.fechaCancelacion">
+                                                        <br>
+                                                        <label style="color: gray;">Cancelada por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioCancelacion}}</label>
+                                                        <br><label>{{detalleOrden.fechaCancelacion}}</label>
+                                                    </div>
+                                                    <div *ngIf="detalleOrden.usuarioConclucion && detalleOrden.fechaConclucion">
+                                                        <br>
+                                                        <label style="color: gray;">Concluida por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioConclucion}}</label>
+                                                        <br><label>{{detalleOrden.fechaConclucion}}</label>
+                                                    </div>
+                                                    <div *ngIf="detalleOrden.usuarioEntrega && detalleOrden.fechaEntrega">
+                                                        <br>
+                                                        <label style="color: gray;">Entregada por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioEntrega}}</label>
+                                                        <br><label>{{detalleOrden.fechaEntrega}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-12" style="margin-top: -5px !important;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title t-center">Cliente</h5>
+                            <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
+                                <div class="col-12">
+                                    <label class="form-label required">Nombre:</label>
+                                    <input type="text" class="form-control" placeholder="Nombre"
+                                        formControlName="nombre" (keypress)="soloLetras($event)">
+                                </div>
+                                <div class="col-xxl-5">
+                                    <label class="form-label required">Teléfono:</label>
+                                    <input type="text" class="form-control" placeholder="Teléfono"
+                                        formControlName="telefono" (keypress)="soloNumeros($event)">
+                                </div>
+                                <div class="col-xxl-7">
+                                    <label class="form-label">Correo:</label>
+                                    <input type="email" class="form-control" placeholder="Correo"
+                                        formControlName="correo" (keypress)="soloTexto($event)">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Dirección:</label>
+                                    <textarea class="form-control" placeholder="Dirección" formControlName="direccion"
+                                        (keypress)="soloTexto($event)" rows="2"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 col-12" style="margin-top: -5px !important; margin-bottom: -25px;">
+                    <div class="card">
+                        <div class="card-body card-w-title">
+                            <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
+                                <div class="col-4">
+                                    <label class="form-label">Total:</label>
+                                    <input type="text" class="form-control" placeholder="Total" formControlName="total"
+                                        [value]="obtenerTotalItems()">
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label">A cuenta:</label>
+                                    <input type="text" class="form-control" placeholder="A cuenta"
+                                        formControlName="aCuenta" (keypress)="soloNumeros($event)"
+                                        (input)="moneyFormat($event)" (input)="writeACuenta()" maxlength="11">
+                                </div>
+                                <div class="col-4">
+                                    <label class="form-label">Restante:</label>
+                                    <input type="text" class="form-control" placeholder="Restante"
+                                        formControlName="restante" [value]="obtenerRestanteItems()">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Nota:</label>
+                                    <textarea class="form-control" placeholder="Nota" formControlName="nota"
+                                        (keypress)="soloTexto($event)" rows="2"></textarea>
+                                </div>
+                                <div *ngIf="pkOrden != 0" class="col-12">
+                                    <div class="btn btn-warning form-control">Actualizar Orden</div>
+                                </div>
+                                <div *ngIf="pkOrden == 0" class="col-12">
+                                    <div class="btn btn-primary form-control">Generar Orden</div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-xxl-9 col-lg-8 col-12">
+        <div class="row">
+            <div class="col-12 t-center sticky-img-100" style="margin-bottom: 15px;">
+                <img (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
+                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img (click)="addContent('impresora')" class="shadow-image"
+                    src="https://m-net.mx/scosm/images/impresora.png" alt="" style="z-index: 1005; margin-right: 22px;"
+                    width="50px">
+                <img (click)="addContent('pc')" class="shadow-image" src="https://m-net.mx/scosm/images/pc.png" alt=""
+                    style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img (click)="addContent('monitor')" class="shadow-image"
+                    src="https://m-net.mx/scosm/images/monitor.png" alt="" style="z-index: 1005; margin-right: 22px;"
+                    width="50px">
+                <img (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
+                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
+            </div>
+
+            <ng-container #container></ng-container>
+        </div>
+    </div>
+</div>
