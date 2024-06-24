@@ -200,7 +200,7 @@
 
     <div class="col-xxl-9 col-lg-8 col-12">
         <div class="row d-flex justify-content-center">
-            <div class="col-12 t-center sticky-img-100" style="margin-bottom: 15px;">
+            <div class="col-12 t-center sticky-img-100">
                 <img (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
                 <img (click)="addContent('impresora')" class="shadow-image"
@@ -220,11 +220,12 @@
             <div *ngIf="detalleOrden.status" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <button class="btn btn-info me-2" style="color: white;"><i
-                                class="bi bi-filetype-pdf"></i></button>
-                        <div class="btn btn-warning me-2">Actualizar</div>
-                        <button *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</button>
-                        <button *ngIf="detalleOrden.status == 1" class="btn btn-danger me-2">Cancelar orden</button>
+                        <div class="btn btn-info me-2" style="color: white;"><i class="bi bi-filetype-pdf"></i></div>
+
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2">Actualizar</div>
+                        <div *ngIf="detalleOrden.status == 2" class="btn btn-warning me-2">Retomar orden</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-danger me-2">Cancelar orden</div>
                     </div>
                 </div>
             </div>
