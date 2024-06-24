@@ -1,13 +1,18 @@
-<div class="col-12 dashboard">
+<div class="col-12 dashboard" style="margin-bottom: -5px;">
     <div class="card">
         <div class="filter">
-            <span *ngIf="this.formImpresora.valid" class="badge bg-success">&nbsp;<i
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 1" class="badge bg-warning text-dark">&nbsp;Servicio pendiente</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 2" class="badge bg-primary text-dark" style="color:white !important;">&nbsp;Servicio concluido</span>
+
+            &nbsp;
+            
+            <span *ngIf="formImpresora.valid" class="badge bg-success">&nbsp;<i
                     class="bi bi-check-circle me-1"></i></span>
-            <span *ngIf="!this.formImpresora.valid" class="badge bg-warning text-dark">&nbsp;<i
+            <span *ngIf="!formImpresora.valid" class="badge bg-warning text-dark">&nbsp;<i
                     class="bi bi-exclamation-triangle me-1"></i></span>
         </div>
         <div class="card-body">
-            <div class="col-12">
+            <div class="col-12" style="margin-top: 15px !important;">
                 <div class="row">
                     <form class="row g-3" autocomplete="off" [formGroup]="formImpresora" (input)="enviarCambios()">
                         <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center">
@@ -58,9 +63,18 @@
                                 (keypress)="soloNumeros($event)" maxlength="11" (input)="moneyFormat($event)">
                         </div>
                     </form>
-                    <div class="col-12 botonera-sp d-flex justify-content-end" style="margin-top: 15px;">
-                        <div class="btn btn-warning" (click)="limpiarFormulario()">Limpiar</div>
-                        <div class="btn btn-danger t-bold" (click)="parent.removeContent(data.idItem)">X</div>
+                    <div class="col-12" style="margin-top: 15px;">
+                        <section *ngIf="!data.datosEquipo" class="d-flex justify-content-end">
+                            <div class="btn btn-warning me-2" (click)="limpiarFormulario()">Limpiar</div>
+                            <div class="btn btn-danger me-2 t-bold" (click)="parent.removeContent(data.idItem)">X</div>
+                        </section>
+                        <section *ngIf="data.datosEquipo">
+                            <div *ngIf="data.datosEquipo.status <= 2" class="btn btn-primary me-2">Enviar diagnostico</div>
+                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-success me-2">Concluir</div>
+                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-warning me-2">Cancelar</div>
+                            
+                            <div class="btn btn-danger t-bold" style="float: right !important;"><i class="bi bi-trash"></i></div>
+                        </section>
                     </div>
                 </div>
             </div>

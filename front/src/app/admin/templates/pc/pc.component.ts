@@ -10,7 +10,7 @@ import { invalidZeroValidator } from 'src/app/shared/validators/cero-validator';
 	styleUrls: ['./pc.component.css']
 })
 export class PcComponent extends FGenerico implements OnInit {
-	@Input() data: any;
+	@Input() data: any = null;
 
 	protected formPc!: FormGroup;
 	protected checks: any = [
@@ -50,6 +50,8 @@ export class PcComponent extends FGenerico implements OnInit {
 
 	ngOnInit(): void {
 		this.crearFormPc();
+
+		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 
 	private crearFormPc(): void {
@@ -80,6 +82,31 @@ export class PcComponent extends FGenerico implements OnInit {
 	protected limpiarFormulario(): void {
 		this.formPc.reset();
 		this.formPc.get('costoReparacion')?.setValue('$ 0');
+		this.enviarCambios();
+	}
+
+	// modificación componente
+
+	private cargarFormularioEquipo(): void {
+		this.formPc.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		this.formPc.get('equipo')?.setValue(this.data.datosEquipo.nombre);
+		this.formPc.get('password')?.setValue(this.data.datosEquipo.password);
+		this.formPc.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
+		this.formPc.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
+		this.formPc.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+
+		this.formPc.get('botones')?.setValue(this.data.datosEquipo.botones);
+		this.formPc.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
+		this.formPc.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
+		this.formPc.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
+		this.formPc.get('displayPort')?.setValue(this.data.datosEquipo.displayPort);
+		this.formPc.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
+		this.formPc.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
+		this.formPc.get('unidadDeCd')?.setValue(this.data.datosEquipo.unidadDeCd);
+		
+		this.formPc.get('detalles')?.setValue(this.data.datosEquipo.detalles);
+		this.formPc.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
+
 		this.enviarCambios();
 	}
 }

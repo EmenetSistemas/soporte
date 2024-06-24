@@ -10,7 +10,7 @@ import { invalidZeroValidator } from 'src/app/shared/validators/cero-validator';
 	styleUrls: ['./impresora.component.css']
 })
 export class ImpresoraComponent extends FGenerico implements OnInit{
-	@Input() data: any;
+	@Input() data: any = null;
 
 	protected formImpresora!: FormGroup;
 	protected checks: any = [
@@ -53,6 +53,8 @@ export class ImpresoraComponent extends FGenerico implements OnInit{
 
 	ngOnInit(): void {
 		this.crearFormImpresora();
+
+		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 
 	private crearFormImpresora(): void {
@@ -83,6 +85,31 @@ export class ImpresoraComponent extends FGenerico implements OnInit{
 	protected limpiarFormulario(): void {
 		this.formImpresora.reset();
 		this.formImpresora.get('costoReparacion')?.setValue('$ 0');
+		this.enviarCambios();
+	}
+
+	// modificación componente
+
+	private cargarFormularioEquipo(): void {
+		this.formImpresora.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		this.formImpresora.get('equipo')?.setValue(this.data.datosEquipo.nombre);
+		this.formImpresora.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
+		this.formImpresora.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
+		this.formImpresora.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+
+		this.formImpresora.get('botones')?.setValue(this.data.datosEquipo.botones);
+		this.formImpresora.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
+		this.formImpresora.get('pantalla')?.setValue(this.data.datosEquipo.pantalla);
+		this.formImpresora.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
+		this.formImpresora.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
+		this.formImpresora.get('charolaHojas')?.setValue(this.data.datosEquipo.charolaHojas);
+		this.formImpresora.get('cableCorriente')?.setValue(this.data.datosEquipo.cableCorriente);
+		this.formImpresora.get('escaner')?.setValue(this.data.datosEquipo.escaner);
+		this.formImpresora.get('cartuchos')?.setValue(this.data.datosEquipo.cartuchos);
+
+		this.formImpresora.get('detalles')?.setValue(this.data.datosEquipo.detalles);
+		this.formImpresora.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
+
 		this.enviarCambios();
 	}
 }

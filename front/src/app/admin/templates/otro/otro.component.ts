@@ -10,7 +10,7 @@ import { invalidZeroValidator } from 'src/app/shared/validators/cero-validator';
 	styleUrls: ['./otro.component.css']
 })
 export class OtroComponent extends FGenerico {
-	@Input() data: any;
+	@Input() data: any = null;
 
 	protected formOtro!: FormGroup;
 	protected checks: any = [
@@ -86,6 +86,8 @@ export class OtroComponent extends FGenerico {
 
 	ngOnInit(): void {
 		this.crearFormOtro();
+
+		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 	
 	private crearFormOtro(): void {
@@ -128,6 +130,43 @@ export class OtroComponent extends FGenerico {
 	protected limpiarFormulario(): void {
 		this.formOtro.reset();
 		this.formOtro.get('costoReparacion')?.setValue('$ 0');
+		this.enviarCambios();
+	}
+
+	// modificación componente
+
+	private cargarFormularioEquipo(): void {
+		this.formOtro.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		this.formOtro.get('equipo')?.setValue(this.data.datosEquipo.nombre);
+		this.formOtro.get('password')?.setValue(this.data.datosEquipo.password);
+		this.formOtro.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
+		this.formOtro.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
+		this.formOtro.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+
+		this.formOtro.get('teclado')?.setValue(this.data.datosEquipo.teclado);
+		this.formOtro.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
+		this.formOtro.get('pantalla')?.setValue(this.data.datosEquipo.pantalla);
+		this.formOtro.get('bisagras')?.setValue(this.data.datosEquipo.bisagras);
+		this.formOtro.get('centroDeCarga')?.setValue(this.data.datosEquipo.centroDeCarga);
+		this.formOtro.get('padDeBotones')?.setValue(this.data.datosEquipo.padDeBotones);
+		this.formOtro.get('unidadDeCd')?.setValue(this.data.datosEquipo.unidadDeCd);
+		this.formOtro.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
+		this.formOtro.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
+		this.formOtro.get('puertoDvi')?.setValue(this.data.datosEquipo.puertoDvi);
+		this.formOtro.get('displayPort')?.setValue(this.data.datosEquipo.displayPort);
+		this.formOtro.get('botonEncendido')?.setValue(this.data.datosEquipo.botonEncendido);
+		this.formOtro.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
+		this.formOtro.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
+		this.formOtro.get('base')?.setValue(this.data.datosEquipo.base);
+		this.formOtro.get('botones')?.setValue(this.data.datosEquipo.botones);
+		this.formOtro.get('charolaHojas')?.setValue(this.data.datosEquipo.charolaHojas);
+		this.formOtro.get('cableCorriente')?.setValue(this.data.datosEquipo.cableCorriente);
+		this.formOtro.get('escaner')?.setValue(this.data.datosEquipo.escaner);
+		this.formOtro.get('cartuchos')?.setValue(this.data.datosEquipo.cartuchos);
+
+		this.formOtro.get('detalles')?.setValue(this.data.datosEquipo.detalles);
+		this.formOtro.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
+
 		this.enviarCambios();
 	}
 }
