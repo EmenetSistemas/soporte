@@ -40,12 +40,15 @@ class OrdenesService
         $orden->fechaCancelacion  = $this->formatearFecha($orden->fechaCancelacion);
         $orden->fechaModificacion = $this->formatearFecha($orden->fechaModificacion);
 
+        $detalleOrden = $this->ordenesRepository->obtenerDetalleOrdenServicio($pkOrden);
+
         return response()->json(
             [
                 'data' => [
-                    'orden' => $orden
+                    'orden' => $orden,
+                    'detalleOrden' => $detalleOrden
                 ],
-                'mensaje' => 'Se el detalle de la orden de servicio con éxito'
+                'mensaje' => 'Se consultó el detalle de la orden de servicio con éxito'
             ],
             200
         );

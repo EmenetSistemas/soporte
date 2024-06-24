@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Models\TblDetalleOrdenServicio;
 use App\Models\TblOrdenesServicio;
 
 class OrdenesRepository
@@ -78,6 +79,12 @@ class OrdenesRepository
                                    ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioCancelacion')
                                    ->leftJoin('tblUsuarios as usuarioModificacion', 'usuarioModificacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioModificacion')
                                    ->where('tblOrdenesServicio.pkTblOrdenServicio', $pkOrden);
-        return $query->get()[0];
+        return $query->get()[0] ?? [];
+    }
+
+    public function obtenerDetalleOrdenServicio ($pkOrden) {
+        $query = TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden);
+
+        return $query->get() ?? [];
     }
 }
