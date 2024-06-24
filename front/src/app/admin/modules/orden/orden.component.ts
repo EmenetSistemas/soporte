@@ -70,7 +70,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		});
 	}
 
-	protected addContent(type: string) {
+	protected addContent(type: string, data: any = null) {
 		let componentFactory: any;
 
 		switch (type) {
@@ -92,9 +92,12 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		}
 
 		const componentRef: any = this.container.createComponent(componentFactory);
+
 		componentRef.instance.data = {
 			idItem: this.count
 		};
+
+		if (data != null) componentRef.instance.data.datosEquipo = data;
 
 		this.contentList.push({ component: componentRef, pk: this.count, itemType: type });
 		this.count += 1;
@@ -108,7 +111,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	protected obtenerTotalItems(): string {
 		const total = this.contentList.reduce((total, item) => {
-			const cost = parseFloat(item.data?.costo.replace(/[,$]/g, '') ?? 0);
+			const cost = parseFloat(item.data?.costoReparacion.replace(/[,$]/g, '') ?? 0);
 			return total + (isNaN(cost) ? 0 : cost);
 		}, 0);
 
@@ -136,7 +139,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	protected obtenerRestanteItems(): string {
 		const total = this.contentList.reduce((total, item) => {
-			const cost = parseFloat(item.data?.costo.replace(/[,$]/g, '') ?? 0);
+			const cost = parseFloat(item.data?.costoReparacion.replace(/[,$]/g, '') ?? 0);
 			return total + (isNaN(cost) ? 0 : cost);
 		}, 0);
 
@@ -154,10 +157,11 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	// carga actualización
 
-	protected obtenerDetalleOrdenServicio(): Promise<any> {
+	private obtenerDetalleOrdenServicio(): Promise<any> {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
 				this.detalleOrden = respuesta.data.orden;
+				this.crearComponentesEquipos(respuesta.data.detalleOrden);
 				this.cargarDatosFormularioCliente(this.detalleOrden);
 				this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
 			}, error => {
@@ -166,12 +170,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		);
 	}
 
+	private crearComponentesEquipos(equipos: any): void {
+		equipos.forEach((equipo: any) => {
+			this.addContent(equipo.tipoEquipo, equipo);
+		});
+	}
+
 	private cargarDatosFormularioCliente(data: any): void {
 		this.formCliente.get('nombre')?.setValue(data.cliente);
 		this.formCliente.get('telefono')?.setValue(data.telefono);
 		this.formCliente.get('correo')?.setValue(data.correo);
 		this.formCliente.get('direccion')?.setValue(data.direccion);
-		this.formCliente.get('aCuenta')?.setValue(data.aCuenta);
+		this.formCliente.get('aCuenta')?.setValue('$ '+(+data.aCuenta).toLocaleString());
 		this.formCliente.get('nota')?.setValue(data.nota);
 	}
 }

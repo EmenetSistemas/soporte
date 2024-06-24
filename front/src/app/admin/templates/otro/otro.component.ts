@@ -116,7 +116,7 @@ export class OtroComponent extends FGenerico {
 			escaner          : [false],
 			cartuchos        : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			costo            : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
+			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 	
@@ -127,7 +127,7 @@ export class OtroComponent extends FGenerico {
 
 	protected limpiarFormulario(): void {
 		this.formOtro.reset();
-		this.formOtro.get('costo')?.setValue('$ 0');
+		this.formOtro.get('costoReparacion')?.setValue('$ 0');
 		this.enviarCambios();
 	}
 }

@@ -68,7 +68,7 @@ export class PcComponent extends FGenerico implements OnInit {
 			carcasa          : [false],
 			unidadDeCd       : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			costo            : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
+			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 
@@ -79,7 +79,7 @@ export class PcComponent extends FGenerico implements OnInit {
 
 	protected limpiarFormulario(): void {
 		this.formPc.reset();
-		this.formPc.get('costo')?.setValue('$ 0');
+		this.formPc.get('costoReparacion')?.setValue('$ 0');
 		this.enviarCambios();
 	}
 }

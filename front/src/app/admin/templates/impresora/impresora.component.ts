@@ -71,7 +71,7 @@ export class ImpresoraComponent extends FGenerico implements OnInit{
 			escaner          : [false],
 			cartuchos        : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			costo            : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
+			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 
@@ -82,7 +82,7 @@ export class ImpresoraComponent extends FGenerico implements OnInit{
 
 	protected limpiarFormulario(): void {
 		this.formImpresora.reset();
-		this.formImpresora.get('costo')?.setValue('$ 0');
+		this.formImpresora.get('costoReparacion')?.setValue('$ 0');
 		this.enviarCambios();
 	}
 }

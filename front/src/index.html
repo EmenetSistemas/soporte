@@ -12,10 +12,47 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
 		rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
 	<app-root></app-root>
+
+	<a id="toTop" href="javascript:void(0);" (click)="scrollToTop()"
+		class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+	<script>
+		$(document).ready(function () {
+			const select = (el, all = false) => {
+				el = el.trim()
+				if (all) {
+					return [...document.querySelectorAll(el)]
+				} else {
+					return document.querySelector(el)
+				}
+			}
+
+			const onscroll = (el, listener) => {
+				el.addEventListener('scroll', listener)
+			}
+
+			let backtotop = select('.back-to-top')
+			if (backtotop) {
+				const toggleBacktotop = () => {
+					if (window.scrollY > 100) {
+						backtotop.classList.add('active')
+					} else {
+						backtotop.classList.remove('active')
+					}
+				}
+				window.addEventListener('load', toggleBacktotop)
+				onscroll(document, toggleBacktotop)
+			}
+
+			$("#toTop").on("click", function () {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			});
+		});
+	</script>
 </body>
 
 </html>

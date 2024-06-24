@@ -27,3 +27,16 @@
     transform: translateY(-5px);
     box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
 }
+
+.items-footer{
+    position: sticky !important;
+    bottom: -10px !important;
+    z-index: 995 !important;
+    width: auto;
+    margin-bottom: -25px !important;
+}
+
+.sp-buttons {
+    margin: 0px !important;
+    padding: 10px;
+}

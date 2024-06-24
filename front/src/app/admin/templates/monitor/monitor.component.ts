@@ -63,7 +63,7 @@ export class MonitorComponent extends FGenerico implements OnInit{
 			tornillos        : [false],
 			pantalla         : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			costo            : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
+			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 	
@@ -74,7 +74,7 @@ export class MonitorComponent extends FGenerico implements OnInit{
 
 	protected limpiarFormulario(): void {
 		this.formMonitor.reset();
-		this.formMonitor.get('costo')?.setValue('$ 0');
+		this.formMonitor.get('costoReparacion')?.setValue('$ 0');
 		this.enviarCambios();
 	}
 }
