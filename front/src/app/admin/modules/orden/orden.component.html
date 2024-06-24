@@ -22,7 +22,7 @@
 
         <section class="section dashboard sticky-100">
             <div class="row">
-                <div *ngIf="pkOrden != 0" class="col-12">
+                <!--div *ngIf="pkOrden != 0" class="col-12">
                     <div class="card">
                         <div class="card-body" style="margin-bottom: -20px !important;">
                             <div id="totalBloqueCerrar" class="accordion accordion-flush">
@@ -40,30 +40,41 @@
                                         <div class="accordion-body">
                                             <div id="accordionExample-ipad" class="accordion accordion-flush">
                                                 <div class="t-center">
-                                                    <div *ngIf="detalleOrden.usuarioModificacion && detalleOrden.fechaModificacion">
-                                                        <label style="color: gray;">Última actualización</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioModificacion}}</label>
+                                                    <div
+                                                        *ngIf="detalleOrden.usuarioModificacion && detalleOrden.fechaModificacion">
+                                                        <label style="color: gray;">Última
+                                                            actualización</label>&nbsp;<label
+                                                            style="color: #008FFF;">{{detalleOrden.usuarioModificacion}}</label>
                                                         <br><label>{{detalleOrden.fechaModificacion}}</label>
 
                                                         <hr>
                                                     </div>
 
-                                                    <div *ngIf="detalleOrden.usuarioRegistro && detalleOrden.fechaRegistro">
-                                                        <label style="color: gray;">Recibe</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioRegistro}}</label>
+                                                    <div
+                                                        *ngIf="detalleOrden.usuarioRegistro && detalleOrden.fechaRegistro">
+                                                        <label style="color: gray;">Recibe</label>&nbsp;<label
+                                                            style="color: #008FFF;">{{detalleOrden.usuarioRegistro}}</label>
                                                         <br><label>{{detalleOrden.fechaRegistro}}</label>
                                                     </div>
-                                                    <div *ngIf="detalleOrden.usuarioCancelacion && detalleOrden.fechaCancelacion">
+                                                    <div
+                                                        *ngIf="detalleOrden.usuarioCancelacion && detalleOrden.fechaCancelacion">
                                                         <br>
-                                                        <label style="color: gray;">Cancelada por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioCancelacion}}</label>
+                                                        <label style="color: gray;">Cancelada por</label>&nbsp;<label
+                                                            style="color: #008FFF;">{{detalleOrden.usuarioCancelacion}}</label>
                                                         <br><label>{{detalleOrden.fechaCancelacion}}</label>
                                                     </div>
-                                                    <div *ngIf="detalleOrden.usuarioConclucion && detalleOrden.fechaConclucion">
+                                                    <div
+                                                        *ngIf="detalleOrden.usuarioConclucion && detalleOrden.fechaConclucion">
                                                         <br>
-                                                        <label style="color: gray;">Concluida por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioConclucion}}</label>
+                                                        <label style="color: gray;">Concluida por</label>&nbsp;<label
+                                                            style="color: #008FFF;">{{detalleOrden.usuarioConclucion}}</label>
                                                         <br><label>{{detalleOrden.fechaConclucion}}</label>
                                                     </div>
-                                                    <div *ngIf="detalleOrden.usuarioEntrega && detalleOrden.fechaEntrega">
+                                                    <div
+                                                        *ngIf="detalleOrden.usuarioEntrega && detalleOrden.fechaEntrega">
                                                         <br>
-                                                        <label style="color: gray;">Entregada por</label>&nbsp;<label style="color: #008FFF;">{{detalleOrden.usuarioEntrega}}</label>
+                                                        <label style="color: gray;">Entregada por</label>&nbsp;<label
+                                                            style="color: #008FFF;">{{detalleOrden.usuarioEntrega}}</label>
                                                         <br><label>{{detalleOrden.fechaEntrega}}</label>
                                                     </div>
                                                 </div>
@@ -74,10 +85,53 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div-->
 
                 <div class="col-lg-12 col-md-6 col-12" style="margin-top: -5px !important;">
                     <div class="card">
+                        <div class="dropdown">
+                            <div class="filter" data-bs-toggle="dropdown">
+                                <button class="btn btn-info btn-sm" style="border-radius: 10px; color: white;">
+                                    <i class="bi bi-info-circle"></i>
+                                </button>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <div class="t-center">
+                                    <div *ngIf="detalleOrden.usuarioModificacion && detalleOrden.fechaModificacion">
+                                        <label style="color: gray;">Última
+                                            actualización</label>&nbsp;<label
+                                            style="color: #008FFF;">{{detalleOrden.usuarioModificacion}}</label>
+                                        <br><label>{{detalleOrden.fechaModificacion}}</label>
+
+                                        <hr>
+                                    </div>
+
+                                    <div *ngIf="detalleOrden.usuarioRegistro && detalleOrden.fechaRegistro">
+                                        <label style="color: gray;">Recibe</label>&nbsp;<label
+                                            style="color: #008FFF;">{{detalleOrden.usuarioRegistro}}</label>
+                                        <br><label>{{detalleOrden.fechaRegistro}}</label>
+                                    </div>
+                                    <div *ngIf="detalleOrden.usuarioCancelacion && detalleOrden.fechaCancelacion">
+                                        <br>
+                                        <label style="color: gray;">Cancelada por</label>&nbsp;<label
+                                            style="color: #008FFF;">{{detalleOrden.usuarioCancelacion}}</label>
+                                        <br><label>{{detalleOrden.fechaCancelacion}}</label>
+                                    </div>
+                                    <div *ngIf="detalleOrden.usuarioConclucion && detalleOrden.fechaConclucion">
+                                        <br>
+                                        <label style="color: gray;">Concluida por</label>&nbsp;<label
+                                            style="color: #008FFF;">{{detalleOrden.usuarioConclucion}}</label>
+                                        <br><label>{{detalleOrden.fechaConclucion}}</label>
+                                    </div>
+                                    <div *ngIf="detalleOrden.usuarioEntrega && detalleOrden.fechaEntrega">
+                                        <br>
+                                        <label style="color: gray;">Entregada por</label>&nbsp;<label
+                                            style="color: #008FFF;">{{detalleOrden.usuarioEntrega}}</label>
+                                        <br><label>{{detalleOrden.fechaEntrega}}</label>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
                         <div class="card-body">
                             <h5 class="card-title t-center">Cliente</h5>
                             <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
@@ -106,7 +160,8 @@
                     </div>
                 </div>
 
-                <div class="col-lg-12 col-md-6 col-12" style="margin-top: -5px !important; margin-bottom: -25px !important;">
+                <div class="col-lg-12 col-md-6 col-12"
+                    style="margin-top: -5px !important; margin-bottom: -25px !important;">
                     <div class="card">
                         <div class="card-body card-w-title">
                             <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
@@ -131,7 +186,7 @@
                                     <textarea class="form-control" placeholder="Nota" formControlName="nota"
                                         (keypress)="soloTexto($event)" rows="2"></textarea>
                                 </div>
-                                
+
                                 <div *ngIf="pkOrden == 0" class="col-12">
                                     <div class="btn btn-primary form-control">Generar Orden</div>
                                 </div>
@@ -165,13 +220,14 @@
             <div *ngIf="detalleOrden.status" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <button class="btn btn-info me-2" style="color: white;"><i class="bi bi-filetype-pdf"></i></button>
+                        <button class="btn btn-info me-2" style="color: white;"><i
+                                class="bi bi-filetype-pdf"></i></button>
                         <div class="btn btn-warning me-2">Actualizar</div>
                         <button *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</button>
                         <button *ngIf="detalleOrden.status == 1" class="btn btn-danger me-2">Cancelar orden</button>
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>
