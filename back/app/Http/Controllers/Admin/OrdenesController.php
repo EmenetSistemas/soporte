@@ -17,6 +17,21 @@ class OrdenesController extends Controller
         $this->ordenesService = $OrdenesService;
     }
 
+    public function registrarOrdenServicio (Request $orden) {
+        try{
+            return $this->ordenesService->registrarOrdenServicio($orden->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
     public function obtenerOrdenesServicio ($status) {
         try{
             return $this->ordenesService->obtenerOrdenesServicio($status);

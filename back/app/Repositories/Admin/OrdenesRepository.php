@@ -4,9 +4,66 @@ namespace App\Repositories\Admin;
 
 use App\Models\TblDetalleOrdenServicio;
 use App\Models\TblOrdenesServicio;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class OrdenesRepository
 {
+    public function registrarOrdenServicio ($orden) {
+        $registro = new TblOrdenesServicio();
+        $registro->cliente           = $this->formatString($orden, 'cliente');
+        $registro->telefono          = $this->formatString($orden, 'telefono');
+        $registro->correo            = $this->formatString($orden, 'correo');
+        $registro->direccion         = $this->formatString($orden, 'direccion');
+        $registro->aCuenta           = trim(str_replace(['$', ','], '', $orden['aCuenta']));
+        $registro->codigo            = Str::random(8);
+        $registro->nota              = $this->formatString($orden, 'nota');
+        $registro->fkUsuarioRegistro = 1;
+        $registro->fechaRegistro     = Carbon::now();
+        $registro->status            = 1;
+        $registro->save();
+
+        return $registro->pkTblOrdenServicio;
+    }
+
+    public function registrarDetalleOrdenServicio ($pkOrden, $tipoEquipo, $equipo) {
+        $registro = new TblDetalleOrdenServicio();
+        $registro->fkTblOrdenServicio = $pkOrden;
+        $registro->tipoEquipo         = $tipoEquipo;
+        $registro->nombre             = $this->formatString($equipo, 'equipo');
+        $registro->noSerie            = $this->formatString($equipo, 'noSerie');
+        $registro->password           = $this->formatString($equipo, 'password');
+        $registro->descripcionFalla   = $this->formatString($equipo, 'descripcionFalla');
+        $registro->observaciones      = $this->formatString($equipo, 'observaciones');
+
+        $registro->base               = $equipo['base'] ?? null;
+        $registro->bisagras           = $equipo['bisagras'] ?? null;
+        $registro->botonEncendido     = $equipo['botonEncendido'] ?? null;
+        $registro->botones            = $equipo['botones'] ?? null;
+        $registro->cableCorriente     = $equipo['cableCorriente'] ?? null;
+        $registro->carcasa            = $equipo['carcasa'] ?? null;
+        $registro->cartuchos          = $equipo['cartuchos'] ?? null;
+        $registro->centroDeCarga      = $equipo['centroDeCarga'] ?? null;
+        $registro->charolaHojas       = $equipo['charolaHojas'] ?? null;
+        $registro->displayPort        = $equipo['displayPort'] ?? null;
+        $registro->escaner            = $equipo['escaner'] ?? null;
+        $registro->padDeBotones       = $equipo['padDeBotones'] ?? null;
+        $registro->pantalla           = $equipo['pantalla'] ?? null;
+        $registro->puertoDvi          = $equipo['puertoDvi'] ?? null;
+        $registro->puertoHdmi         = $equipo['puertoHdmi'] ?? null;
+        $registro->puertoUsb          = $equipo['puertoUsb'] ?? null;
+        $registro->puertoVga          = $equipo['puertoVga'] ?? null;
+        $registro->teclado            = $equipo['teclado'] ?? null;
+        $registro->tornillos          = $equipo['tornillos'] ?? null;
+        $registro->unidadDeCd         = $equipo['unidadDeCd'] ?? null;
+
+        $registro->detalles           = $this->formatString($equipo, 'detalles');
+        $registro->costoReparacion    = trim(str_replace(['$', ','], '', $equipo['costoReparacion']));
+        $registro->diagnosticoFinal   = $this->formatString($equipo, 'diagnosticoFinal');
+        $registro->status             = 1;
+        $registro->save();
+    }
+
     public function obtenerOrdenesServicio ($status) {
         $query = TblOrdenesServicio::select(
                                        'tblOrdenesServicio.pkTblOrdenServicio as pkTblOrdenServicio',
@@ -86,5 +143,9 @@ class OrdenesRepository
         $query = TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden);
 
         return $query->get() ?? [];
+    }
+
+    private function formatString ($arr, $index) {
+        return isset($arr[$index]) && trim($arr[$index]) != '' ? $arr[$index] : null;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Repositories\Admin\OrdenesRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Undefined;
 
@@ -15,6 +16,22 @@ class OrdenesService
         OrdenesRepository $OrdenesRepository
     ) {
         $this->ordenesRepository = $OrdenesRepository;
+    }
+
+    public function registrarOrdenServicio ($orden) {
+        DB::beginTransaction();
+            $pkOrden = $this->ordenesRepository->registrarOrdenServicio($orden);
+            foreach ($orden['equipos'] as $equipo) {
+                $this->ordenesRepository->registrarDetalleOrdenServicio($pkOrden, $equipo['itemType'], $equipo['data']);
+            }
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se registró la orden de servicio con éxito'
+            ],
+            200
+        );
     }
 
     public function obtenerOrdenesServicio ($status) {
