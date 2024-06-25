@@ -5,7 +5,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes de servicio</li>
-                    <li class="breadcrumb-item active">Detalle orden de servicio</li>
+                    <li class="breadcrumb-item active">Detalle orden</li>
                 </ol>
             </nav>
         </div>
@@ -15,7 +15,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" [routerLink]="'/'">Dashboard</li>
-                    <li class="breadcrumb-item active">Generar orden de servicio</li>
+                    <li class="breadcrumb-item active">Generar orden</li>
                 </ol>
             </nav>
         </div>
@@ -89,7 +89,7 @@
 
                 <div class="col-lg-12 col-md-6 col-12" style="margin-top: -5px !important;">
                     <div class="card">
-                        <div class="dropdown">
+                        <div *ngIf="pkOrden != 0" class="dropdown">
                             <div class="filter" data-bs-toggle="dropdown">
                                 <button class="btn btn-info btn-sm" style="border-radius: 10px; color: white;">
                                     <i class="bi bi-info-circle"></i>
@@ -132,6 +132,7 @@
                                 </div>
                             </ul>
                         </div>
+
                         <div class="card-body">
                             <h5 class="card-title t-center">Cliente</h5>
                             <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
@@ -199,8 +200,8 @@
     </div>
 
     <div class="col-xxl-9 col-lg-8 col-12">
-        <div class="row d-flex justify-content-center">
-            <div class="col-12 t-center sticky-img-100">
+        <div class="row d-flex justify-content-center" [ngClass]="{'top-sp-img': pkOrden != 0 && detalleOrden.status != 1}">
+            <div *ngIf="pkOrden == 0 || detalleOrden.status == 1" class="col-12 t-center sticky-img-100">
                 <img (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
                 <img (click)="addContent('impresora')" class="shadow-image"
