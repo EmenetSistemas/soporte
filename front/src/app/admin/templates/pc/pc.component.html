@@ -2,14 +2,18 @@
     <div class="card">
         <div class="filter">
             <span *ngIf="data.datosEquipo && data.datosEquipo.status == 1" class="badge bg-warning text-dark">&nbsp;Servicio pendiente&nbsp;</span>
-            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 2" class="badge bg-primary text-dark" style="color:white !important;">&nbsp;Servicio concluido&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 2" class="badge bg-primary">&nbsp;Servicio concluido&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 3" class="badge bg-success">&nbsp;Servicio entregado&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 4" class="badge bg-danger">&nbsp;Servicio cancelado&nbsp;</span>
 
             &nbsp;
             
-            <span *ngIf="formPc.valid" class="badge bg-success">&nbsp;<i
-                    class="bi bi-check-circle me-1"></i></span>
-            <span *ngIf="!formPc.valid" class="badge bg-warning text-dark">&nbsp;<i
-                    class="bi bi-exclamation-triangle me-1"></i></span>
+            <span *ngIf="formPc.valid" class="badge bg-success">
+                &nbsp;<i class="bi bi-check-circle me-1"></i>
+            </span>
+            <span *ngIf="!formPc.valid" class="badge bg-warning text-dark">
+                &nbsp;<i class="bi bi-exclamation-triangle me-1"></i>
+            </span>
         </div>
         <div class="card-body">
             <div class="col-12" style="margin-top: 15px !important;">

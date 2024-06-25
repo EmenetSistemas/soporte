@@ -20,7 +20,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	protected formCliente!: FormGroup;
 
-	protected contentList: any[] = [];
+	protected listaEquipos: any[] = [];
 	protected count: number = 0;
 
 	protected pkOrden: any = 0;
@@ -99,18 +99,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 		if (data != null) componentRef.instance.data.datosEquipo = data;
 
-		this.contentList.push({ component: componentRef, pk: this.count, itemType: type });
+		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType: type });
 		this.count += 1;
 	}
 
 	public cacharDatosComponent(dataFormComponent: any, pk: number): void {
-		const componente = this.contentList.find(item => item.pk === pk);
+		const componente = this.listaEquipos.find(item => item.pk === pk);
 		componente.data = dataFormComponent;
 		this.cambioAcuenta();
 	}
 
 	protected obtenerTotalItems(): string {
-		const total = this.contentList.reduce((total, item) => {
+		const total = this.listaEquipos.reduce((total, item) => {
 			const cost = parseFloat(item.data?.costoReparacion.replace(/[,$]/g, '') ?? 0);
 			return total + (isNaN(cost) ? 0 : cost);
 		}, 0);
@@ -138,7 +138,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected obtenerRestanteItems(): string {
-		const total = this.contentList.reduce((total, item) => {
+		const total = this.listaEquipos.reduce((total, item) => {
 			const cost = parseFloat(item.data?.costoReparacion.replace(/[,$]/g, '') ?? 0);
 			return total + (isNaN(cost) ? 0 : cost);
 		}, 0);
@@ -149,9 +149,9 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	public removeContent(index: number) {
-		const componentRef = this.contentList.find(item => item.pk === index).component;
+		const componentRef = this.listaEquipos.find(item => item.pk === index).component;
 		componentRef.destroy();
-		this.contentList = this.contentList.filter(item => item.pk !== index);
+		this.listaEquipos = this.listaEquipos.filter(item => item.pk !== index);
 		this.cambioAcuenta();
 	}
 
