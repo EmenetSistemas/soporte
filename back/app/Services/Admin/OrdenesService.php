@@ -28,6 +28,9 @@ class OrdenesService
 
         return response()->json(
             [
+                'data' => [
+                    'pkOrden' => $pkOrden
+                ],
                 'mensaje' => 'Se registró la orden de servicio con éxito'
             ],
             200
