@@ -48,17 +48,22 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	ngOnInit(): void {
 		this.mensajes.mensajeEsperar();
-		this.crearFormCliente();
-		this.route.paramMap.subscribe(params => {
-			this.pkOrden = params.get('pkOrden') ?? 0;
-			this.mensajeEsp = params.get('msj') && params.get('msj') == 'msj' ? 'Se registró la orden de servicio con éxito' : '';
-		});
-
-		if (this.pkOrden == 0) {
-			this.mensajes.cerrarMensajes();
-			return;
+		try {
+			this.crearFormCliente();
+			this.route.paramMap.subscribe(params => {
+				this.pkOrden = params.get('pkOrden') ?? 0;
+				this.mensajeEsp = params.get('msj') && params.get('msj') == 'msj' ? 'Se registró la orden de servicio con éxito' : '';
+			});
+	
+			if (this.pkOrden == 0) {
+				this.mensajes.cerrarMensajes();
+				return;
+			}
+			this.obtenerDetalleOrdenServicio();
+		} catch (e) {
+			this.router.navigate(['/']);
+			this.mensajes.mensajeGenerico('No deberías intentar eso', 'error');
 		}
-		this.obtenerDetalleOrdenServicio();
 	}
 
 	private crearFormCliente(): void {
