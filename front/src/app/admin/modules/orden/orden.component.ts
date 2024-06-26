@@ -7,7 +7,7 @@ import { MonitorComponent } from '../../templates/monitor/monitor.component';
 import { OtroComponent } from '../../templates/otro/otro.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 
 @Component({
@@ -24,6 +24,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	protected count: number = 0;
 
 	protected pkOrden: any = 0;
+	protected mensajeEsp: string = '';
+
 	protected detalleOrden: any = {};
 
 	protected status: any = [
@@ -38,7 +40,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		private resolver: ComponentFactoryResolver,
 		private mensajes: MensajesService,
 		private route: ActivatedRoute,
-		private apiOrdenes: OrdenesService
+		private apiOrdenes: OrdenesService,
+		private router: Router
 	) {
 		super();
 	}
@@ -48,6 +51,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.crearFormCliente();
 		this.route.paramMap.subscribe(params => {
 			this.pkOrden = params.get('pkOrden') ?? 0;
+			this.mensajeEsp = params.get('msj') && params.get('msj') == 'msj' ? 'Se registró la orden de servicio con éxito' : '';
 		});
 
 		if (this.pkOrden == 0) {
@@ -59,14 +63,14 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	private crearFormCliente(): void {
 		this.formCliente = this.fb.group({
-			nombre    : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			telefono  : [null, [Validators.required, Validators.pattern('[0-9 .]*')]],
-			correo    : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			direccion : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			cliente    : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			telefono  : [null, [Validators.required, Validators.pattern('[0-9 .]*'), Validators.maxLength(12)]],
+			correo    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			direccion : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			total     : [{ value: '$ 0', disabled: true }],
-			aCuenta   : ['$ 0', [Validators.pattern('[0-9 ,.]*'), Validators.maxLength(11)]],
+			aCuenta   : ['$ 0', [Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11)]],
 			restante  : [{ value: '$ 0', disabled: true }],
-			nota      : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
 		});
 	}
 
@@ -155,17 +159,65 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.cambioAcuenta();
 	}
 
+	protected generarOrden(): void {
+		if ( this.formCliente.invalid ) {
+			this.mensajes.mensajeGenerico('Aún hay campos vacíos o que no cumplen con la estructura correcta de la <b>Información del cliente<b>', 'warning', 'Los campos requeridos están marcados con un *');
+			return;
+		}
+
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		if (equipoInvalidoIndex !== -1) {
+			const equipoInvalido = this.listaEquipos[equipoInvalidoIndex];
+			this.mensajes.mensajeGenerico(
+				`Aún hay campos vacíos o que no cumplen con la estructura correcta del <b>equipo ${equipoInvalidoIndex + 1} | ${equipoInvalido.itemType}</b>`,
+				'warning',
+				'Los campos requeridos están marcados con un *'
+			);
+			return;
+		}
+
+		this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'info', 'Registrar orden de servicio').then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				const orden = {
+					...this.formCliente.value,
+					equipos: this.listaEquipos.map(({ component, pk, ...rest }) => rest)
+				};
+				
+				this.apiOrdenes.registrarOrdenServicio(orden).subscribe(
+					respuesta => {
+						this.router.navigate(['/detalle-orden', respuesta.data.pkOrden, 'msj']);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}, error => {
+				this.mensajes.mensajeGenerico('error', 'error');
+			}
+		);
+	}
+
 	// carga actualización
 
 	private obtenerDetalleOrdenServicio(): Promise<any> {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
 				this.detalleOrden = respuesta.data.orden;
+
 				this.crearComponentesEquipos(respuesta.data.detalleOrden);
 				this.cargarDatosFormularioCliente(this.detalleOrden);
-				this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+
+				if (this.mensajeEsp != '') {
+					this.mensajes.mensajeGenerico(this.mensajeEsp, 'success');
+				} else {
+					this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+				}
 			}, error => {
-				this.mensajes.mensajeGenerico('error', 'error');
+				this.router.navigate(['/']);
+				this.mensajes.mensajeGenerico('No deberías intentar eso', 'error');
 			}
 		);
 	}
@@ -177,7 +229,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	private cargarDatosFormularioCliente(data: any): void {
-		this.formCliente.get('nombre')?.setValue(data.cliente);
+		this.formCliente.get('cliente')?.setValue(data.cliente);
 		this.formCliente.get('telefono')?.setValue(data.telefono);
 		this.formCliente.get('correo')?.setValue(data.correo);
 		this.formCliente.get('direccion')?.setValue(data.direccion);

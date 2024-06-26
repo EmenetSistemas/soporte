@@ -152,7 +152,7 @@ export class ConsultaOrdenesComponent implements OnDestroy{
 	}
 
 	protected actionSelected(data: any): void {
-		this.router.navigate(['/detalle-orden', data.action]);
+		this.router.navigate(['/detalle-orden', data.action, 'nmsj']);
 	}
 
 	ngOnDestroy(): void {

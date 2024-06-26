@@ -11,6 +11,10 @@ export class OrdenesService {
 		private http: HttpClient
 	) { }
 
+	public registrarOrdenServicio(orden: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/registrarOrdenServicio`, orden);
+	}
+
 	public obtenerOrdenesServicio(status: number): Observable<any> {
 		return this.http.get<any>(`${api}/ordenes/obtenerOrdenesServicio/${status}`);
 	}

@@ -46,6 +46,17 @@ export default class FGenerico {
         return telefono.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
     }
 
+    public phoneFormat(event: any): void {
+        const inputElement = event.target;
+        let inputValue = inputElement.value.replace(/\D/g, '');
+      
+        inputValue = inputValue.startsWith('5') || inputValue.startsWith('6') ?
+                     inputValue.replace(/(\d{2})(\d{4})(\d{0,4})/, '$1 $2 $3').trim() :
+                     inputValue.replace(/(\d{3})(\d{3})(\d{0,4})/, '$1 $2 $3').trim();
+      
+        inputElement.value = inputValue;
+      }
+
     public obtenerSaludo () : string {
         const horaActual = new Date().getHours();
     

@@ -19,7 +19,7 @@ export const HomeRoutes: Routes = [
                 path: 'consulta-ordenes',
                 component: ConsultaOrdenesComponent
             }, {
-                path: 'detalle-orden/:pkOrden',
+                path: 'detalle-orden/:pkOrden/:msj',
                 component: OrdenComponent
             }
         ]

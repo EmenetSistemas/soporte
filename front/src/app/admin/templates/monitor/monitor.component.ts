@@ -71,7 +71,7 @@ export class MonitorComponent extends FGenerico implements OnInit{
 	
 	protected enviarCambios(): void {
 		this.formMonitor.value.formValid = this.formMonitor.valid;
-		this.parent.cacharDatosComponent(this.formMonitor.value, this.data);
+		this.parent.cacharDatosComponent(this.formMonitor.value, this.data.idItem);
 	}
 
 	protected limpiarFormulario(): void {

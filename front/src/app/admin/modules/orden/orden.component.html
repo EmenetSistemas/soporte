@@ -139,12 +139,13 @@
                                 <div class="col-md-12 col-sm-7 col-12">
                                     <label class="form-label required">Nombre:</label>
                                     <input type="text" class="form-control" placeholder="Nombre"
-                                        formControlName="nombre" (keypress)="soloLetras($event)">
+                                        formControlName="cliente" (keypress)="soloLetras($event)">
                                 </div>
                                 <div class="col-xxl-5 col-md-12 col-sm-5 col-12">
                                     <label class="form-label required">Teléfono:</label>
                                     <input type="text" class="form-control" placeholder="Teléfono"
-                                        formControlName="telefono" (keypress)="soloNumeros($event)">
+                                        formControlName="telefono" (keypress)="soloNumeros($event)"
+                                        (input)="phoneFormat($event)" maxlength="12">
                                 </div>
                                 <div class="col-xxl-7">
                                     <label class="form-label">Correo:</label>
@@ -196,7 +197,8 @@
     </div>
 
     <div class="col-xxl-9 col-lg-8 col-12">
-        <div class="row d-flex justify-content-center items-rep" [ngClass]="{'top-sp-img': pkOrden != 0 && detalleOrden.status != 1}">
+        <div class="row d-flex justify-content-center items-rep"
+            [ngClass]="{'top-sp-img': pkOrden != 0 && detalleOrden.status != 1}">
             <div *ngIf="pkOrden == 0 || detalleOrden.status == 1" class="col-12 t-center sticky-img-100">
                 <img (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
@@ -217,10 +219,12 @@
             <div *ngIf="detalleOrden.status" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;"><i class="bi bi-filetype-pdf"></i></div>
+                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;">
+                            <i class="bi bi-filetype-pdf"></i></div>
 
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2">Actualizar</div>
-                        <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning me-2">Retomar orden</div>
+                        <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning me-2">
+                            Retomar orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-danger">Cancelar orden</div>
                     </div>
@@ -230,7 +234,7 @@
             <div *ngIf="pkOrden == 0 && listaEquipos.length > 0" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <div class="btn btn-primary">Generar Orden</div>
+                        <div class="btn btn-primary" (click)="generarOrden()">Generar Orden</div>
                     </div>
                 </div>
             </div>

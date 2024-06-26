@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class MensajesService {
 
 
 	cerrarMensajes(): void {
-		Swal.close()
+		Swal.close();
 	}
 
 	mensajeGenerico(mensaje: string, tipo: string, title: string = '', html = null): void {
@@ -31,7 +31,7 @@ export class MensajesService {
 			title,
 			allowOutsideClick: false,
 			icon: tipo,
-			text: mensaje,
+			html: mensaje,
 			confirmButtonText: 'Continuar',
 			buttonsStyling: false,
 			customClass: {
@@ -69,7 +69,7 @@ export class MensajesService {
 	mensajeConfirmacionCustom(mensaje: string, tipo: any, titulo: string = '', btnConfirmar = 'Continuar', btnCancelar = 'Cancelar', btnDenegado = 'Denegar', showDeny = false) {
 		return Swal.fire({
 			title: titulo,
-			text: mensaje,
+			html: mensaje,
 			icon: tipo,
 			showDenyButton: showDeny,
 			showCancelButton: true,
