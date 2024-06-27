@@ -13,28 +13,35 @@ export class MonitorComponent extends FGenerico implements OnInit{
 	@Input() data: any = null;
 
 	protected formMonitor!: FormGroup;
-	protected checks: any = [
+	protected checks: any[] = [
 		{
 			identificador: 'base',
-			label: 'Base'
+			label: 'Base',
+			checked: false
 		}, {
 			identificador: 'puertoVga',
-			label: 'Puerto VGA'
+			label: 'Puerto VGA',
+			checked: false
 		}, {
 			identificador: 'puertoDvi',
-			label: 'Puerto DVI'
+			label: 'Puerto DVI',
+			checked: false
 		}, {
 			identificador: 'puertoHdmi',
-			label: 'Puerto HDMI'
+			label: 'Puerto HDMI',
+			checked: false
 		}, {
 			identificador: 'displayPort',
-			label: 'Puerto Display Port'
+			label: 'Puerto Display Port',
+			checked: false
 		}, {
 			identificador: 'tornillos',
-			label: 'Tornillos'
+			label: 'Tornillos',
+			checked: false
 		}, {
 			identificador: 'pantalla',
-			label: 'Pantalla'
+			label: 'Pantalla',
+			checked: false
 		}
 	];
 
@@ -47,7 +54,6 @@ export class MonitorComponent extends FGenerico implements OnInit{
 
 	ngOnInit(): void {
 		this.crearFormMonitor();
-
 		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 	
@@ -57,49 +63,59 @@ export class MonitorComponent extends FGenerico implements OnInit{
 			noSerie          : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			descripcionFalla : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			observaciones    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			base             : [false],
-			puertoVga        : [false],
-			puertoDvi        : [false],
-			puertoHdmi       : [false],
-			displayPort      : [false],
-			tornillos        : [false],
-			pantalla         : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
+
+	protected cambioCheck(option: any): void {
+		option.checked = !option.checked;
+		this.enviarCambios();
+	}
 	
 	protected enviarCambios(): void {
 		this.formMonitor.value.formValid = this.formMonitor.valid;
-		this.parent.cacharDatosComponent(this.formMonitor.value, this.data.idItem);
+		if (this.data.datosEquipo) {
+			this.formMonitor.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		}
+
+		const data = {
+			...this.formMonitor.value,
+			...this.checks.reduce((acc: any, item: any) => {
+				acc[item.identificador] = item.checked;
+				return acc;
+			}, {})
+		};
+
+		this.parent.cacharDatosComponent(data, this.data.idItem);
 	}
 
 	protected limpiarFormulario(): void {
 		this.formMonitor.reset();
 		this.formMonitor.get('costoReparacion')?.setValue('$ 0');
+		this.checks.forEach(check => check.checked = false);
 		this.enviarCambios();
 	}
 
 	// modificación componente
 
 	private cargarFormularioEquipo(): void {
-		this.formMonitor.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
-		this.formMonitor.get('equipo')?.setValue(this.data.datosEquipo.nombre);
-		this.formMonitor.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
-		this.formMonitor.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
-		this.formMonitor.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+		this.formMonitor.patchValue({
+			equipo: this.data.datosEquipo.nombre,
+			noSerie: this.data.datosEquipo.noSerie,
+			descripcionFalla: this.data.datosEquipo.descripcionFalla,
+			observaciones: this.data.datosEquipo.observaciones,
+			detalles: this.data.datosEquipo.detalles,
+			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
+		});
 
-		this.formMonitor.get('base')?.setValue(this.data.datosEquipo.base);
-		this.formMonitor.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
-		this.formMonitor.get('puertoDvi')?.setValue(this.data.datosEquipo.puertoDvi);
-		this.formMonitor.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
-		this.formMonitor.get('displayPort')?.setValue(this.data.datosEquipo.displayPort);
-		this.formMonitor.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
-		this.formMonitor.get('pantalla')?.setValue(this.data.datosEquipo.pantalla);
-		
-		this.formMonitor.get('detalles')?.setValue(this.data.datosEquipo.detalles);
-		this.formMonitor.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
+		this.checks.forEach(check => {
+			check.checked = this.data.datosEquipo[check.identificador] == 1;
+		});
 
-		this.enviarCambios();
+		this.parent.cacharDatosComponent(
+			{costoReparacion : this.formMonitor.value.costoReparacion},
+			this.data.idItem
+		);
 	}
 }

@@ -13,67 +13,87 @@ export class OtroComponent extends FGenerico {
 	@Input() data: any = null;
 
 	protected formOtro!: FormGroup;
-	protected checks: any = [
+	protected checks: any[] = [
 		{
 			identificador: 'teclado',
-			label: 'Teclado'
+			label: 'Teclado',
+			checked: false
 		}, {
 			identificador: 'puertoUsb',
-			label: 'Puerto USB'
+			label: 'Puerto USB',
+			checked: false
 		}, {
 			identificador: 'pantalla',
-			label: 'Pantalla'
+			label: 'Pantalla',
+			checked: false
 		}, {
 			identificador: 'bisagras',
-			label: 'Bisagras'
+			label: 'Bisagras',
+			checked: false
 		}, {
 			identificador: 'centroDeCarga',
-			label: 'Centro de carga'
+			label: 'Centro de carga',
+			checked: false
 		}, {
 			identificador: 'padDeBotones',
-			label: 'Pad de botones'
+			label: 'Pad de botones',
+			checked: false
 		}, {
 			identificador: 'unidadDeCd',
-			label: 'Unidad de CD'
+			label: 'Unidad de CD',
+			checked: false
 		}, {
 			identificador: 'puertoVga',
-			label: 'Puerto VGA'
+			label: 'Puerto VGA',
+			checked: false
 		}, {
 			identificador: 'puertoHdmi',
-			label: 'Puerto HDMI'
+			label: 'Puerto HDMI',
+			checked: false
 		}, {
 			identificador: 'puertoDvi',
-			label: 'Puerto DVI'
+			label: 'Puerto DVI',
+			checked: false
 		}, {
 			identificador: 'displayPort',
-			label: 'Display Port'
+			label: 'Display Port',
+			checked: false
 		}, {
 			identificador: 'botonEncendido',
-			label: 'Boton de encendido'
+			label: 'Boton de encendido',
+			checked: false
 		}, {
 			identificador: 'tornillos',
-			label: 'Tornillos'
+			label: 'Tornillos',
+			checked: false
 		}, {
 			identificador: 'carcasa',
-			label: 'Carcasa'
+			label: 'Carcasa',
+			checked: false
 		}, {
 			identificador: 'base',
-			label: 'Base'
+			label: 'Base',
+			checked: false
 		}, {
 			identificador: 'botones',
-			label: 'Botones'
+			label: 'Botones',
+			checked: false
 		}, {
 			identificador: 'charolaHojas',
-			label: 'Charola de hojas'
+			label: 'Charola de hojas',
+			checked: false
 		}, {
 			identificador: 'cableCorriente',
-			label: 'Cable de corriente'
+			label: 'Cable de corriente',
+			checked: false
 		}, {
 			identificador: 'escaner',
-			label: 'Escaner'
+			label: 'Escaner',
+			checked: false
 		}, {
 			identificador: 'cartuchos',
-			label: 'Cartuchos'
+			label: 'Cartuchos',
+			checked: false
 		}
 	];
 
@@ -86,7 +106,6 @@ export class OtroComponent extends FGenerico {
 
 	ngOnInit(): void {
 		this.crearFormOtro();
-
 		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 	
@@ -97,76 +116,60 @@ export class OtroComponent extends FGenerico {
 			noSerie          : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			descripcionFalla : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			observaciones    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			teclado          : [false],
-			puertoUsb        : [false],
-			pantalla         : [false],
-			bisagras         : [false],
-			centroDeCarga    : [false],
-			padDeBotones     : [false],
-			unidadDeCd       : [false],
-			puertoVga        : [false],
-			puertoHdmi       : [false],
-			puertoDvi        : [false],
-			displayPort      : [false],
-			botonEncendido   : [false],
-			tornillos        : [false],
-			carcasa          : [false],
-			base             : [false],
-			botones          : [false],
-			charolaHojas     : [false],
-			cableCorriente   : [false],
-			escaner          : [false],
-			cartuchos        : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 	
+	protected cambioCheck(option: any): void {
+		option.checked = !option.checked;
+		this.enviarCambios();
+	}
+
 	protected enviarCambios(): void {
 		this.formOtro.value.formValid = this.formOtro.valid;
-		this.parent.cacharDatosComponent(this.formOtro.value, this.data.idItem);
+		if (this.data.datosEquipo) {
+			this.formOtro.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		}
+
+		const data = {
+			...this.formOtro.value,
+			...this.checks.reduce((acc: any, item: any) => {
+				acc[item.identificador] = item.checked;
+				return acc;
+			}, {})
+		};
+
+		this.parent.cacharDatosComponent(data, this.data.idItem);
 	}
 
 	protected limpiarFormulario(): void {
 		this.formOtro.reset();
 		this.formOtro.get('costoReparacion')?.setValue('$ 0');
+		this.checks.forEach(check => check.checked = false);
 		this.enviarCambios();
 	}
 
 	// modificación componente
 
 	private cargarFormularioEquipo(): void {
-		this.formOtro.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
-		this.formOtro.get('equipo')?.setValue(this.data.datosEquipo.nombre);
-		this.formOtro.get('password')?.setValue(this.data.datosEquipo.password);
-		this.formOtro.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
-		this.formOtro.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
-		this.formOtro.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+		this.formOtro.patchValue({
+			equipo: this.data.datosEquipo.nombre,
+			password: this.data.datosEquipo.password,
+			noSerie: this.data.datosEquipo.noSerie,
+			descripcionFalla: this.data.datosEquipo.descripcionFalla,
+			observaciones: this.data.datosEquipo.observaciones,
+			detalles: this.data.datosEquipo.detalles,
+			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
+		});
 
-		this.formOtro.get('teclado')?.setValue(this.data.datosEquipo.teclado);
-		this.formOtro.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
-		this.formOtro.get('pantalla')?.setValue(this.data.datosEquipo.pantalla);
-		this.formOtro.get('bisagras')?.setValue(this.data.datosEquipo.bisagras);
-		this.formOtro.get('centroDeCarga')?.setValue(this.data.datosEquipo.centroDeCarga);
-		this.formOtro.get('padDeBotones')?.setValue(this.data.datosEquipo.padDeBotones);
-		this.formOtro.get('unidadDeCd')?.setValue(this.data.datosEquipo.unidadDeCd);
-		this.formOtro.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
-		this.formOtro.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
-		this.formOtro.get('puertoDvi')?.setValue(this.data.datosEquipo.puertoDvi);
-		this.formOtro.get('displayPort')?.setValue(this.data.datosEquipo.displayPort);
-		this.formOtro.get('botonEncendido')?.setValue(this.data.datosEquipo.botonEncendido);
-		this.formOtro.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
-		this.formOtro.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
-		this.formOtro.get('base')?.setValue(this.data.datosEquipo.base);
-		this.formOtro.get('botones')?.setValue(this.data.datosEquipo.botones);
-		this.formOtro.get('charolaHojas')?.setValue(this.data.datosEquipo.charolaHojas);
-		this.formOtro.get('cableCorriente')?.setValue(this.data.datosEquipo.cableCorriente);
-		this.formOtro.get('escaner')?.setValue(this.data.datosEquipo.escaner);
-		this.formOtro.get('cartuchos')?.setValue(this.data.datosEquipo.cartuchos);
+		this.checks.forEach(check => {
+			check.checked = this.data.datosEquipo[check.identificador] == 1;
+		});
 
-		this.formOtro.get('detalles')?.setValue(this.data.datosEquipo.detalles);
-		this.formOtro.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
-
-		this.enviarCambios();
+		this.parent.cacharDatosComponent(
+			{costoReparacion : this.formOtro.value.costoReparacion},
+			this.data.idItem
+		);
 	}
 }

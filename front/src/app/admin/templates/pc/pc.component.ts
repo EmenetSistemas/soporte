@@ -13,31 +13,39 @@ export class PcComponent extends FGenerico implements OnInit {
 	@Input() data: any = null;
 
 	protected formPc!: FormGroup;
-	protected checks: any = [
+	protected checks: any[] = [
 		{
 			identificador: 'botones',
-			label: 'Botones'
+			label: 'Botones',
+			checked: true
 		}, {
 			identificador: 'puertoUsb',
-			label: 'Puerto USB'
+			label: 'Puerto USB',
+			checked: true
 		}, {
 			identificador: 'puertoVga',
-			label: 'Puerto VGA'
+			label: 'Puerto VGA',
+			checked: true
 		}, {
 			identificador: 'puertoHdmi',
-			label: 'Puerto HDMI'
+			label: 'Puerto HDMI',
+			checked: true
 		}, {
 			identificador: 'displayPort',
-			label: 'Display Port'
+			label: 'Display Port',
+			checked: true
 		}, {
 			identificador: 'tornillos',
-			label: 'Tornillos'
+			label: 'Tornillos',
+			checked: true
 		}, {
 			identificador: 'carcasa',
-			label: 'Carcasa(Gabinete)'
+			label: 'Carcasa(Gabinete)',
+			checked: true
 		}, {
 			identificador: 'unidadDeCd',
-			label: 'Unidad de CD'
+			label: 'Unidad de CD',
+			checked: true
 		}
 	];
 
@@ -61,52 +69,60 @@ export class PcComponent extends FGenerico implements OnInit {
 			noSerie          : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			descripcionFalla : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			observaciones    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			botones          : [false],
-			puertoUsb        : [false],
-			puertoVga        : [false],
-			puertoHdmi       : [false],
-			displayPort      : [false],
-			tornillos        : [false],
-			carcasa          : [false],
-			unidadDeCd       : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 
+	protected cambioCheck(option: any): void {
+		option.checked = !option.checked;
+		this.enviarCambios();
+	}
+
 	protected enviarCambios(): void {
 		this.formPc.value.formValid = this.formPc.valid;
-		this.parent.cacharDatosComponent(this.formPc.value, this.data.idItem);
+		if (this.data.datosEquipo) {
+			this.formPc.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		}
+
+		const data = {
+			...this.formPc.value,
+			...this.checks.reduce((acc: any, item: any) => {
+				acc[item.identificador] = item.checked;
+				return acc;
+			}, {})
+		};
+
+		this.parent.cacharDatosComponent(data, this.data.idItem);
 	}
 
 	protected limpiarFormulario(): void {
 		this.formPc.reset();
 		this.formPc.get('costoReparacion')?.setValue('$ 0');
+		this.checks.forEach(check => check.checked = false);
 		this.enviarCambios();
 	}
 
 	// modificación componente
 
 	private cargarFormularioEquipo(): void {
-		this.formPc.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
-		this.formPc.get('equipo')?.setValue(this.data.datosEquipo.nombre);
-		this.formPc.get('password')?.setValue(this.data.datosEquipo.password);
-		this.formPc.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
-		this.formPc.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
-		this.formPc.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+		this.formPc.patchValue({
+			equipo: this.data.datosEquipo.nombre,
+			password: this.data.datosEquipo.password,
+			noSerie: this.data.datosEquipo.noSerie,
+			descripcionFalla: this.data.datosEquipo.descripcionFalla,
+			observaciones: this.data.datosEquipo.observaciones,
+			detalles: this.data.datosEquipo.detalles,
+			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
+		});
 
-		this.formPc.get('botones')?.setValue(this.data.datosEquipo.botones);
-		this.formPc.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
-		this.formPc.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
-		this.formPc.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
-		this.formPc.get('displayPort')?.setValue(this.data.datosEquipo.displayPort);
-		this.formPc.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
-		this.formPc.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
-		this.formPc.get('unidadDeCd')?.setValue(this.data.datosEquipo.unidadDeCd);
-		
-		this.formPc.get('detalles')?.setValue(this.data.datosEquipo.detalles);
-		this.formPc.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
+		this.checks.forEach(check => {
+			check.checked = this.data.datosEquipo[check.identificador] == 1;
+		});
 
-		this.enviarCambios();
+		this.parent.cacharDatosComponent(
+			{costoReparacion : this.formPc.value.costoReparacion},
+			this.data.idItem
+		);
 	}
 }

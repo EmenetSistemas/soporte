@@ -13,43 +13,55 @@ export class LaptopComponent extends FGenerico implements OnInit{
 	@Input() data: any = null;
 
 	protected formLaptop!: FormGroup;
-	protected checks: any = [
+	protected checks: any[] = [
 		{
 			identificador: 'teclado',
-			label: 'Teclado'
+			label: 'Teclado',
+			checked: false
 		}, {
 			identificador: 'puertoUsb',
-			label: 'Puerto USB'
+			label: 'Puerto USB',
+			checked: false
 		}, {
 			identificador: 'pantalla',
-			label: 'Pantalla'
+			label: 'Pantalla',
+			checked: false
 		}, {
 			identificador: 'bisagras',
-			label: 'Bisagras'
+			label: 'Bisagras',
+			checked: false
 		}, {
 			identificador: 'centroDeCarga',
-			label: 'Centro de carga'
+			label: 'Centro de carga',
+			checked: false
 		}, {
 			identificador: 'padDeBotones',
-			label: 'Pad de botones'
+			label: 'Pad de botones',
+			checked: false
 		}, {
 			identificador: 'unidadDeCd',
-			label: 'Unidad de CD'
+			label: 'Unidad de CD',
+			checked: false
 		}, {
 			identificador: 'puertoVga',
-			label: 'Puerto VGA'
+			label: 'Puerto VGA',
+			checked: false
 		}, {
 			identificador: 'puertoHdmi',
-			label: 'Puerto HDMI'
+			label: 'Puerto HDMI',
+			checked: false
 		}, {
 			identificador: 'botonEncendido',
-			label: 'Botón encendido'
+			label: 'Botón encendido',
+			checked: false
 		}, {
 			identificador: 'tornillos',
-			label: 'Tornillos'
+			label: 'Tornillos',
+			checked: false
 		}, {
 			identificador: 'carcasa',
-			label: 'Carcasa'
+			label: 'Carcasa',
+			checked: false
 		}
 	];
 
@@ -62,7 +74,6 @@ export class LaptopComponent extends FGenerico implements OnInit{
 
 	ngOnInit(): void {
 		this.crearFormLaptop();
-
 		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 	
@@ -73,60 +84,60 @@ export class LaptopComponent extends FGenerico implements OnInit{
 			noSerie          : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			descripcionFalla : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			observaciones    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			teclado          : [false],
-			puertoUsb        : [false],
-			pantalla         : [false],
-			bisagras         : [false],
-			centroDeCarga    : [false],
-			padDeBotones     : [false],
-			unidadDeCd       : [false],
-			puertoVga        : [false],
-			puertoHdmi       : [false],
-			botonEncendido   : [false],
-			tornillos        : [false],
-			carcasa          : [false],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		});
 	}
 	
+	protected cambioCheck(option: any): void {
+		option.checked = !option.checked;
+		this.enviarCambios();
+	}
+
 	protected enviarCambios(): void {
 		this.formLaptop.value.formValid = this.formLaptop.valid;
-		this.parent.cacharDatosComponent(this.formLaptop.value, this.data.idItem);
+		if (this.data.datosEquipo) {
+			this.formLaptop.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+		}
+
+		const data = {
+			...this.formLaptop.value,
+			...this.checks.reduce((acc: any, item: any) => {
+				acc[item.identificador] = item.checked;
+				return acc;
+			}, {})
+		};
+
+		this.parent.cacharDatosComponent(data, this.data.idItem);
 	}
 
 	protected limpiarFormulario(): void {
 		this.formLaptop.reset();
 		this.formLaptop.get('costoReparacion')?.setValue('$ 0');
+		this.checks.forEach(check => check.checked = false);
 		this.enviarCambios();
 	}
 
 	// modificación componente
 
 	private cargarFormularioEquipo(): void {
-		this.formLaptop.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
-		this.formLaptop.get('equipo')?.setValue(this.data.datosEquipo.nombre);
-		this.formLaptop.get('password')?.setValue(this.data.datosEquipo.password);
-		this.formLaptop.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
-		this.formLaptop.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
-		this.formLaptop.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+		this.formLaptop.patchValue({
+			equipo: this.data.datosEquipo.nombre,
+			password: this.data.datosEquipo.password,
+			noSerie: this.data.datosEquipo.noSerie,
+			descripcionFalla: this.data.datosEquipo.descripcionFalla,
+			observaciones: this.data.datosEquipo.observaciones,
+			detalles: this.data.datosEquipo.detalles,
+			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
+		});
 
-		this.formLaptop.get('teclado')?.setValue(this.data.datosEquipo.teclado);
-		this.formLaptop.get('puertoUsb')?.setValue(this.data.datosEquipo.puertoUsb);
-		this.formLaptop.get('pantalla')?.setValue(this.data.datosEquipo.pantalla);
-		this.formLaptop.get('bisagras')?.setValue(this.data.datosEquipo.bisagras);
-		this.formLaptop.get('centroDeCarga')?.setValue(this.data.datosEquipo.centroDeCarga);
-		this.formLaptop.get('padDeBotones')?.setValue(this.data.datosEquipo.padDeBotones);
-		this.formLaptop.get('unidadDeCd')?.setValue(this.data.datosEquipo.unidadDeCd);
-		this.formLaptop.get('puertoVga')?.setValue(this.data.datosEquipo.puertoVga);
-		this.formLaptop.get('puertoHdmi')?.setValue(this.data.datosEquipo.puertoHdmi);
-		this.formLaptop.get('botonEncendido')?.setValue(this.data.datosEquipo.botonEncendido);
-		this.formLaptop.get('tornillos')?.setValue(this.data.datosEquipo.tornillos);
-		this.formLaptop.get('carcasa')?.setValue(this.data.datosEquipo.carcasa);
+		this.checks.forEach(check => {
+			check.checked = this.data.datosEquipo[check.identificador] == 1;
+		});
 
-		this.formLaptop.get('detalles')?.setValue(this.data.datosEquipo.detalles);
-		this.formLaptop.get('costoReparacion')?.setValue('$ '+(+this.data.datosEquipo.costoReparacion).toLocaleString());
-
-		this.enviarCambios();
+		this.parent.cacharDatosComponent(
+			{costoReparacion : this.formLaptop.value.costoReparacion},
+			this.data.idItem
+		);
 	}
 }
