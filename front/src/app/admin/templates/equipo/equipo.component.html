@@ -23,9 +23,46 @@
             <div class="col-12" style="margin-top: 15px !important;">
                 <div class="row">
                     <form class="row g-3" autocomplete="off" [formGroup]="formEquipo" (input)="enviarCambios()">
-                        <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center">
+                        <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center" data-bs-toggle="dropdown">
                             <img src="https://m-net.mx/scosm/images/{{data.itemType}}.png" width="100px">
                         </div>
+
+                        <ul class="dropdown-menu">
+                            <div class="t-center">
+                                <div *ngIf="data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion">
+                                    <label style="color: gray !important;">Última
+                                        actualización</label>&nbsp;<label
+                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioModificacion}}</label>
+                                    <br><label>{{data.datosEquipo.fechaModificacion}}</label>
+                                </div>
+                                
+                                <hr *ngIf="
+                                    (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) &&
+                                    (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) &&
+                                    (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega)
+                                ">
+
+                                <div *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion">
+                                    <br>
+                                    <label style="color: gray !important;">Cancelada por</label>&nbsp;<label
+                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioCancelacion}}</label>
+                                    <br><label>{{data.datosEquipo.fechaCancelacion}}</label>
+                                </div>
+                                <div *ngIf="data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion">
+                                    <br>
+                                    <label style="color: gray !important;">Concluida por</label>&nbsp;<label
+                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioConclucion}}</label>
+                                    <br><label>{{data.datosEquipo.fechaConclucion}}</label>
+                                </div>
+                                <div *ngIf="data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega">
+                                    <br>
+                                    <label style="color: gray !important;">Entregada por</label>&nbsp;<label
+                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioEntrega}}</label>
+                                    <br><label>{{data.datosEquipo.fechaEntrega}}</label>
+                                </div>
+                            </div>
+                        </ul>
+
                         <div class="col-xxl-9 col-lg-8 col-sm-9">
                             <div class="row g-3">
                                 <div [ngClass]="{
