@@ -1,40 +1,51 @@
 <div class="col-12 dashboard" style="margin-bottom: -5px;">
     <div class="card">
         <div class="filter">
-            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 1" class="badge bg-warning text-dark">&nbsp;Servicio pendiente&nbsp;</span>
-            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 2" class="badge bg-primary">&nbsp;Servicio concluido&nbsp;</span>
-            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 3" class="badge bg-success">&nbsp;Servicio entregado&nbsp;</span>
-            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 4" class="badge bg-danger">&nbsp;Servicio cancelado&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 1"
+                class="badge bg-warning text-dark">&nbsp;Servicio pendiente&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 2" class="badge bg-primary">&nbsp;Servicio
+                concluido&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 3" class="badge bg-success">&nbsp;Servicio
+                entregado&nbsp;</span>
+            <span *ngIf="data.datosEquipo && data.datosEquipo.status == 4" class="badge bg-danger">&nbsp;Servicio
+                cancelado&nbsp;</span>
 
             &nbsp;
-            
-            <span *ngIf="formLaptop.valid" class="badge bg-success">
+
+            <span *ngIf="formEquipo.valid" class="badge bg-success">
                 &nbsp;<i class="bi bi-check-circle me-1"></i>
             </span>
-            <span *ngIf="!formLaptop.valid" class="badge bg-warning text-dark">
+            <span *ngIf="!formEquipo.valid" class="badge bg-warning text-dark">
                 &nbsp;<i class="bi bi-exclamation-triangle me-1"></i>
             </span>
         </div>
         <div class="card-body">
             <div class="col-12" style="margin-top: 15px !important;">
                 <div class="row">
-                    <form class="row g-3" autocomplete="off" [formGroup]="formLaptop" (input)="enviarCambios()">
+                    <form class="row g-3" autocomplete="off" [formGroup]="formEquipo" (input)="enviarCambios()">
                         <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center">
-                            <img src="https://m-net.mx/scosm/images/laptop.png" width="100px">
+                            <img src="https://m-net.mx/scosm/images/{{data.itemType}}.png" width="100px">
                         </div>
                         <div class="col-xxl-9 col-lg-8 col-sm-9">
                             <div class="row g-3">
-                                <div class="col-xxl-4 col-lg-6 col-sm-4">
+                                <div [ngClass]="{
+                                    'col-xxl-4 col-lg-6 col-sm-4': data.itemType != 'impresora' && data.itemType != 'monitor',
+                                    'col-sm-6': data.itemType == 'impresora' || data.itemType == 'monitor'
+                                }">
                                     <label class="form-label required">Equipo:</label>
                                     <input type="text" class="form-control" placeholder="Equipo"
                                         formControlName="equipo" (keypress)="soloTexto($event)">
                                 </div>
-                                <div class="col-xxl-4 col-lg-6 col-sm-4">
+                                <div *ngIf="data.itemType != 'impresora' && data.itemType != 'monitor'"
+                                    class="col-xxl-4 col-lg-6 col-sm-4">
                                     <label class="form-label">Contraseña:</label>
                                     <input type="text" class="form-control" placeholder="Contraseña"
                                         formControlName="password" (keypress)="soloTexto($event)">
                                 </div>
-                                <div class="col-xxl-4 col-lg-12 col-sm-4">
+                                <div [ngClass]="{
+                                    'col-xxl-4 col-lg-12 col-sm-4': data.itemType != 'impresora' && data.itemType != 'monitor',
+                                    'col-sm-6': data.itemType == 'impresora' || data.itemType == 'monitor'
+                                }">
                                     <label class="form-label">No. Serie:</label>
                                     <input type="text" class="form-control" placeholder="No. Serie"
                                         formControlName="noSerie" (keypress)="soloTexto($event)">
@@ -55,7 +66,8 @@
                         </div>
                         <div class="col-12">
                             <div *ngFor="let check of checks" class="form-check form-switch f-left">
-                                <input class="form-check-input" type="checkbox" id="{{check.identificador+data.idItem}}" [checked]="check.checked" (change)="cambioCheck(check)">
+                                <input class="form-check-input" type="checkbox" id="{{check.identificador+data.idItem}}"
+                                    [checked]="check.checked" (change)="cambioCheck(check)">
                                 <label class="form-check-label"
                                     for="{{check.identificador+data.idItem}}">{{check.label}}</label>
                             </div>
@@ -67,8 +79,9 @@
                         </div>
                         <div class="col-sm-3">
                             <label class="form-label required">Costo:</label>
-                            <input type="text" class="form-control" placeholder="Costo" formControlName="costoReparacion"
-                                (keypress)="soloNumeros($event)" maxlength="11" (input)="moneyFormat($event)">
+                            <input type="text" class="form-control" placeholder="Costo"
+                                formControlName="costoReparacion" (keypress)="soloNumeros($event)" maxlength="11"
+                                (input)="moneyFormat($event)">
                         </div>
                     </form>
                     <div class="col-12" style="margin-top: 15px;">
@@ -77,11 +90,13 @@
                             <div class="btn btn-danger me-2 t-bold" (click)="parent.removeContent(data.idItem)">X</div>
                         </section>
                         <section *ngIf="data.datosEquipo">
-                            <div *ngIf="data.datosEquipo.status <= 2" class="btn btn-primary me-2">Enviar diagnostico</div>
+                            <div *ngIf="data.datosEquipo.status <= 2" class="btn btn-primary me-2">Enviar diagnostico
+                            </div>
                             <div *ngIf="data.datosEquipo.status == 1" class="btn btn-success me-2">Concluir</div>
                             <div *ngIf="data.datosEquipo.status == 1" class="btn btn-warning me-2">Cancelar</div>
-                            
-                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-danger t-bold" style="float: right !important;"><i class="bi bi-trash"></i></div>
+
+                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-danger t-bold"
+                                style="float: right !important;"><i class="bi bi-trash"></i></div>
                         </section>
                     </div>
                 </div>

@@ -1,14 +1,10 @@
 import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import FGenerico from 'src/shared/util/funciones-genericas';
-import { LaptopComponent } from '../../templates/laptop/laptop.component';
-import { ImpresoraComponent } from '../../templates/impresora/impresora.component';
-import { PcComponent } from '../../templates/pc/pc.component';
-import { MonitorComponent } from '../../templates/monitor/monitor.component';
-import { OtroComponent } from '../../templates/otro/otro.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
+import { EquipoComponent } from '../../templates/equipo/equipo.component';
 
 @Component({
 	selector: 'app-orden',
@@ -66,7 +62,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	private crearFormCliente(): void {
 		this.formCliente = this.fb.group({
-			cliente    : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			cliente   : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			telefono  : [null, [Validators.required, Validators.pattern('[0-9 .]*'), Validators.maxLength(12)]],
 			correo    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			direccion : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
@@ -77,36 +73,19 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		});
 	}
 
-	protected addContent(type: string, data: any = null) {
-		let componentFactory: any;
-
-		switch (type) {
-			case 'laptop':
-				componentFactory = this.resolver.resolveComponentFactory(LaptopComponent);
-			break;
-			case 'impresora':
-				componentFactory = this.resolver.resolveComponentFactory(ImpresoraComponent);
-			break;
-			case 'pc':
-				componentFactory = this.resolver.resolveComponentFactory(PcComponent);
-			break;
-			case 'monitor':
-				componentFactory = this.resolver.resolveComponentFactory(MonitorComponent);
-			break;
-			case 'otro':
-				componentFactory = this.resolver.resolveComponentFactory(OtroComponent);
-			break;
-		}
+	protected addContent(itemType: string, data: any = null) {
+		let componentFactory: any = this.resolver.resolveComponentFactory(EquipoComponent);
 
 		const componentRef: any = this.container.createComponent(componentFactory);
 
 		componentRef.instance.data = {
-			idItem: this.count
+			idItem: this.count,
+			itemType
 		};
 
 		if (data != null) componentRef.instance.data.datosEquipo = data;
 
-		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType: type });
+		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType });
 		this.count += 1;
 	}
 
