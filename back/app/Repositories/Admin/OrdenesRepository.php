@@ -36,26 +36,26 @@ class OrdenesRepository
         $registro->descripcionFalla   = $this->formatString($equipo, 'descripcionFalla');
         $registro->observaciones      = $this->formatString($equipo, 'observaciones');
 
-        $registro->base               = $equipo['base'] ?? null;
-        $registro->bisagras           = $equipo['bisagras'] ?? null;
-        $registro->botonEncendido     = $equipo['botonEncendido'] ?? null;
-        $registro->botones            = $equipo['botones'] ?? null;
-        $registro->cableCorriente     = $equipo['cableCorriente'] ?? null;
-        $registro->carcasa            = $equipo['carcasa'] ?? null;
-        $registro->cartuchos          = $equipo['cartuchos'] ?? null;
-        $registro->centroDeCarga      = $equipo['centroDeCarga'] ?? null;
-        $registro->charolaHojas       = $equipo['charolaHojas'] ?? null;
-        $registro->displayPort        = $equipo['displayPort'] ?? null;
-        $registro->escaner            = $equipo['escaner'] ?? null;
-        $registro->padDeBotones       = $equipo['padDeBotones'] ?? null;
-        $registro->pantalla           = $equipo['pantalla'] ?? null;
-        $registro->puertoDvi          = $equipo['puertoDvi'] ?? null;
-        $registro->puertoHdmi         = $equipo['puertoHdmi'] ?? null;
-        $registro->puertoUsb          = $equipo['puertoUsb'] ?? null;
-        $registro->puertoVga          = $equipo['puertoVga'] ?? null;
-        $registro->teclado            = $equipo['teclado'] ?? null;
-        $registro->tornillos          = $equipo['tornillos'] ?? null;
-        $registro->unidadDeCd         = $equipo['unidadDeCd'] ?? null;
+        $registro->base               = isset($equipo['base']) ? ($equipo['base'] ? 1 : 0) : null;
+        $registro->bisagras           = isset($equipo['bisagras']) ? ($equipo['bisagras'] ? 1 : 0) : null;
+        $registro->botonEncendido     = isset($equipo['botonEncendido']) ? ($equipo['botonEncendido'] ? 1 : 0) : null;
+        $registro->botones            = isset($equipo['botones']) ? ($equipo['botones'] ? 1 : 0) : null;
+        $registro->cableCorriente     = isset($equipo['cableCorriente']) ? ($equipo['cableCorriente'] ? 1 : 0) : null;
+        $registro->carcasa            = isset($equipo['carcasa']) ? ($equipo['carcasa'] ? 1 : 0) : null;
+        $registro->cartuchos          = isset($equipo['cartuchos']) ? ($equipo['cartuchos'] ? 1 : 0) : null;
+        $registro->centroDeCarga      = isset($equipo['centroDeCarga']) ? ($equipo['centroDeCarga'] ? 1 : 0) : null;
+        $registro->charolaHojas       = isset($equipo['charolaHojas']) ? ($equipo['charolaHojas'] ? 1 : 0) : null;
+        $registro->displayPort        = isset($equipo['displayPort']) ? ($equipo['displayPort'] ? 1 : 0) : null;
+        $registro->escaner            = isset($equipo['escaner']) ? ($equipo['escaner'] ? 1 : 0) : null;
+        $registro->padDeBotones       = isset($equipo['padDeBotones']) ? ($equipo['padDeBotones'] ? 1 : 0) : null;
+        $registro->pantalla           = isset($equipo['pantalla']) ? ($equipo['pantalla'] ? 1 : 0) : null;
+        $registro->puertoDvi          = isset($equipo['puertoDvi']) ? ($equipo['puertoDvi'] ? 1 : 0) : null;
+        $registro->puertoHdmi         = isset($equipo['puertoHdmi']) ? ($equipo['puertoHdmi'] ? 1 : 0) : null;
+        $registro->puertoUsb          = isset($equipo['puertoUsb']) ? ($equipo['puertoUsb'] ? 1 : 0) : null;
+        $registro->puertoVga          = isset($equipo['puertoVga']) ? ($equipo['puertoVga'] ? 1 : 0) : null;
+        $registro->teclado            = isset($equipo['teclado']) ? ($equipo['teclado'] ? 1 : 0) : null;
+        $registro->tornillos          = isset($equipo['tornillos']) ? ($equipo['tornillos'] ? 1 : 0) : null;
+        $registro->unidadDeCd         = isset($equipo['unidadDeCd']) ? ($equipo['unidadDeCd'] ? 1 : 0) : null;
 
         $registro->detalles           = $this->formatString($equipo, 'detalles');
         $registro->costoReparacion    = trim(str_replace(['$', ','], '', $equipo['costoReparacion']));
@@ -143,6 +143,58 @@ class OrdenesRepository
         $query = TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden);
 
         return $query->get() ?? [];
+    }
+
+    public function actualizarOrdenServicio ($orden) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $orden['pkTblOrdenServicio'])
+                          ->update([
+                              'cliente'               => $this->formatString($orden, 'cliente'),
+                              'telefono'              => $this->formatString($orden, 'telefono'),
+                              'correo'                => $this->formatString($orden, 'correo'),
+                              'direccion'             => $this->formatString($orden, 'direccion'),
+                              'aCuenta'               => trim(str_replace(['$', ','], '', $orden['aCuenta'])),
+                              'nota'                  => $this->formatString($orden, 'nota'),
+                              'fkUsuarioModificacion' => 1,
+                              'fechaModificacion'     => Carbon::now(),
+                          ]);
+    }
+
+    public function actualizarDetalleOrdenServicio ($equipo) {
+        TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $equipo['pkTblDetalleOrdenServicio'])
+                               ->update([
+                                   'nombre'                => $this->formatString($equipo, 'equipo'),
+                                   'noSerie'               => $this->formatString($equipo, 'noSerie'),
+                                   'password'              => $this->formatString($equipo, 'password'),
+                                   'descripcionFalla'      => $this->formatString($equipo, 'descripcionFalla'),
+                                   'observaciones'         => $this->formatString($equipo, 'observaciones'),
+
+                                   'base'                  => isset($equipo['base']) ? ($equipo['base'] ? 1 : 0) : null,
+                                   'bisagras'              => isset($equipo['bisagras']) ? ($equipo['bisagras'] ? 1 : 0) : null,
+                                   'botonEncendido'        => isset($equipo['botonEncendido']) ? ($equipo['botonEncendido'] ? 1 : 0) : null,
+                                   'botones'               => isset($equipo['botones']) ? ($equipo['botones'] ? 1 : 0) : null,
+                                   'cableCorriente'        => isset($equipo['cableCorriente']) ? ($equipo['cableCorriente'] ? 1 : 0) : null,
+                                   'carcasa'               => isset($equipo['carcasa']) ? ($equipo['carcasa'] ? 1 : 0) : null,
+                                   'cartuchos'             => isset($equipo['cartuchos']) ? ($equipo['cartuchos'] ? 1 : 0) : null,
+                                   'centroDeCarga'         => isset($equipo['centroDeCarga']) ? ($equipo['centroDeCarga'] ? 1 : 0) : null,
+                                   'charolaHojas'          => isset($equipo['charolaHojas']) ? ($equipo['charolaHojas'] ? 1 : 0) : null,
+                                   'displayPort'           => isset($equipo['displayPort']) ? ($equipo['displayPort'] ? 1 : 0) : null,
+                                   'escaner'               => isset($equipo['escaner']) ? ($equipo['escaner'] ? 1 : 0) : null,
+                                   'padDeBotones'          => isset($equipo['padDeBotones']) ? ($equipo['padDeBotones'] ? 1 : 0) : null,
+                                   'pantalla'              => isset($equipo['pantalla']) ? ($equipo['pantalla'] ? 1 : 0) : null,
+                                   'puertoDvi'             => isset($equipo['puertoDvi']) ? ($equipo['puertoDvi'] ? 1 : 0) : null,
+                                   'puertoHdmi'            => isset($equipo['puertoHdmi']) ? ($equipo['puertoHdmi'] ? 1 : 0) : null,
+                                   'puertoUsb'             => isset($equipo['puertoUsb']) ? ($equipo['puertoUsb'] ? 1 : 0) : null,
+                                   'puertoVga'             => isset($equipo['puertoVga']) ? ($equipo['puertoVga'] ? 1 : 0) : null,
+                                   'teclado'               => isset($equipo['teclado']) ? ($equipo['teclado'] ? 1 : 0) : null,
+                                   'tornillos'             => isset($equipo['tornillos']) ? ($equipo['tornillos'] ? 1 : 0) : null,
+                                   'unidadDeCd'            => isset($equipo['unidadDeCd']) ? ($equipo['unidadDeCd'] ? 1 : 0) : null,
+
+                                   'detalles'              => $this->formatString($equipo, 'detalles'),
+                                   'costoReparacion'       => trim(str_replace(['$', ','], '', $equipo['costoReparacion'])),
+                                   'diagnosticoFinal'      => $this->formatString($equipo, 'diagnosticoFinal'),
+                                   'fkUsuarioModificacion' => 1,
+                                   'fechaModificacion'     => Carbon::now(),
+                               ]);
     }
 
     private function formatString ($arr, $index) {

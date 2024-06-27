@@ -31,7 +31,7 @@ class OrdenesController extends Controller
             );
         }
     }
-
+    
     public function obtenerOrdenesServicio ($status) {
         try{
             return $this->ordenesService->obtenerOrdenesServicio($status);
@@ -46,10 +46,25 @@ class OrdenesController extends Controller
             );
         }
     }
-
+    
     public function obtenerDetalleOrdenServicio ($pkOrden) {
         try{
             return $this->ordenesService->obtenerDetalleOrdenServicio($pkOrden);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
+    public function actualizarOrdenServicio (Request $orden) {
+        try{
+            return $this->ordenesService->actualizarOrdenServicio($orden->all());
         } catch( \Throwable $error ) {
             Log::alert($error);
             return response()->json(

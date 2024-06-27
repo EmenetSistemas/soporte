@@ -91,4 +91,24 @@ class OrdenesService
             return $carbon->format('d-m-Y | h:i a');
         }
     }
+
+    public function actualizarOrdenServicio ($orden) {
+        DB::beginTransaction();
+            $this->ordenesRepository->actualizarOrdenServicio($orden);
+            foreach ($orden['equipos'] as $equipo) {
+                if (isset($equipo['data']['pkTblDetalleOrdenServicio'])) {
+                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data']);
+                } else {
+                    $this->ordenesRepository->registrarDetalleOrdenServicio($orden['pkTblOrdenServicio'], $equipo['itemType'], $equipo['data']);
+                }
+            }
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se actualizó la orden de servicio con éxito'
+            ],
+            200
+        );
+    }
 }
