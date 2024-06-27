@@ -62,6 +62,13 @@ class OrdenesService
 
         $detalleOrden = $this->ordenesRepository->obtenerDetalleOrdenServicio($pkOrden);
 
+        foreach ($detalleOrden as $equipo) {
+            $equipo->fechaConclucion   = $this->formatearFecha($equipo->fechaConclucion);
+            $equipo->fechaEntrega      = $this->formatearFecha($equipo->fechaEntrega);
+            $equipo->fechaCancelacion  = $this->formatearFecha($equipo->fechaCancelacion);
+            $equipo->fechaModificacion = $this->formatearFecha($equipo->fechaModificacion);
+        }
+
         return response()->json(
             [
                 'data' => [

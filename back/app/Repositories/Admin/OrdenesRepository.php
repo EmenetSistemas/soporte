@@ -140,7 +140,53 @@ class OrdenesRepository
     }
 
     public function obtenerDetalleOrdenServicio ($pkOrden) {
-        $query = TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden);
+        $query = TblDetalleOrdenServicio::select(
+                                            'tblDetalleOrdenServicio.pkTblDetalleOrdenServicio as pkTblDetalleOrdenServicio',
+                                            'tblDetalleOrdenServicio.fkTblOrdenServicio as fkTblOrdenServicio',
+                                            'tblDetalleOrdenServicio.tipoEquipo as tipoEquipo',
+                                            'tblDetalleOrdenServicio.nombre as nombre',
+                                            'tblDetalleOrdenServicio.noSerie as noSerie',
+                                            'tblDetalleOrdenServicio.password as password',
+                                            'tblDetalleOrdenServicio.descripcionFalla as descripcionFalla',
+                                            'tblDetalleOrdenServicio.observaciones as observaciones',
+                                            'tblDetalleOrdenServicio.base as base',
+                                            'tblDetalleOrdenServicio.bisagras as bisagras',
+                                            'tblDetalleOrdenServicio.botonEncendido as botonEncendido',
+                                            'tblDetalleOrdenServicio.botones as botones',
+                                            'tblDetalleOrdenServicio.cableCorriente as cableCorriente',
+                                            'tblDetalleOrdenServicio.carcasa as carcasa',
+                                            'tblDetalleOrdenServicio.cartuchos as cartuchos',
+                                            'tblDetalleOrdenServicio.centroDeCarga as centroDeCarga',
+                                            'tblDetalleOrdenServicio.charolaHojas as charolaHojas',
+                                            'tblDetalleOrdenServicio.displayPort as displayPort',
+                                            'tblDetalleOrdenServicio.escaner as escaner',
+                                            'tblDetalleOrdenServicio.padDeBotones as padDeBotones',
+                                            'tblDetalleOrdenServicio.pantalla as pantalla',
+                                            'tblDetalleOrdenServicio.puertoDvi as puertoDvi',
+                                            'tblDetalleOrdenServicio.puertoHdmi as puertoHdmi',
+                                            'tblDetalleOrdenServicio.puertoUsb as puertoUsb',
+                                            'tblDetalleOrdenServicio.puertoVga as puertoVga',
+                                            'tblDetalleOrdenServicio.teclado as teclado',
+                                            'tblDetalleOrdenServicio.tornillos as tornillos',
+                                            'tblDetalleOrdenServicio.unidadDeCd as unidadDeCd',
+                                            'tblDetalleOrdenServicio.detalles as detalles',
+                                            'tblDetalleOrdenServicio.costoReparacion as costoReparacion',
+                                            'tblDetalleOrdenServicio.diagnosticoFinal as diagnosticoFinal',
+                                            'usuarioConclucion.nombre as usuarioConclucion',
+                                            'tblDetalleOrdenServicio.fechaConclucion as fechaConclucion',
+                                            'usuarioEntrega.nombre as usuarioEntrega',
+                                            'tblDetalleOrdenServicio.fechaEntrega as fechaEntrega',
+                                            'usuarioCancelacion.nombre as usuarioCancelacion',
+                                            'tblDetalleOrdenServicio.fechaCancelacion as fechaCancelacion',
+                                            'usuarioModificacion.nombre as usuarioModificacion',
+                                            'tblDetalleOrdenServicio.fechaModificacion as fechaModificacion',
+                                            'tblDetalleOrdenServicio.status as status'
+                                        )
+                                        ->leftJoin('tblUsuarios as usuarioConclucion', 'usuarioConclucion.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioConclucion')
+                                        ->leftJoin('tblUsuarios as usuarioEntrega', 'usuarioEntrega.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioEntrega')
+                                        ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioCancelacion')
+                                        ->leftJoin('tblUsuarios as usuarioModificacion', 'usuarioModificacion.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioModificacion')
+                                        ->where('fkTblOrdenServicio', $pkOrden);
 
         return $query->get() ?? [];
     }
