@@ -17,35 +17,35 @@ export class PcComponent extends FGenerico implements OnInit {
 		{
 			identificador: 'botones',
 			label: 'Botones',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'puertoUsb',
 			label: 'Puerto USB',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'puertoVga',
 			label: 'Puerto VGA',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'puertoHdmi',
 			label: 'Puerto HDMI',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'displayPort',
 			label: 'Display Port',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'tornillos',
 			label: 'Tornillos',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'carcasa',
 			label: 'Carcasa(Gabinete)',
-			checked: true
+			checked: false
 		}, {
 			identificador: 'unidadDeCd',
 			label: 'Unidad de CD',
-			checked: true
+			checked: false
 		}
 	];
 

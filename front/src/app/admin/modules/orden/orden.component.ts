@@ -239,6 +239,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected actualizarOrden(): void {
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		
+		if (equipoInvalidoIndex !== -1) {
+			const equipoInvalido = this.listaEquipos[equipoInvalidoIndex];
+			this.mensajes.mensajeGenerico(
+				`Aún hay campos vacíos o que no cumplen con la estructura correcta del <b>equipo ${equipoInvalidoIndex + 1} | ${equipoInvalido.itemType}</b>`,
+				'warning',
+				'Los campos requeridos están marcados con un *'
+			);
+			return;
+		}
+
 		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
 
 		if (!this.validaCambios() && equipos.length == 0) {
@@ -263,13 +275,20 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 				this.apiOrdenes.actualizarOrdenServicio(orden).subscribe(
 					respuesta => {
-						this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+						this.refrescarDatos(respuesta.mensaje);
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}
 				);
 			}
 		);
+	}
+
+	private refrescarDatos(mensaje: string): void {
+		this.resetForm();
+		this.obtenerDetalleOrdenServicio().then(()=> {
+			this.mensajes.mensajeGenericoToast(mensaje, 'success');
+		});
 	}
 
 	private validaCambios(): boolean {
