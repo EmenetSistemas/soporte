@@ -222,7 +222,7 @@
                         <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;">
                             <i class="bi bi-filetype-pdf"></i></div>
 
-                        <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2">Actualizar</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2" (click)="actualizarOrden()">Actualizar</div>
                         <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning me-2">
                             Retomar orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</div>

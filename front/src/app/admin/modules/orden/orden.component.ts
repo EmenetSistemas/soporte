@@ -24,7 +24,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	protected count: number = 0;
 
 	protected pkOrden: any = 0;
-	protected mensajeEsp: string = '';
 
 	protected detalleOrden: any = {};
 
@@ -52,7 +51,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.crearFormCliente();
 			this.route.paramMap.subscribe(params => {
 				this.pkOrden = params.get('pkOrden') ?? 0;
-				this.mensajeEsp = params.get('msj') && params.get('msj') == 'msj' ? 'Se registró la orden de servicio con éxito' : '';
 			});
 	
 			if (this.pkOrden == 0) {
@@ -194,13 +192,15 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				
 				this.apiOrdenes.registrarOrdenServicio(orden).subscribe(
 					respuesta => {
-						this.router.navigate(['/detalle-orden', respuesta.data.pkOrden, 'msj']);
+						this.resetForm();
+						this.pkOrden = respuesta.data.pkOrden;
+						this.obtenerDetalleOrdenServicio().then(()=> {
+							this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
+						});
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}
 				);
-			}, error => {
-				this.mensajes.mensajeGenerico('error', 'error');
 			}
 		);
 	}
@@ -215,11 +215,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				this.crearComponentesEquipos(respuesta.data.detalleOrden);
 				this.cargarDatosFormularioCliente(this.detalleOrden);
 
-				if (this.mensajeEsp != '') {
-					this.mensajes.mensajeGenerico(this.mensajeEsp, 'success');
-				} else {
-					this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
-				}
+				this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
 			}, error => {
 				this.router.navigate(['/']);
 				this.mensajes.mensajeGenerico('No deberías intentar eso', 'error');
@@ -240,5 +236,68 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.formCliente.get('direccion')?.setValue(data.direccion);
 		this.formCliente.get('aCuenta')?.setValue('$ '+(+data.aCuenta).toLocaleString());
 		this.formCliente.get('nota')?.setValue(data.nota);
+	}
+
+	protected actualizarOrden(): void {
+		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
+
+		if (!this.validaCambios() && equipos.length == 0) {
+			this.mensajes.mensajeGenericoToast('No hay cambios por guardar', 'info');
+			return;
+		}
+
+		this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'info', 'Actualizar orden de servicio').then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				const orden = {
+					...this.formCliente.value,
+					equipos: equipos.map(({ component, pk, ...rest }) => rest)
+				};
+
+				if (this.pkOrden != 0) {
+					orden.pkTblOrdenServicio = this.pkOrden;
+				}
+
+				this.apiOrdenes.actualizarOrdenServicio(orden).subscribe(
+					respuesta => {
+						this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
+	private validaCambios(): boolean {
+		if (
+			this.formCliente.value.cliente == this.detalleOrden.cliente &&
+			this.formCliente.value.telefono == this.detalleOrden.telefono &&
+			this.formCliente.value.correo == this.detalleOrden.correo &&
+			this.formCliente.value.direccion == this.detalleOrden.direccion &&
+			this.formCliente.value.aCuenta.replace(/[,$]/g, '').trim() == this.detalleOrden.aCuenta &&
+			this.formCliente.value.nota == this.detalleOrden.nota
+		) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private resetForm(): void {
+		this.formCliente.reset();
+		this.formCliente.get('total')?.setValue('$ 0');
+		this.formCliente.get('aCuenta')?.setValue('$ 0');
+		this.formCliente.get('restante')?.setValue('$ 0');
+
+		this.listaEquipos.forEach(equipo => {
+			equipo.component.destroy();
+		});
+
+		this.listaEquipos = [];
+		this.count = 0;
 	}
 }
