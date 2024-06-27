@@ -190,10 +190,9 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
 				this.detalleOrden = respuesta.data.orden;
-
+		
 				this.crearComponentesEquipos(respuesta.data.detalleOrden);
-				this.cargarDatosFormularioCliente(this.detalleOrden);
-
+		
 				this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
 			}, error => {
 				this.router.navigate(['/']);
@@ -201,11 +200,16 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			}
 		);
 	}
+	  
 
-	private crearComponentesEquipos(equipos: any): void {
+	private crearComponentesEquipos(equipos: any): void{
 		equipos.forEach((equipo: any) => {
 			this.addContent(equipo.tipoEquipo, equipo);
 		});
+
+		setTimeout(() => {
+			this.cargarDatosFormularioCliente(this.detalleOrden);
+		}, 100);
 	}
 
 	private cargarDatosFormularioCliente(data: any): void {
@@ -213,7 +217,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.formCliente.get('telefono')?.setValue(data.telefono);
 		this.formCliente.get('correo')?.setValue(data.correo);
 		this.formCliente.get('direccion')?.setValue(data.direccion);
-		this.formCliente.get('aCuenta')?.setValue('$ '+(+data.aCuenta).toLocaleString());
+		this.formCliente.get('aCuenta')?.setValue('$ '+data.aCuenta);
 		this.formCliente.get('nota')?.setValue(data.nota);
 	}
 
