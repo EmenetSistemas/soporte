@@ -136,4 +136,19 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function eliminarEquipoOrden ($pkEquipo) {
+        try{
+            return $this->ordenesService->eliminarEquipoOrden($pkEquipo);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }

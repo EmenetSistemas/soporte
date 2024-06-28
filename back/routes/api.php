@@ -10,3 +10,4 @@ Route::post('/ordenes/cambioStatusServicio', 'App\Http\Controllers\Admin\Ordenes
 Route::post('/ordenes/cancelarOrdenServicio', 'App\Http\Controllers\Admin\OrdenesController@cancelarOrdenServicio');
 Route::get('/ordenes/retomarOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admin\OrdenesController@retomarOrdenServicio');
 Route::post('/ordenes/concluirOrdenServicio', 'App\Http\Controllers\Admin\OrdenesController@concluirOrdenServicio');
+Route::get('/ordenes/eliminarEquipoOrden/{pkEquipo}', 'App\Http\Controllers\Admin\OrdenesController@eliminarEquipoOrden');

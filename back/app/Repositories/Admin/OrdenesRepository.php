@@ -359,4 +359,8 @@ class OrdenesRepository
                                    'status' => 2
                                ]);
     }
+
+    public function eliminarEquipoOrden ($pkEquipo) {
+        TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $pkEquipo)->delete();
+    }
 }

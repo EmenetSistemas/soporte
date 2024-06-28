@@ -158,7 +158,7 @@ class OrdenesService
 
         return response()->json(
             [
-                'mensaje' => 'Se cambio el status de la orden y los equipos a "pendiente" con éxito'
+                'mensaje' => 'Se cambió el status de la orden y los equipos a "pendiente" con éxito'
             ],
             200
         );
@@ -172,7 +172,18 @@ class OrdenesService
 
         return response()->json(
             [
-                'mensaje' => 'Se cambio el status de la orden y los equipos pendientes a "concluido" con éxito'
+                'mensaje' => 'Se cambió el status de la orden y los equipos pendientes a "concluido" con éxito'
+            ],
+            200
+        );
+    }
+
+    public function eliminarEquipoOrden ($pkEquipo) {
+        $this->ordenesRepository->eliminarEquipoOrden($pkEquipo);
+
+        return response()->json(
+            [
+                'mensaje' => 'Se eliminó el equipo de la orden de servicio con éxito'
             ],
             200
         );
