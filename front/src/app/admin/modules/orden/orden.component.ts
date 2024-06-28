@@ -364,7 +364,37 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		);
 	}
 
+	protected concluirOrdenServicio(): void {
+		this.mensajes.mensajeConfirmacionCustom(
+			`¿Estás seguro de concluir la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessageConclusion()} a "servicio concluido"`,
+			'question', 
+			'Concluir orden de servicio'
+		).then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				const dataConclucion = {
+					pkTblOrdenServicio: this.pkOrden
+				};
+
+				this.apiOrdenes.concluirOrdenServicio(dataConclucion).subscribe(
+					respuesta => {
+						this.refrescarDatos(respuesta.mensaje);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
 	private extraMessage(): string {
 		return this.listaEquipos.length > 1 ? ' así como de todos los equipos' : '';
+	}
+
+	private extraMessageConclusion(): string {
+		return this.equiposOrden.filter((equipo: any) => equipo.status == 1).length > 1 ? ' así como de los equipos pedientes' : '';
 	}
 }

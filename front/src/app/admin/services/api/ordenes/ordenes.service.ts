@@ -38,4 +38,8 @@ export class OrdenesService {
 	public retomarOrdenServicio(pkOrden: number): Observable<any> {
 		return this.http.get<any>(`${api}/ordenes/retomarOrdenServicio/${pkOrden}`);
 	}
+
+	public concluirOrdenServicio(dataConclucion: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/concluirOrdenServicio`, dataConclucion);
+	}
 }

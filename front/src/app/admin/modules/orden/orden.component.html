@@ -174,7 +174,7 @@
                         <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning"
                             (click)="retomarOrdenServicio()">
                             Retomar orden</div>
-                        <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2" (click)="concluirOrdenServicio()">Concluir orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-danger" (click)="cancelarOrdenServicio()">
                             Cancelar orden</div>
                     </div>
