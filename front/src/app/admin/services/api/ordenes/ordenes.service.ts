@@ -26,4 +26,16 @@ export class OrdenesService {
 	public actualizarOrdenServicio(orden: any): Observable<any> {
 		return this.http.post<any>(`${api}/ordenes/actualizarOrdenServicio`, orden);
 	}
+
+	public cambioStatusServicio(cambioStatus: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/cambioStatusServicio`, cambioStatus);
+	}
+
+	public cancelarOrdenServicio(dataCancelacion: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/cancelarOrdenServicio`, dataCancelacion);
+	}
+
+	public retomarOrdenServicio(pkOrden: number): Observable<any> {
+		return this.http.get<any>(`${api}/ordenes/retomarOrdenServicio/${pkOrden}`);
+	}
 }

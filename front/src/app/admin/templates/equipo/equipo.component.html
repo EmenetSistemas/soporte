@@ -12,7 +12,8 @@
 
             &nbsp;
 
-            <span *ngIf="formEquipo.valid" class="badge bg-success">
+            <span *ngIf="formEquipo.valid && (data.datosEquipo.status == 1 || data.datosEquipo.status == 2)"
+                class="badge bg-success">
                 &nbsp;<i class="bi bi-check-circle me-1"></i>
             </span>
             <span *ngIf="!formEquipo.valid" class="badge bg-warning text-dark">
@@ -23,45 +24,55 @@
             <div class="col-12" style="margin-top: 15px !important;">
                 <div class="row">
                     <form class="row g-3" autocomplete="off" [formGroup]="formEquipo" (input)="enviarCambios()">
-                        <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center" data-bs-toggle="dropdown">
+                        <div class="col-xxl-3 col-lg-4 col-sm-3 d-flex justify-content-center align-items-center"
+                            data-bs-toggle="dropdown">
                             <img src="https://m-net.mx/scosm/images/{{data.itemType}}.png" width="100px">
                         </div>
 
                         <ul class="dropdown-menu">
-                            <div class="t-center">
-                                <div *ngIf="data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion">
-                                    <label style="color: gray !important;">Última
-                                        actualización</label>&nbsp;<label
-                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioModificacion}}</label>
-                                    <br><label>{{data.datosEquipo.fechaModificacion}}</label>
-                                </div>
-                                
-                                <hr *ngIf="
-                                    (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) &&
-                                    (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) &&
-                                    (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega)
-                                ">
+                            <ng-container *ngIf="
+                                (data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion) ||
+                                (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) ||
+                                (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) ||
+                                (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega); else sinActualizaciones
+                            ">
+                                <div class="t-center">
+                                    <div
+                                        *ngIf="data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion">
+                                        <label style="color: gray !important;">Última
+                                            actualización</label>&nbsp;<label
+                                            style="color: #008FFF !important;">{{data.datosEquipo.usuarioModificacion}}</label>
+                                        <br><label>{{data.datosEquipo.fechaModificacion}}</label>
+                                    </div>
 
-                                <div *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion">
-                                    <br>
-                                    <label style="color: gray !important;">Cancelada por</label>&nbsp;<label
-                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioCancelacion}}</label>
-                                    <br><label>{{data.datosEquipo.fechaCancelacion}}</label>
+                                    <hr *ngIf="
+                                        (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) &&
+                                        (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) &&
+                                        (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega)
+                                    ">
+
+                                    <div
+                                        *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion">
+                                        <br>
+                                        <label style="color: gray !important;">Cancelado por</label>&nbsp;<label
+                                            style="color: #008FFF !important;">{{data.datosEquipo.usuarioCancelacion}}</label>
+                                        <br><label>{{data.datosEquipo.fechaCancelacion}}</label>
+                                    </div>
+                                    <div *ngIf="data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion">
+                                        <br>
+                                        <label style="color: gray !important;">Concluido por</label>&nbsp;<label
+                                            style="color: #008FFF !important;">{{data.datosEquipo.usuarioConclucion}}</label>
+                                        <br><label>{{data.datosEquipo.fechaConclucion}}</label>
+                                    </div>
                                 </div>
-                                <div *ngIf="data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion">
-                                    <br>
-                                    <label style="color: gray !important;">Concluida por</label>&nbsp;<label
-                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioConclucion}}</label>
-                                    <br><label>{{data.datosEquipo.fechaConclucion}}</label>
-                                </div>
-                                <div *ngIf="data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega">
-                                    <br>
-                                    <label style="color: gray !important;">Entregada por</label>&nbsp;<label
-                                        style="color: #008FFF !important;">{{data.datosEquipo.usuarioEntrega}}</label>
-                                    <br><label>{{data.datosEquipo.fechaEntrega}}</label>
-                                </div>
-                            </div>
+                            </ng-container>
                         </ul>
+
+                        <ng-template #sinActualizaciones>
+                            <div class="t-center">
+                                Aún no hay actualizaciones para mostrar
+                            </div>
+                        </ng-template>
 
                         <div class="col-xxl-9 col-lg-8 col-sm-9">
                             <div class="row g-3">
@@ -129,10 +140,16 @@
                         <section *ngIf="data.datosEquipo">
                             <div *ngIf="data.datosEquipo.status <= 2" class="btn btn-primary me-2">Enviar diagnostico
                             </div>
-                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-success me-2">Concluir</div>
-                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-warning me-2">Cancelar</div>
-
-                            <div *ngIf="data.datosEquipo.status == 1" class="btn btn-danger t-bold"
+                            <div *ngIf="(data.datosEquipo.status == 1) && parent.validaListaPedientes()"
+                                class="btn btn-success me-2" (click)="cambioStatusServicio('Concluir', 2)">Concluir
+                            </div>
+                            <div *ngIf="(data.datosEquipo.status == 1) && parent.validaListaPedientesEntregados()"
+                                class="btn btn-warning me-2" (click)="cambioStatusServicio('Cancelar', 4)">Cancelar
+                            </div>
+                            <div *ngIf="(data.datosEquipo.status == 2 || data.datosEquipo.status == 4) && parent.validaOpcionesIndividuales()"
+                                class="btn btn-warning me-2" (click)="cambioStatusServicio('Retomar', 1)">Retomar
+                                servicio</div>
+                            <div *ngIf="data.datosEquipo.status == 1 && parent.validaListaPedientes()" class="btn btn-danger t-bold"
                                 style="float: right !important;"><i class="bi bi-trash"></i></div>
                         </section>
                     </div>

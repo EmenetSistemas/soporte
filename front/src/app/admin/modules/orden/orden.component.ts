@@ -22,6 +22,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	protected pkOrden: any = 0;
 
 	protected detalleOrden: any = {};
+	protected equiposOrden: any = [];
 
 	protected status: any = [
 		'pendiente',
@@ -184,14 +185,26 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		);
 	}
 
+	public validaListaPedientes(): boolean {
+		return this.equiposOrden.filter((equipo: any) => equipo.status == 1).length > 1;
+	}
+
+	public validaListaPedientesEntregados(): boolean {
+		return this.equiposOrden.filter((equipo: any) => equipo.status == 1 || equipo.status == 2).length > 1;
+	}
+
+	public validaOpcionesIndividuales(): boolean {
+		return this.equiposOrden.length > 1;
+	}
+
 	// carga actualización
 
 	private obtenerDetalleOrdenServicio(): Promise<any> {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
 				this.detalleOrden = respuesta.data.orden;
-		
-				this.crearComponentesEquipos(respuesta.data.detalleOrden);
+				this.equiposOrden = respuesta.data.detalleOrden;
+				this.crearComponentesEquipos(this.equiposOrden);
 		
 				this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
 			}, error => {
@@ -267,7 +280,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		);
 	}
 
-	private refrescarDatos(mensaje: string): void {
+	public refrescarDatos(mensaje: string): void {
 		this.resetForm();
 		this.obtenerDetalleOrdenServicio().then(()=> {
 			this.mensajes.mensajeGenericoToast(mensaje, 'success');
@@ -301,5 +314,57 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 		this.listaEquipos = [];
 		this.count = 0;
+	}
+
+	protected cancelarOrdenServicio(): void {
+		this.mensajes.mensajeConfirmacionCustom(
+			`¿Estás seguro de cancelar la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessage()} a "servicio cancelado"`,
+			'question', 
+			'Cancelar orden de servicio'
+		).then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				const dataCancelacion = {
+					pkTblOrdenServicio: this.pkOrden
+				};
+		
+				this.apiOrdenes.cancelarOrdenServicio(dataCancelacion).subscribe(
+					respuesta => {
+						this.refrescarDatos(respuesta.mensaje);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
+	protected retomarOrdenServicio(): void {
+		this.mensajes.mensajeConfirmacionCustom(
+			`¿Estás seguro de retomar la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessage()} a "servicio pendiente"`,
+			'question', 
+			'Retomar orden de servicio'
+		).then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				this.apiOrdenes.retomarOrdenServicio(this.pkOrden).subscribe(
+					respuesta => {
+						this.refrescarDatos(respuesta.mensaje);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
+	private extraMessage(): string {
+		return this.listaEquipos.length > 1 ? ' así como de todos los equipos' : '';
 	}
 }

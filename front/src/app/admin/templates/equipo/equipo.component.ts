@@ -8,6 +8,8 @@ import { impresora_checks } from 'src/app/shared/util/impresora-checks';
 import { pc_checks } from 'src/app/shared/util/pc-checks';
 import { monitor_checks } from 'src/app/shared/util/monitor-checks';
 import { otro_checks } from 'src/app/shared/util/otro-checks';
+import { MensajesService } from '../../services/mensajes/mensajes.service';
+import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 
 @Component({
   selector: 'app-equipo',
@@ -22,7 +24,9 @@ export class EquipoComponent extends FGenerico implements OnInit{
 
 	constructor(
 		private fb: FormBuilder,
-		protected parent: OrdenComponent
+		protected parent: OrdenComponent,
+		private mensajes: MensajesService,
+		private apiOrdenes: OrdenesService
 	) {
 		super();
 	}
@@ -79,6 +83,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		this.formEquipo.value.formValid = this.formEquipo.valid;
 		if (this.data.datosEquipo) {
 			this.formEquipo.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+			this.formEquipo.value.status = this.data.datosEquipo.status;
 		}
 
 		const data = {
@@ -124,6 +129,36 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		this.parent.cacharDatosComponent(
 			{costoReparacion : this.formEquipo.value.costoReparacion},
 			this.data.idItem
+		);
+	}
+
+	protected cambioStatusServicio(tipoCambio: string, status: number): void {
+		const statusList = [
+			'pendiente',
+			'concluido',
+			'entregado',
+			'cancelado'
+		];
+
+		this.mensajes.mensajeConfirmacionCustom('¿Estás seguro cambiar el status del equipo en cuestión a "'+statusList[status-1]+'"?', 'question', tipoCambio+' servicio equipo "'+this.data.datosEquipo.nombre+'"').then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();		
+
+				const data = {
+					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio,
+					status
+				};
+
+				this.apiOrdenes.cambioStatusServicio(data).subscribe(
+					respuesta => {
+						this.parent.refrescarDatos(respuesta.mensaje);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
 		);
 	}
 }

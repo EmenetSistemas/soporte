@@ -1,7 +1,17 @@
 <div class="row">
     <div class="col-xxl-3 col-lg-4 col-12">
         <div *ngIf="pkOrden != 0" class="pagetitle">
-            <h1>Orden {{status[detalleOrden.status-1]}} #{{pkOrden}}</h1>
+            <h1>
+                Orden {{status[detalleOrden.status-1]}} #{{pkOrden}}
+                <div class="spinner-grow spinner-grow-sm" role="status" [ngClass]="{
+                        'text-warning': detalleOrden.status === 1,
+                        'text-primary': detalleOrden.status === 2,
+                        'text-success': detalleOrden.status === 3,
+                        'text-danger': detalleOrden.status === 4
+                    }" style="position: absolute; margin-top: 6px; margin-left: 10px;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes de servicio</li>
@@ -30,7 +40,7 @@
                                     <i class="bi bi-info-circle"></i>
                                 </button>
                             </div>
-                            
+
                             <ul class="dropdown-menu">
                                 <div class="t-center">
                                     <div *ngIf="detalleOrden.usuarioModificacion && detalleOrden.fechaModificacion">
@@ -156,13 +166,17 @@
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
                         <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;">
-                            <i class="bi bi-filetype-pdf"></i></div>
+                            <i class="bi bi-filetype-pdf"></i>
+                        </div>
 
-                        <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2" (click)="actualizarOrden()">Actualizar</div>
-                        <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning me-2">
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2" (click)="actualizarOrden()">
+                            Actualizar</div>
+                        <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning"
+                            (click)="retomarOrdenServicio()">
                             Retomar orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2">Concluir orden</div>
-                        <div *ngIf="detalleOrden.status == 1" class="btn btn-danger">Cancelar orden</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-danger" (click)="cancelarOrdenServicio()">
+                            Cancelar orden</div>
                     </div>
                 </div>
             </div>
