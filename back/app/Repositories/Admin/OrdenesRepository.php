@@ -338,4 +338,25 @@ class OrdenesRepository
                                    'status' => 1
                                ]);
     }
+
+    public function concluirOrdenServicio ($dataConclucion) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $dataConclucion['pkTblOrdenServicio'])
+                          ->update([
+                              'fkUsuarioConclucion' => 1,
+                              'fechaConclucion' => Carbon::now(),
+                              'status' => 2
+                          ]);
+    }
+
+    public function concluirEquiposOrden ($dataConclucion) {
+        TblDetalleOrdenServicio::where([
+                                   ['fkTblOrdenServicio', $dataConclucion['pkTblOrdenServicio']],
+                                   ['status', '!=', 4]
+                               ])
+                               ->update([
+                                   'fkUsuarioConclucion' => 1,
+                                   'fechaConclucion' => Carbon::now(),
+                                   'status' => 2
+                               ]);
+    }
 }

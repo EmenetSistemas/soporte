@@ -163,4 +163,18 @@ class OrdenesService
             200
         );
     }
+
+    public function concluirOrdenServicio ($dataConclucion) {
+        DB::beginTransaction();
+            $this->ordenesRepository->concluirOrdenServicio($dataConclucion);
+            $this->ordenesRepository->concluirEquiposOrden($dataConclucion);
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se cambio el status de la orden y los equipos pendientes a "concluido" con éxito'
+            ],
+            200
+        );
+    }
 }

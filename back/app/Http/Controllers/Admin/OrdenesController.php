@@ -121,4 +121,19 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function concluirOrdenServicio (Request $request) {
+        try{
+            return $this->ordenesService->concluirOrdenServicio($request->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }
