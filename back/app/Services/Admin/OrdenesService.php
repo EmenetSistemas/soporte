@@ -118,4 +118,49 @@ class OrdenesService
             200
         );
     }
+
+    public function cambioStatusServicio ($dataCambio) {
+        DB::beginTransaction();
+            $pkOrden = $this->ordenesRepository->cambioStatusServicio($dataCambio);
+
+            if ($dataCambio['status'] == 1) {
+                $this->ordenesRepository->retomarOrdenServicio($pkOrden);
+            }
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se actualizó el status del servicio con éxito'
+            ],
+            200
+        );
+    }
+
+    public function cancelarOrdenServicio ($dataCancelacion) {
+        DB::beginTransaction();
+            $this->ordenesRepository->cancelarOrdenServicio($dataCancelacion['pkTblOrdenServicio']);
+            $this->ordenesRepository->cancelarEquiposOrden($dataCancelacion['pkTblOrdenServicio']);
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se canceló la orden de servicio con éxito'
+            ],
+            200
+        );
+    }
+
+    public function retomarOrdenServicio ($pkOrden) {
+        DB::beginTransaction();
+            $this->ordenesRepository->retomarOrdenServicio($pkOrden);
+            $this->ordenesRepository->retomarEquiposOrden($pkOrden);
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se cambio el status de la orden y los equipos a "pendiente" con éxito'
+            ],
+            200
+        );
+    }
 }

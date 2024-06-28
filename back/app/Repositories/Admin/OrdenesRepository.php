@@ -106,6 +106,7 @@ class OrdenesRepository
                 $query->orderBy('tblOrdenesServicio.fechaCancelacion', 'desc');
             break;
         }
+
         return $query->get();
     }
 
@@ -245,5 +246,96 @@ class OrdenesRepository
 
     private function formatString ($arr, $index) {
         return isset($arr[$index]) && trim($arr[$index]) != '' ? $arr[$index] : null;
+    }
+
+    public function cambioStatusServicio ($dataCambio) {
+        $query = TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $dataCambio['pkTblDetalleOrdenServicio']);
+
+        switch ($dataCambio['status']) {
+            case 1:
+                $update = [
+                    'fkUsuarioConclucion' => null,
+                    'fechaConclucion' => null,
+                    'fkUsuarioEntrega' => null,
+                    'fechaEntrega' => null,
+                    'fkUsuarioCancelacion' => null,
+                    'fechaCancelacion' => null,
+                    'status' => $dataCambio['status']
+                ];
+            break;
+            case 2:
+                $update = [
+                    'fkUsuarioConclucion' => 1,
+                    'fechaConclucion' => Carbon::now(),
+                    'status' => $dataCambio['status']
+                ];
+            break;
+            case 3:
+                $update = [
+                    'fkUsuarioEntrega' => 1,
+                    'fechaEntrega' => Carbon::now(),
+                    'status' => $dataCambio['status']
+                ];
+            break;
+            case 4:
+                $update = [
+                    'fkUsuarioConclucion' => null,
+                    'fechaConclucion' => null,
+                    'fkUsuarioCancelacion' => 1,
+                    'fechaCancelacion' => Carbon::now(),
+                    'status' => $dataCambio['status']
+                ];
+            break;
+        }
+
+        $query->update($update);
+
+        return $query->get()[0]->fkTblOrdenServicio ?? 0;
+    }
+
+    public function cancelarOrdenServicio ($pkOrden) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
+                          ->update([
+                              'fkUsuarioCancelacion' => 1,
+                              'fechaCancelacion' => Carbon::now(),
+                              'status' => 4
+                          ]);
+    }
+
+    public function cancelarEquiposOrden ($pkOrden) {
+        TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden)
+                               ->update([
+                                   'fkUsuarioConclucion' => null,
+                                   'fechaConclucion' => null,
+                                   'fkUsuarioEntrega' => null,
+                                   'fechaEntrega' => null,
+                                   'status' => 4
+                               ]);
+    }
+
+    public function retomarOrdenServicio ($pkOrden) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
+                          ->update([
+                              'fkUsuarioConclucion' => null,
+                              'fechaConclucion' => null,
+                              'fkUsuarioEntrega' => null,
+                              'fechaEntrega' => null,
+                              'fkUsuarioCancelacion' => null,
+                              'fechaCancelacion' => null,
+                              'status' => 1
+                          ]);
+    }
+
+    public function retomarEquiposOrden ($pkOrden) {
+        TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden)
+                               ->update([
+                                   'fkUsuarioConclucion' => null,
+                                   'fechaConclucion' => null,
+                                   'fkUsuarioEntrega' => null,
+                                   'fechaEntrega' => null,
+                                   'fkUsuarioCancelacion' => null,
+                                   'fechaCancelacion' => null,
+                                   'status' => 1
+                               ]);
     }
 }

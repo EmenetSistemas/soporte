@@ -76,4 +76,49 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function cambioStatusServicio (Request $request) {
+        try{
+            return $this->ordenesService->cambioStatusServicio($request->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
+    public function cancelarOrdenServicio (Request $request) {
+        try{
+            return $this->ordenesService->cancelarOrdenServicio($request->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
+    public function retomarOrdenServicio ($pkOrden) {
+        try{
+            return $this->ordenesService->retomarOrdenServicio($pkOrden);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }
