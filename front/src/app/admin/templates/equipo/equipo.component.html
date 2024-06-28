@@ -149,8 +149,8 @@
                             <div *ngIf="(data.datosEquipo.status == 2 || data.datosEquipo.status == 4) && parent.validaOpcionesIndividuales()"
                                 class="btn btn-warning me-2" (click)="cambioStatusServicio('Retomar', 1)">Retomar
                                 servicio</div>
-                            <div *ngIf="data.datosEquipo.status == 1 && parent.validaListaPedientes()" class="btn btn-danger t-bold"
-                                style="float: right !important;"><i class="bi bi-trash"></i></div>
+                            <div *ngIf="data.datosEquipo.status == 1 && parent.validaOpcionesIndividuales()" class="btn btn-danger t-bold"
+                                style="float: right !important;" (click)="eliminarEquipoOrden()"><i class="bi bi-trash"></i></div>
                         </section>
                     </div>
                 </div>

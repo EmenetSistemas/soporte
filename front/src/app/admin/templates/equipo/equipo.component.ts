@@ -161,4 +161,22 @@ export class EquipoComponent extends FGenerico implements OnInit{
 			}
 		);
 	}
+
+	protected eliminarEquipoOrden(): void {
+		this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de eliminar el equipo en cuestión de la orden de servicio?', 'question', 'Eliminar equipo "'+this.data.datosEquipo.nombre+'" de orden de servicio').then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				this.apiOrdenes.eliminarEquipoOrden(this.data.datosEquipo.pkTblDetalleOrdenServicio).subscribe(
+					respuesta => {
+						this.parent.refrescarDatos(respuesta.mensaje);
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
 }
