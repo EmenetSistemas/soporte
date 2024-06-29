@@ -72,6 +72,8 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		}
 
 		this.formEquipo = this.fb.group(elements);
+
+		if (!this.data.datosEquipo) this.enviarCambios();
 	}
 	
 	protected cambioCheck(option: any): void {

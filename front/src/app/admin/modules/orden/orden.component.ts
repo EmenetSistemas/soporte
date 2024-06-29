@@ -243,11 +243,29 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.formCliente.get('correo')?.setValue(data.correo);
 		this.formCliente.get('direccion')?.setValue(data.direccion);
 		this.formCliente.get('aCuenta')?.setValue('$ '+data.aCuenta);
+
+		let aCuenta = parseFloat(this.formCliente.value.aCuenta.replace(/[,$]/g, ''));
+		aCuenta = isNaN(aCuenta) ? 0 : aCuenta;
+
+		if (+aCuenta > +this.obtenerTotalItems().replace(/[,$]/g, '')) {
+			this.formCliente.get('aCuenta')?.setValue('$ 0');
+			this.mensajes.mensajeGenericoToast('La cantidad a cuenta no puede ser mayor al total', 'warning');
+		}
+		
 		this.formCliente.get('nota')?.setValue(data.nota);
 	}
 
 	protected actualizarOrden(): void {
-		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && !equipo.data?.formValid));
+		this.listaEquipos.findIndex(equipo => console.log(equipo.data));
+
+		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
+
+		if (!this.validaCambios() && equipos.length == 0) {
+			this.mensajes.mensajeGenericoToast('No hay cambios por guardar', 'info');
+			return;
+		}
+
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && equipo.data?.pkTblDetalleOrdenServicio && !equipo.data?.formValid) || (equipo.data && Object.keys(equipo.data).length > 1 && !equipo.data?.formValid));
 		
 		if (equipoInvalidoIndex !== -1) {
 			const equipoInvalido = this.listaEquipos[equipoInvalidoIndex];
@@ -256,13 +274,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				'warning',
 				'Los campos requeridos están marcados con un *'
 			);
-			return;
-		}
-
-		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
-
-		if (!this.validaCambios() && equipos.length == 0) {
-			this.mensajes.mensajeGenericoToast('No hay cambios por guardar', 'info');
 			return;
 		}
 
@@ -377,7 +388,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected concluirOrdenServicio(): void {
-		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && !equipo.data?.formValid));
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && equipo.data?.pkTblDetalleOrdenServicio && Object.keys(equipo.data).length > 1) || (equipo.data && Object.keys(equipo.data).length > 1 && !equipo.data?.formValid));
 		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
 
 		if (equipoInvalidoIndex !== -1 || (this.validaCambios() && equipos.length > 0)) {
