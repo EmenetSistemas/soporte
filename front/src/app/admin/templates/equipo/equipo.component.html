@@ -44,23 +44,16 @@
                                             actualización</label>&nbsp;<label
                                             style="color: #008FFF !important;">{{data.datosEquipo.usuarioModificacion}}</label>
                                         <br><label>{{data.datosEquipo.fechaModificacion}}</label>
+                                        <hr>
                                     </div>
-
-                                    <hr *ngIf="
-                                        (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) &&
-                                        (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) &&
-                                        (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega)
-                                    ">
 
                                     <div
                                         *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion">
-                                        <br>
                                         <label style="color: gray !important;">Cancelado por</label>&nbsp;<label
                                             style="color: #008FFF !important;">{{data.datosEquipo.usuarioCancelacion}}</label>
                                         <br><label>{{data.datosEquipo.fechaCancelacion}}</label>
                                     </div>
                                     <div *ngIf="data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion">
-                                        <br>
                                         <label style="color: gray !important;">Concluido por</label>&nbsp;<label
                                             style="color: #008FFF !important;">{{data.datosEquipo.usuarioConclucion}}</label>
                                         <br><label>{{data.datosEquipo.fechaConclucion}}</label>
