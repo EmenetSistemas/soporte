@@ -144,7 +144,7 @@
 
     <div class="col-xxl-9 col-lg-8 col-12">
         <div class="row d-flex justify-content-center items-rep">
-            <div class="col-12 t-center sticky-img-100">
+            <div class="col-12 t-center sticky-img-100" style="height: 50px;">
                 <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
                 <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('impresora')" class="shadow-image"
@@ -157,8 +157,9 @@
                     width="50px">
                 <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
-                <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}">
-                    <span class="badge bg-primary">Concluidos: {{equiposPedientes()}} / {{equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span><br>
+                <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}" [ngStyle]="{'margin-top': xor(equiposSinCancelar() > 0, equiposCancelados() > 0) ? '10px' : '-4px'}">
+                    <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{equiposPedientes()}} / {{equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span>
+                    <br *ngIf="equiposSinCancelar() > 0 && equiposCancelados() > 0">
                     <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i class="bi bi-x-circle"></i></span>
                 </div>
             </div>

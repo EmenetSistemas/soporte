@@ -251,7 +251,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.formCliente.get('aCuenta')?.setValue('$ 0');
 			this.mensajes.mensajeGenericoToast('La cantidad a cuenta no puede ser mayor al total', 'warning');
 		}
-		
+
 		this.formCliente.get('nota')?.setValue(data.nota);
 	}
 
@@ -428,4 +428,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	private extraMessageConclusion(): string {
 		return this.equiposOrden.filter((equipo: any) => equipo.status == 1).length > 1 ? ' así como de los equipos pedientes' : '';
 	}
+
+	protected xor(a: any, b: any): any {
+		return ( a || b ) && !( a && b );
+	 }
 }
