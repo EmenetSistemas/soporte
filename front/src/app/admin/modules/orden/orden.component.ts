@@ -148,7 +148,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			return;
 		}
 
-		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && !equipo.data?.formValid));
 		if (equipoInvalidoIndex !== -1) {
 			const equipoInvalido = this.listaEquipos[equipoInvalidoIndex];
 			this.mensajes.mensajeGenerico(
@@ -247,7 +247,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected actualizarOrden(): void {
-		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && !equipo.data?.formValid));
 		
 		if (equipoInvalidoIndex !== -1) {
 			const equipoInvalido = this.listaEquipos[equipoInvalidoIndex];
@@ -377,7 +377,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected concluirOrdenServicio(): void {
-		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0' || (equipo.data && !equipo.data?.formValid));
 		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
 
 		if (equipoInvalidoIndex !== -1 || (this.validaCambios() && equipos.length > 0)) {

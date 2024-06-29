@@ -12,11 +12,11 @@
 
             &nbsp;
 
-            <span *ngIf="formEquipo.valid && (data.datosEquipo.status == 1 || data.datosEquipo.status == 2)"
+            <span *ngIf="formEquipo.valid && (!data.datosEquipo || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)"
                 class="badge bg-success">
                 &nbsp;<i class="bi bi-check-circle me-1"></i>
             </span>
-            <span *ngIf="!formEquipo.valid" class="badge bg-warning text-dark">
+            <span *ngIf="!formEquipo.valid && (!data.datosEquipo || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)" class="badge bg-warning text-dark">
                 &nbsp;<i class="bi bi-exclamation-triangle me-1"></i>
             </span>
         </div>

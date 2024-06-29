@@ -157,7 +157,7 @@
                     width="50px">
                 <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
-                <div class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}">
+                <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}">
                     <span class="badge bg-primary">Concluidos: {{equiposPedientes()}} / {{equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span><br>
                     <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i class="bi bi-x-circle"></i></span>
                 </div>
