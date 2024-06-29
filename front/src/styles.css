@@ -1372,3 +1372,7 @@ form label {
 	float: left !important;
 	margin-right: 20px;
 }
+
+.f-right {
+	float: right !important;
+}

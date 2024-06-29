@@ -197,6 +197,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		return this.equiposOrden.length > 1;
 	}
 
+	protected equiposPedientes(): number {
+		return this.equiposOrden.filter((equipo: any) => equipo.status == 2 || equipo.status == 3).length;
+	}
+
+	protected equiposSinCancelar(): number {
+		return this.equiposOrden.filter((equipo: any) => equipo.status != 4).length;
+	}
+
+	protected equiposCancelados(): number {
+		return this.equiposOrden.filter((equipo: any) => equipo.status == 4).length;
+	}
+
 	// carga actualización
 
 	private obtenerDetalleOrdenServicio(): Promise<any> {

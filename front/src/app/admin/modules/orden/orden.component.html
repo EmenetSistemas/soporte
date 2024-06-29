@@ -143,21 +143,24 @@
     </div>
 
     <div class="col-xxl-9 col-lg-8 col-12">
-        <div class="row d-flex justify-content-center items-rep"
-            [ngClass]="{'top-sp-img': pkOrden != 0 && detalleOrden.status != 1}">
-            <div *ngIf="pkOrden == 0 || detalleOrden.status == 1" class="col-12 t-center sticky-img-100">
-                <img (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
+        <div class="row d-flex justify-content-center items-rep">
+            <div class="col-12 t-center sticky-img-100">
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img (click)="addContent('impresora')" class="shadow-image"
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('impresora')" class="shadow-image"
                     src="https://m-net.mx/scosm/images/impresora.png" alt="" style="z-index: 1005; margin-right: 22px;"
                     width="50px">
-                <img (click)="addContent('pc')" class="shadow-image" src="https://m-net.mx/scosm/images/pc.png" alt=""
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('pc')" class="shadow-image" src="https://m-net.mx/scosm/images/pc.png" alt=""
                     style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img (click)="addContent('monitor')" class="shadow-image"
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('monitor')" class="shadow-image"
                     src="https://m-net.mx/scosm/images/monitor.png" alt="" style="z-index: 1005; margin-right: 22px;"
                     width="50px">
-                <img (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
+                <div class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}">
+                    <span class="badge bg-primary">Concluidos: {{equiposPedientes()}} / {{equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span><br>
+                    <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i class="bi bi-x-circle"></i></span>
+                </div>
             </div>
 
             <ng-container #container></ng-container>
