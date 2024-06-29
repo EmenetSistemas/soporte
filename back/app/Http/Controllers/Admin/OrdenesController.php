@@ -137,9 +137,9 @@ class OrdenesController extends Controller
         }
     }
 
-    public function eliminarEquipoOrden ($pkEquipo) {
+    public function eliminarEquipoOrden (Request $request) {
         try{
-            return $this->ordenesService->eliminarEquipoOrden($pkEquipo);
+            return $this->ordenesService->eliminarEquipoOrden($request->all());
         } catch( \Throwable $error ) {
             Log::alert($error);
             return response()->json(

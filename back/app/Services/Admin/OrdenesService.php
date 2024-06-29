@@ -178,14 +178,34 @@ class OrdenesService
         );
     }
 
-    public function eliminarEquipoOrden ($pkEquipo) {
-        $this->ordenesRepository->eliminarEquipoOrden($pkEquipo);
+    public function eliminarEquipoOrden ($dataEliminacion) {
+        $pkOrden = $this->ordenesRepository->eliminarEquipoOrden($dataEliminacion);
 
-        return response()->json(
-            [
-                'mensaje' => 'Se eliminó el equipo de la orden de servicio con éxito'
-            ],
-            200
-        );
+        if ($this->ordenesRepository->validaStatusOrden($pkOrden, 1) > 0) {
+            return response()->json(
+                [
+                    'mensaje' => 'Se eliminó el equipo de la orden de servicio con éxito'
+                ],
+                200
+            );
+        }
+
+        if ($this->ordenesRepository->validaStatusOrden($pkOrden, 2) > 0) {
+            return response()->json(
+                [
+                    'mensaje' => 'Se eliminó el equipo de la orden de servicio y al no quedar servicios pendientes se cocluyó la orden de servicio con éxito'
+                ],
+                200
+            );
+        }
+
+        if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
+            return response()->json(
+                [
+                    'mensaje' => 'Se eliminó el equipo de la orden de servicio y al no quedar servicios pendientes se canceló la orden de servicio con éxito'
+                ],
+                200
+            );
+        }
     }
 }

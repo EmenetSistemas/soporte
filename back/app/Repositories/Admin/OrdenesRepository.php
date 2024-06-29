@@ -360,7 +360,21 @@ class OrdenesRepository
                                ]);
     }
 
-    public function eliminarEquipoOrden ($pkEquipo) {
-        TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $pkEquipo)->delete();
+    public function eliminarEquipoOrden ($dataEliminacion) {
+        $query = TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $dataEliminacion['pkTblDetalleOrdenServicio']);
+
+        $pk = $query->get()[0]->fkTblOrdenServicio;
+        $query->delete();
+
+        return $pk;
+    }
+
+    public function validaStatusOrden ($pkOrden, $status) {
+        $query = TblDetalleOrdenServicio::where([
+                                            ['fkTblOrdenServicio', $pkOrden],
+                                            ['status', $status]
+                                        ]);
+        
+        return $query->count();
     }
 }
