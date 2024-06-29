@@ -169,7 +169,11 @@ export class EquipoComponent extends FGenerico implements OnInit{
 
 				this.mensajes.mensajeEsperar();
 
-				this.apiOrdenes.eliminarEquipoOrden(this.data.datosEquipo.pkTblDetalleOrdenServicio).subscribe(
+				const dataEliminacion = {
+					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio
+				};
+
+				this.apiOrdenes.eliminarEquipoOrden(dataEliminacion).subscribe(
 					respuesta => {
 						this.parent.refrescarDatos(respuesta.mensaje);
 					}, error => {

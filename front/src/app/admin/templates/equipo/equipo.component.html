@@ -31,10 +31,11 @@
 
                         <ul class="dropdown-menu">
                             <ng-container *ngIf="
-                                (data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion) ||
+                                data.datosEquipo &&
+                                ((data.datosEquipo.usuarioModificacion && data.datosEquipo.fechaModificacion) ||
                                 (data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion) ||
                                 (data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion) ||
-                                (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega); else sinActualizaciones
+                                (data.datosEquipo.usuarioEntrega && data.datosEquipo.fechaEntrega)); else sinActualizaciones
                             ">
                                 <div class="t-center">
                                     <div

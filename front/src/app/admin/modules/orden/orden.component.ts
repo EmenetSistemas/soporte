@@ -365,6 +365,14 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected concluirOrdenServicio(): void {
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || equipo.data?.costoReparacion == '$ 0');
+		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
+
+		if (equipoInvalidoIndex !== -1 || (this.validaCambios() && equipos.length > 0)) {
+			this.mensajes.mensajeGenerico('Aún tienes cambios pendientes por guardar, antes de continuar con la conclusión del servicio se recomienda actualizar la orden de servicio para no perder los mismos', 'warning', 'Cambios pendientes');
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom(
 			`¿Estás seguro de concluir la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessageConclusion()} a "servicio concluido"`,
 			'question', 

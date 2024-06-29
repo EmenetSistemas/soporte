@@ -43,7 +43,7 @@ export class OrdenesService {
 		return this.http.post<any>(`${api}/ordenes/concluirOrdenServicio`, dataConclucion);
 	}
 
-	public eliminarEquipoOrden(pkEquipo: number): Observable<any> {
-		return this.http.get<any>(`${api}/ordenes/eliminarEquipoOrden/${pkEquipo}`);
+	public eliminarEquipoOrden(dataEliminacion: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/eliminarEquipoOrden`, dataEliminacion);
 	}
 }
