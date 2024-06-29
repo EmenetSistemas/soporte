@@ -200,6 +200,7 @@ class OrdenesService
         }
 
         if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
+            $this->ordenesRepository->cancelarOrdenServicio($pkOrden);
             return response()->json(
                 [
                     'mensaje' => 'Se eliminó el equipo de la orden de servicio y al no quedar servicios pendientes se canceló la orden de servicio con éxito'
