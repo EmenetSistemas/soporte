@@ -158,7 +158,7 @@
                 <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
                     alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
                 <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}" [ngStyle]="{'margin-top': xor(equiposSinCancelar() > 0, equiposCancelados() > 0) ? '10px' : '-4px'}">
-                    <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{equiposPedientes()}} / {{equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span>
+                    <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{equiposSinCancelar() == 1 ? equiposPedientes()+' ' : equiposPedientes() +' / '+ equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span>
                     <br *ngIf="equiposSinCancelar() > 0 && equiposCancelados() > 0">
                     <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i class="bi bi-x-circle"></i></span>
                 </div>

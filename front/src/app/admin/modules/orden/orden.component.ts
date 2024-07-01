@@ -303,10 +303,14 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		);
 	}
 
-	public refrescarDatos(mensaje: string): void {
+	public refrescarDatos(mensaje: string, status: number = 0): void {
 		this.resetForm();
 		this.obtenerDetalleOrdenServicio().then(()=> {
-			this.mensajes.mensajeGenericoToast(mensaje, 'success');
+			if (status == 300) {
+				this.mensajes.mensajeGenerico(mensaje, 'warning');
+			} else {
+				this.mensajes.mensajeGenericoToast(mensaje, 'success');
+			}
 		});
 	}
 

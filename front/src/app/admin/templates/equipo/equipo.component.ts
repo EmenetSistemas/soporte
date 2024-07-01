@@ -155,7 +155,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 
 				this.apiOrdenes.cambioStatusServicio(data).subscribe(
 					respuesta => {
-						this.parent.refrescarDatos(respuesta.mensaje);
+						this.parent.refrescarDatos(respuesta.mensaje, respuesta.status);
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}
@@ -177,7 +177,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 
 				this.apiOrdenes.eliminarEquipoOrden(dataEliminacion).subscribe(
 					respuesta => {
-						this.parent.refrescarDatos(respuesta.mensaje);
+						this.parent.refrescarDatos(respuesta.mensaje, respuesta.status);
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}
