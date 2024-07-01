@@ -66,7 +66,26 @@ export class ConsultaOrdenesComponent implements OnDestroy{
 		'fechaCancelacion' : {
 			'dateRange' : true,
 			'center' : true
-		}
+		},
+		'status': {
+			'center': true,
+			'dadges': true,
+			'dadgesCases': [
+				{
+					'text': 'Pendiente',
+					'color': 'warning'
+				}, {
+					'text': 'Concluida',
+					'color': 'primary'
+				}, {
+					'text': 'Entregada',
+					'color': 'success'
+				}, {
+					'text': 'Cancelada',
+					'color': 'danger'
+				}
+			]
+		},
 	};
 
 	private columnasBase: any = {
@@ -75,16 +94,24 @@ export class ConsultaOrdenesComponent implements OnDestroy{
 		'telefono'           : 'Telefono',
 		'totalEquipos'       : 'Equipos',
 		'total'              : 'Total',
-		'aCuenta'            : 'A cuenta'
+		'aCuenta'            : 'A cuenta',
+		'status'             : 'Status'
 	}
 
 	protected columnasTabla: any = this.columnasBase;
 
 	protected datosTabla: any = [];
 
-	private status = 0;
+	protected status = 0;
 
 	private intervalo: any;
+
+	protected listaStatus: any = [
+		'pendiente',
+		'concluida',
+		'entregada',
+		'cancelada'
+	];
 
 	constructor (
 		private apiOrdenes: OrdenesService,
