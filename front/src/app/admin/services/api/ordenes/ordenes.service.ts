@@ -46,4 +46,8 @@ export class OrdenesService {
 	public eliminarEquipoOrden(dataEliminacion: any): Observable<any> {
 		return this.http.post<any>(`${api}/ordenes/eliminarEquipoOrden`, dataEliminacion);
 	}
+
+	public entregarEquiposOrden(dataEntregar: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/entregarEquiposOrden`, dataEntregar);
+	}
 }

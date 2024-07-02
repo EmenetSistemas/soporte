@@ -2,7 +2,7 @@
     <div class="col-xxl-3 col-lg-4 col-12">
         <div *ngIf="pkOrden != 0" class="pagetitle">
             <h1>
-                Orden {{status[detalleOrden.status-1]}} #{{pkOrden}}
+                Orden {{status[(detalleOrden.status ?? 1)-1]}} #{{pkOrden}}
                 <div class="spinner-grow spinner-grow-sm" role="status" [ngClass]="{
                         'text-warning': detalleOrden.status === 1,
                         'text-primary': detalleOrden.status === 2,
@@ -115,8 +115,8 @@
                             <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
                                 <div class="col-md-4 col-sm-12">
                                     <label class="form-label">Total:</label>
-                                    <input type="text" class="form-control t-center" placeholder="Total" formControlName="total"
-                                        [value]="obtenerTotalItems()">
+                                    <input type="text" class="form-control t-center" placeholder="Total"
+                                        formControlName="total" [value]="obtenerTotalItems()">
                                 </div>
                                 <div class="col-md-4 col-sm-6">
                                     <label class="form-label">A cuenta:</label>
@@ -134,12 +134,15 @@
                                     <textarea class="form-control" placeholder="Nota" formControlName="nota"
                                         (keypress)="soloTexto($event)" rows="2"></textarea>
                                 </div>
-                                <div *ngIf="pkOrden != 0" class="col-12">
+                                <div *ngIf="pkOrden != 0 && detalleOrden.status < 3" class="col-12">
                                     <label class="form-label">Código:</label>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-primary" (click)="enviarCodigo()">Envíar</button>
-                                        <input type="text" class="form-control t-center" placeholder="Código" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="codigo" [value]="detalleOrden.codigo">
-                                        <button class="btn btn-dark" (click)="copyToClipboard()"> <i class="bi bi-copy"></i></button>
+                                        <input type="text" class="form-control t-center" placeholder="Código"
+                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                            formControlName="codigo" [value]="detalleOrden.codigo">
+                                        <button class="btn btn-dark" (click)="copyToClipboard()"> <i
+                                                class="bi bi-copy"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -153,22 +156,29 @@
     <div class="col-xxl-9 col-lg-8 col-12">
         <div class="row d-flex justify-content-center items-rep">
             <div class="col-12 t-center sticky-img-100" style="height: 50px;">
-                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
-                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('impresora')" class="shadow-image"
-                    src="https://m-net.mx/scosm/images/impresora.png" alt="" style="z-index: 1005; margin-right: 22px;"
-                    width="50px">
-                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('pc')" class="shadow-image" src="https://m-net.mx/scosm/images/pc.png" alt=""
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('laptop')"
+                    class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png" alt=""
                     style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('monitor')" class="shadow-image"
-                    src="https://m-net.mx/scosm/images/monitor.png" alt="" style="z-index: 1005; margin-right: 22px;"
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('impresora')"
+                    class="shadow-image" src="https://m-net.mx/scosm/images/impresora.png" alt=""
+                    style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('pc')" class="shadow-image"
+                    src="https://m-net.mx/scosm/images/pc.png" alt="" style="z-index: 1005; margin-right: 22px;"
                     width="50px">
-                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
-                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
-                <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}" [ngStyle]="{'margin-top': xor(equiposSinCancelar() > 0, equiposCancelados() > 0) ? '10px' : '-4px'}">
-                    <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{detalleOrden.status > 1 ? equiposPedientes()+' ' : equiposPedientes() +' / '+ equiposSinCancelar()}} <i class="bi bi-check-circle"></i></span>
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('monitor')"
+                    class="shadow-image" src="https://m-net.mx/scosm/images/monitor.png" alt=""
+                    style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img *ngIf="pkOrden == 0 || detalleOrden.status == 1" (click)="addContent('otro')" class="shadow-image"
+                    src="https://m-net.mx/scosm/images/otro.png" alt="" style="z-index: 1005; margin-right: 22px;"
+                    width="50px">
+                <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}"
+                    [ngStyle]="{'margin-top': xor(equiposSinCancelar() > 0, equiposCancelados() > 0) ? '10px' : '-4px'}">
+                    <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{detalleOrden.status >
+                        1 ? equiposPedientes()+' ' : equiposPedientes() +' / '+ equiposSinCancelar()}} <i
+                            class="bi bi-check-circle"></i></span>
                     <br *ngIf="equiposSinCancelar() > 0 && equiposCancelados() > 0">
-                    <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i class="bi bi-x-circle"></i></span>
+                    <span *ngIf="equiposCancelados() > 0" class="badge bg-danger">Cancelados: {{equiposCancelados()}} <i
+                            class="bi bi-x-circle"></i></span>
                 </div>
             </div>
 
@@ -183,10 +193,14 @@
 
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-warning me-2" (click)="actualizarOrden()">
                             Actualizar</div>
+                        <div *ngIf="detalleOrden.status == 2" class="btn btn-primary me-2"
+                            (click)="child.entregarEquipo(detalleOrden.pkTblOrdenServicio, detalleOrden.codigo)">
+                            Entregar equipo(s)</div>
                         <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning"
                             (click)="retomarOrdenServicio()">
                             Retomar orden</div>
-                        <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2" (click)="concluirOrdenServicio()">Concluir orden</div>
+                        <div *ngIf="detalleOrden.status == 1" class="btn btn-primary me-2"
+                            (click)="concluirOrdenServicio()">Concluir orden</div>
                         <div *ngIf="detalleOrden.status == 1" class="btn btn-danger" (click)="cancelarOrdenServicio()">
                             Cancelar orden</div>
                     </div>

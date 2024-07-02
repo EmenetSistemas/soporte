@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { EquipoComponent } from '../../templates/equipo/equipo.component';
 import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
+import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 
 @Component({
 	selector: 'app-orden',
@@ -39,13 +40,13 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		private route: ActivatedRoute,
 		private apiOrdenes: OrdenesService,
 		private router: Router,
-		private apiChatbot: ChatbotService
+		private apiChatbot: ChatbotService,
+		protected child: SidenavComponent
 	) {
 		super();
 	}
 
 	ngOnInit(): void {
-		this.mensajes.mensajeEsperar();
 		try {
 			this.crearFormCliente();
 			this.route.paramMap.subscribe(params => {
@@ -53,9 +54,10 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			});
 	
 			if (this.pkOrden == 0) {
-				this.mensajes.cerrarMensajes();
 				return;
 			}
+
+			this.mensajes.mensajeEsperar();
 			this.obtenerDetalleOrdenServicio();
 		} catch (e) {
 			this.router.navigate(['/']);

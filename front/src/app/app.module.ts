@@ -40,7 +40,9 @@ import { EquipoComponent } from './admin/templates/equipo/equipo.component';
 		ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    SidenavComponent
+  ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })
