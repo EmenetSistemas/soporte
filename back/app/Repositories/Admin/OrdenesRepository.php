@@ -69,9 +69,16 @@ class OrdenesRepository
                                        'tblOrdenesServicio.pkTblOrdenServicio as pkTblOrdenServicio',
                                        'tblOrdenesServicio.cliente as cliente',
                                        'tblOrdenesServicio.telefono as telefono',
-                                       'tblOrdenesServicio.aCuenta as aCuenta',
-                                       'tblOrdenesServicio.status as status'
+                                       'tblOrdenesServicio.aCuenta as aCuenta'
                                    )
+                                   ->selectRaw("
+                                       CASE
+                                           WHEN tblOrdenesServicio.status = 1 THEN 'Pendiente'
+                                           WHEN tblOrdenesServicio.status = 2 THEN 'Concluida'
+                                           WHEN tblOrdenesServicio.status = 3 THEN 'Entregada'
+                                           WHEN tblOrdenesServicio.status = 4 THEN 'Cancelada'
+                                       END as status
+                                   ")
                                    ->selectRaw("CASE WHEN DATE_FORMAT(tblOrdenesServicio.fechaRegistro, '%d-%m-%Y') = '00-00-0000' THEN '-' ELSE DATE_FORMAT(tblOrdenesServicio.fechaRegistro, '%d-%m-%Y') END as fechaRegistro")
                                    ->selectRaw("CASE WHEN DATE_FORMAT(tblOrdenesServicio.fechaConclucion, '%d-%m-%Y') = '00-00-0000' THEN '-' ELSE DATE_FORMAT(tblOrdenesServicio.fechaConclucion, '%d-%m-%Y') END as fechaConclucion")
                                    ->selectRaw("CASE WHEN DATE_FORMAT(tblOrdenesServicio.fechaEntrega, '%d-%m-%Y') = '00-00-0000' THEN '-' ELSE DATE_FORMAT(tblOrdenesServicio.fechaEntrega, '%d-%m-%Y') END as fechaEntrega")
