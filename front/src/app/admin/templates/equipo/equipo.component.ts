@@ -135,6 +135,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 			descripcionFalla: this.data.datosEquipo.descripcionFalla,
 			observaciones: this.data.datosEquipo.observaciones,
 			detalles: this.data.datosEquipo.detalles,
+			diagnosticoFinal: this.data.datosEquipo.diagnosticoFinal ?? null,
 			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
 		};
 
