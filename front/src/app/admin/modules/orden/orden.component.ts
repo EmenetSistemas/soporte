@@ -70,9 +70,16 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			total     : [{ value: '$ 0', disabled: true }],
 			aCuenta   : ['$ 0', [Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11)]],
 			restante  : [{ value: '$ 0', disabled: true }],
-			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]]
+			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			codigo    : [{ value: null, disabled: true }]
 		});
 	}
+
+	protected copyToClipboard(): void {
+		navigator.clipboard.writeText(this.detalleOrden.codigo).then(() => {
+		  this.mensajes.mensajeGenericoToast('Se copió el código en el portapapeles', 'success');
+		});
+	}	  
 
 	protected addContent(itemType: string, data: any = null) {
 		let componentFactory: any = this.resolver.resolveComponentFactory(EquipoComponent);
@@ -253,6 +260,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		}
 
 		this.formCliente.get('nota')?.setValue(data.nota);
+		this.formCliente.get('codigo')?.setValue(data.codigo);
 	}
 
 	protected actualizarOrden(): void {
