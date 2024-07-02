@@ -390,4 +390,31 @@ class OrdenesRepository
         
         return $query->count();
     }
+
+    public function validarEntregaEquiposOrden ($dataEntregar) {
+        $query = TblOrdenesServicio::select('pkTblOrdenServicio')
+                                   ->where([
+                                       ['pkTblOrdenServicio', $dataEntregar['folio']],
+                                       ['codigo', $dataEntregar['codigo']]
+                                   ]);
+
+        return $query->get()[0]->pkTblOrdenServicio ?? null;
+    }
+
+    public function entregarOrden ($pkOrden, $folioTicket) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
+                          ->update([
+                              'fkUsuarioEntrega' => 1,
+                              'fechaEntrega' => Carbon::now(),
+                              'folioTicket' => $folioTicket,
+                              'status' => 3
+                          ]);
+    }
+
+    public function entregarEquiposOrden ($pkOrden) {
+        TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden)
+                          ->update([
+                              'status' => 3
+                          ]);
+    }
 }

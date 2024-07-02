@@ -151,4 +151,19 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function entregarEquiposOrden (Request $request) {
+        try{
+            return $this->ordenesService->entregarEquiposOrden($request->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }

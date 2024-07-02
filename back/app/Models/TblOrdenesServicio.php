@@ -20,6 +20,7 @@ class TblOrdenesServicio extends Model
         'direccion',
         'aCuenta',
         'codigo',
+        'folioTicket',
         'nota',
         'fkUsuarioRegistro',
         'fechaRegistro',

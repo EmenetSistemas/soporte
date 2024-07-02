@@ -256,4 +256,31 @@ class OrdenesService
             );
         }
     }
+
+    public function entregarEquiposOrden ($dataEntregar) {
+        $pkOrden = $this->ordenesRepository->validarEntregaEquiposOrden($dataEntregar);
+
+        if ($pkOrden == null) {
+            return response()->json(
+                [
+                    'status' => 300,
+                    'mensaje' => 'Los datos ingresados no concuerdan con ninguna orden de servicio, te solicitamos verificar para poder continuar con la entrega'
+                ],
+                200
+            );
+        }
+
+
+        DB::beginTransaction();
+            $this->ordenesRepository->entregarOrden($pkOrden, $dataEntregar['folioTicket']);
+            $this->ordenesRepository->entregarEquiposOrden($pkOrden);
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => 'Se cambió el status de la orden de servicio a entregada con éxito'
+            ],
+            200
+        );
+    }
 }
