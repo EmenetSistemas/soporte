@@ -20,17 +20,15 @@ class OrdenesService
 
     public function registrarOrdenServicio ($orden) {
         DB::beginTransaction();
-            $pkOrden = $this->ordenesRepository->registrarOrdenServicio($orden);
+            $registro = $this->ordenesRepository->registrarOrdenServicio($orden);
             foreach ($orden['equipos'] as $equipo) {
-                $this->ordenesRepository->registrarDetalleOrdenServicio($pkOrden, $equipo['itemType'], $equipo['data']);
+                $this->ordenesRepository->registrarDetalleOrdenServicio($registro['pkOrden'], $equipo['itemType'], $equipo['data']);
             }
         DB::commit();
 
         return response()->json(
             [
-                'data' => [
-                    'pkOrden' => $pkOrden
-                ],
+                'data' => $registro,
                 'mensaje' => 'Se registró la orden de servicio con éxito'
             ],
             200

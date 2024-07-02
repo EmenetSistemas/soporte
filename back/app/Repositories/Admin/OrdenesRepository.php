@@ -16,14 +16,19 @@ class OrdenesRepository
         $registro->correo            = $this->formatString($orden, 'correo');
         $registro->direccion         = $this->formatString($orden, 'direccion');
         $registro->aCuenta           = trim(str_replace(['$', ','], '', $orden['aCuenta']));
-        $registro->codigo            = Str::random(8);
+        $registro->codigo            = Str::random(6);
         $registro->nota              = $this->formatString($orden, 'nota');
         $registro->fkUsuarioRegistro = 1;
         $registro->fechaRegistro     = Carbon::now();
         $registro->status            = 1;
         $registro->save();
 
-        return $registro->pkTblOrdenServicio;
+        return [
+            'pkOrden' => $registro->pkTblOrdenServicio,
+            'cliente' => $registro->cliente,
+            'telefono' => $registro->telefono,
+            'codigo' => $registro->codigo
+        ];
     }
 
     public function registrarDetalleOrdenServicio ($pkOrden, $tipoEquipo, $equipo) {
@@ -126,6 +131,7 @@ class OrdenesRepository
                                        'tblordenesservicio.direccion as direccion',
                                        'tblordenesservicio.aCuenta as aCuenta',
                                        'tblordenesservicio.nota as nota',
+                                       'tblordenesservicio.codigo as codigo',
                                        'usuarioRegistro.nombre as usuarioRegistro',
                                        'tblordenesservicio.fechaRegistro as fechaRegistro',
                                        'usuarioConclucion.nombre as usuarioConclucion',
