@@ -85,6 +85,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		this.formEquipo.value.formValid = this.formEquipo.valid;
 		if (this.data.datosEquipo) {
 			this.formEquipo.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+			this.formEquipo.value.costoReparacion = this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0';
 			this.formEquipo.value.status = this.data.datosEquipo.status;
 		}
 
@@ -128,8 +129,12 @@ export class EquipoComponent extends FGenerico implements OnInit{
 			check.checked = this.data.datosEquipo[check.identificador] == 1;
 		});
 
+		if (this.data.datosEquipo.status == 4) {
+			this.formEquipo.disable();
+		}
+
 		this.parent.cacharDatosComponent(
-			{costoReparacion : this.formEquipo.value.costoReparacion},
+			{costoReparacion : this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0'},
 			this.data.idItem
 		);
 	}
