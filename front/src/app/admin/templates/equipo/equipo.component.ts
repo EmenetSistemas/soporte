@@ -10,6 +10,7 @@ import { monitor_checks } from 'src/app/shared/util/monitor-checks';
 import { otro_checks } from 'src/app/shared/util/otro-checks';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
+import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
 
 @Component({
   selector: 'app-equipo',
@@ -26,7 +27,8 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		private fb: FormBuilder,
 		protected parent: OrdenComponent,
 		private mensajes: MensajesService,
-		private apiOrdenes: OrdenesService
+		private apiOrdenes: OrdenesService,
+		private apiChatbot: ChatbotService
 	) {
 		super();
 	}
@@ -64,6 +66,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 			descripcionFalla : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			observaciones    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			detalles         : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			diagnosticoFinal : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
 			costoReparacion  : ['$ 0', [Validators.required, Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11), invalidZeroValidator()]]
 		};
 
@@ -74,6 +77,22 @@ export class EquipoComponent extends FGenerico implements OnInit{
 		this.formEquipo = this.fb.group(elements);
 
 		if (!this.data.datosEquipo) this.enviarCambios();
+	}
+
+	protected canSend(): boolean {
+		return this.formEquipo.value.diagnosticoFinal != null && this.formEquipo.value.diagnosticoFinal.trim() != ''
+	}
+
+	protected enviarDiagnostico(): void {
+		const telefono = this.data.datosCliente.telefono;
+		const mensaje = this.formEquipo.value.diagnosticoFinal;
+
+		this.apiChatbot.enviarMensajeTextoConfirmacion(
+			telefono,
+			mensaje,
+			'Enviar diagnóstico del equipo "'+this.data.datosEquipo.nombre+'"',
+			'¿Está seguro de enviar el diagnóstico del equipo en cuestión?'
+		);
 	}
 	
 	protected cambioCheck(option: any): void {

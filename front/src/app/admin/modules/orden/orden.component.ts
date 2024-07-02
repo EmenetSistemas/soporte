@@ -5,6 +5,7 @@ import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { EquipoComponent } from '../../templates/equipo/equipo.component';
+import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
 
 @Component({
 	selector: 'app-orden',
@@ -37,7 +38,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		private mensajes: MensajesService,
 		private route: ActivatedRoute,
 		private apiOrdenes: OrdenesService,
-		private router: Router
+		private router: Router,
+		private apiChatbot: ChatbotService
 	) {
 		super();
 	}
@@ -91,7 +93,13 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			itemType
 		};
 
-		if (data != null) componentRef.instance.data.datosEquipo = data;
+		if (data != null) {
+			componentRef.instance.data.datosEquipo = data;
+			componentRef.instance.data.datosCliente = {
+				telefono: this.detalleOrden.telefono,
+				cliente: this.detalleOrden.cliente
+			};
+		};
 
 		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType });
 		this.count += 1;
@@ -181,6 +189,10 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					respuesta => {
 						this.resetForm();
 						this.pkOrden = respuesta.data.pkOrden;
+
+						const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+respuesta.data.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🔑 Código de entrega: *'+respuesta.data.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
+
+						this.apiChatbot.enviarMensajeTexto(respuesta.data.telefono, mensaje);
 						this.obtenerDetalleOrdenServicio().then(()=> {
 							this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
 						});
@@ -190,6 +202,13 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				);
 			}
 		);
+	}
+
+	protected enviarCodigo(): void {
+		const telefono = this.detalleOrden.telefono;
+		const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+this.detalleOrden.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🔑 Código de entrega: *'+this.detalleOrden.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
+
+		this.apiChatbot.enviarMensajeTextoConfirmacion(telefono, mensaje, 'Reenviar código orden de servicio', '¿Está seguro de enviar de nuevo el código de la orden de servicio?');
 	}
 
 	public validaListaPedientes(): boolean {
