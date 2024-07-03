@@ -266,6 +266,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	private cargarDatosFormularioCliente(data: any): void {
+		if (data.status >= 3) this.formCliente.disable();
+
 		this.formCliente.get('cliente')?.setValue(data.cliente);
 		this.formCliente.get('telefono')?.setValue(data.telefono);
 		this.formCliente.get('correo')?.setValue(data.correo);
