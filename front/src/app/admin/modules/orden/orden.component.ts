@@ -7,6 +7,8 @@ import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { EquipoComponent } from '../../templates/equipo/equipo.component';
 import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
+import { ModalService } from '../../services/modal/modal.service';
+import { ModalOrdenPdfComponent } from '../ordenes/modal-orden-pdf/modal-orden-pdf.component';
 
 @Component({
 	selector: 'app-orden',
@@ -41,7 +43,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		private apiOrdenes: OrdenesService,
 		private router: Router,
 		private apiChatbot: ChatbotService,
-		protected child: SidenavComponent
+		protected child: SidenavComponent,
+		private modal: ModalService
 	) {
 		super();
 	}
@@ -466,5 +469,13 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	protected xor(a: any, b: any): any {
 		return ( a || b ) && !( a && b );
-	 }
+	}
+
+	protected abrirModalOrdenPdf(pkOrden: number): void {
+		const dataModal = {
+			pkOrden
+		};
+
+		this.modal.abrirModalConComponente(ModalOrdenPdfComponent, dataModal);
+	}
 }

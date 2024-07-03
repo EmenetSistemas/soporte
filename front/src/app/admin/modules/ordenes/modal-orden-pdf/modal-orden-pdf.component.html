@@ -1,0 +1,25 @@
+<div class="modal-body">
+    <div class="pagetitle">
+        <h1>Orden de servicio</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Soporte</li>
+                <li class="breadcrumb-item active">Orden de servicio</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row" *ngIf="src">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <iframe [src]="src" style="width:100%; height:690px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer" style="text-align: center;">
+    <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
+</div>

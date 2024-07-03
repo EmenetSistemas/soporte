@@ -187,7 +187,7 @@
             <div *ngIf="detalleOrden.status" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;">
+                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;" (click)="abrirModalOrdenPdf(detalleOrden.pkTblOrdenServicio)">
                             <i class="bi bi-filetype-pdf"></i>
                         </div>
 

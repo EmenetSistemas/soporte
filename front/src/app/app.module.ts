@@ -17,6 +17,8 @@ import { DropdownComponent } from './admin/components/dropdown/dropdown.componen
 import { DatatableComponent } from './admin/components/datatable/datatable.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EquipoComponent } from './admin/templates/equipo/equipo.component';
+import { ModalOrdenPdfComponent } from './admin/modules/ordenes/modal-orden-pdf/modal-orden-pdf.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { EquipoComponent } from './admin/templates/equipo/equipo.component';
     ConsultaOrdenesComponent,
     DropdownComponent,
     DatatableComponent,
-    EquipoComponent
+    EquipoComponent,
+    ModalOrdenPdfComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,8 @@ import { EquipoComponent } from './admin/templates/equipo/equipo.component';
     HomeModule,
     FormsModule,
 		ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot()
   ],
   providers: [
     SidenavComponent
