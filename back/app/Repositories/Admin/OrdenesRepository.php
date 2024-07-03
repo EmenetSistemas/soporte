@@ -367,8 +367,6 @@ class OrdenesRepository
                                    ['status', '!=', 4]
                                ])
                                ->update([
-                                   'fkUsuarioConclucion' => 1,
-                                   'fechaConclucion' => Carbon::now(),
                                    'status' => 2
                                ]);
     }
