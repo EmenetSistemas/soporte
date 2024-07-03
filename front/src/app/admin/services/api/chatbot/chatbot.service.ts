@@ -22,8 +22,7 @@ export class ChatbotService {
 
 		return this.apiChatbot(data).toPromise().then(
 			respuesta => {
-			}, error =>{
-				this.mensajes.mensajeGenerico('error', 'error');
+				this.mensajes.mensajeGenerico('Se envió el mensaje con éxito', 'success');
 			}
 		);
 	}
@@ -64,8 +63,6 @@ export class ChatbotService {
 			this.apiChatbot(data).subscribe(
 				respuesta => {
 					this.mensajes.mensajeGenerico('Se envió el mensaje con éxito', 'success');
-				}, error => {
-					this.mensajes.mensajeGenerico('error', 'error');
 				}
 			);
 		});

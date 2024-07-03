@@ -24,11 +24,11 @@ export class SidenavComponent {
                 <form class="row g-3" autocomplete="off">
                     <div class="col-sm-6 col-12">
                         <label class="form-label">Folio:</label>
-                        <input id="folio" type="text" class="form-control t-center" placeholder="Folio" autocomplete="off" value="${folio}">
+                        <input id="folio" type="text" class="form-control t-center" placeholder="Folio" autocomplete="off" value="${folio ?? ''}">
                     </div>
                     <div class="col-sm-6 col-12">
                         <label class="form-label">Código:</label>
-                        <input id="codigo" type="text" class="form-control t-center" placeholder="Código" autocomplete="off" value="${codigo}">
+                        <input id="codigo" type="text" class="form-control t-center" placeholder="Código" autocomplete="off" value="${codigo ?? ''}">
                     </div>
                     <div class="col-12">
                         <label class="form-label">Folio ticket:</label>
