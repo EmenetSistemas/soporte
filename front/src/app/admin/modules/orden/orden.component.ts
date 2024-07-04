@@ -290,8 +290,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected actualizarOrden(): void {
-		this.listaEquipos.findIndex(equipo => console.log(equipo.data));
-
 		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
 
 		if (!this.validaCambios() && equipos.length == 0) {

@@ -47,8 +47,9 @@
                                             actualización</label>&nbsp;<label
                                             style="color: #008FFF !important;">{{data.datosEquipo.usuarioModificacion}}</label>
                                         <br><label>{{data.datosEquipo.fechaModificacion}}</label>
-                                        <hr>
                                     </div>
+
+                                    <hr *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion || data.datosEquipo.usuarioConclucion && data.datosEquipo.fechaConclucion">
 
                                     <div
                                         *ngIf="data.datosEquipo.usuarioCancelacion && data.datosEquipo.fechaCancelacion">
