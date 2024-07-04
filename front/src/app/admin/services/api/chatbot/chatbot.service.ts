@@ -23,6 +23,8 @@ export class ChatbotService {
 		return this.apiChatbot(data).toPromise().then(
 			respuesta => {
 				this.mensajes.mensajeGenerico('Se envió el mensaje con éxito', 'success');
+			}, error => {
+				this.mensajes.mensajeGenerico('El servicio de mensajería no se encuentra disponible', 'warning');
 			}
 		);
 	}
@@ -63,6 +65,8 @@ export class ChatbotService {
 			this.apiChatbot(data).subscribe(
 				respuesta => {
 					this.mensajes.mensajeGenerico('Se envió el mensaje con éxito', 'success');
+				}, error => {
+					this.mensajes.mensajeGenerico('El servicio de mensajería no se encuentra disponible', 'warning');
 				}
 			);
 		});
