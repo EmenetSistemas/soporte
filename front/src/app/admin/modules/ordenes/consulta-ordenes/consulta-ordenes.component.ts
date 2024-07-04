@@ -70,6 +70,7 @@ export class ConsultaOrdenesComponent implements OnDestroy{
 		'status': {
 			'center': true,
 			'dadges': true,
+			'selectColumn': true,
 			'dadgesCases': [
 				{
 					'text': 'Pendiente',

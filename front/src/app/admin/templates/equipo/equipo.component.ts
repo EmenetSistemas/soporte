@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrdenComponent } from '../../modules/orden/orden.component';
 import FGenerico from 'src/shared/util/funciones-genericas';
@@ -17,7 +17,7 @@ import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
   templateUrl: './equipo.component.html',
   styleUrls: ['./equipo.component.css']
 })
-export class EquipoComponent extends FGenerico implements OnInit{
+export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	@Input() data: any = null;
 
 	protected formEquipo!: FormGroup;
@@ -36,6 +36,7 @@ export class EquipoComponent extends FGenerico implements OnInit{
 	ngOnInit(): void {
 		this.crearFormEquipo();
 		this.inicializarChecks();
+		this.limpiarFormulario();
 		if (this.data.datosEquipo) this.cargarFormularioEquipo();
 	}
 
@@ -207,5 +208,9 @@ export class EquipoComponent extends FGenerico implements OnInit{
 				);
 			}
 		);
+	}
+
+	ngOnDestroy(): void {
+		this.limpiarFormulario();
 	}
 }
