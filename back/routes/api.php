@@ -12,3 +12,5 @@ Route::get('/ordenes/retomarOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admi
 Route::post('/ordenes/concluirOrdenServicio', 'App\Http\Controllers\Admin\OrdenesController@concluirOrdenServicio');
 Route::post('/ordenes/eliminarEquipoOrden', 'App\Http\Controllers\Admin\OrdenesController@eliminarEquipoOrden');
 Route::post('/ordenes/entregarEquiposOrden', 'App\Http\Controllers\Admin\OrdenesController@entregarEquiposOrden');
+
+Route::get('/pdfs/generarPdfOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admin\PDFs\PdfController@generarPdfOrdenServicio');
