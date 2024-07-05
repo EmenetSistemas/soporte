@@ -17,7 +17,7 @@ class GenericRepository
 
     public function obtenerTotalEquiposStatus($status) {
         $query = TblOrdenesServicio::leftJoin('tblDetalleOrdenServicio', 'tblDetalleOrdenServicio.fkTblOrdenServicio', 'tblOrdenesServicio.pkTblOrdenServicio')
-            ->where('tblOrdenesServicio.status', $status);
+                                   ->where('tblOrdenesServicio.status', $status);
 
         return $query->count();
     }

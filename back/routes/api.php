@@ -2,8 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
+// auth sistema
+Route::post('/auth/login', 'App\Http\Controllers\Auth\LoginController@login');
+Route::post('/auth', 'App\Http\Controllers\Auth\LoginController@auth');
+Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
+
+// estadisticas sistema
 Route::get('/estadisticas/obtenerEstadisticas', 'App\Http\Controllers\Admin\GenericController@obtenerEstadisticas');
 
+// funciones sistema
 Route::post('/ordenes/registrarOrdenServicio', 'App\Http\Controllers\Admin\OrdenesController@registrarOrdenServicio');
 Route::get('/ordenes/obtenerOrdenesServicio/{status}', 'App\Http\Controllers\Admin\OrdenesController@obtenerOrdenesServicio');
 Route::get('/ordenes/obtenerDetalleOrdenServicio/{status}', 'App\Http\Controllers\Admin\OrdenesController@obtenerDetalleOrdenServicio');
@@ -15,4 +22,5 @@ Route::post('/ordenes/concluirOrdenServicio', 'App\Http\Controllers\Admin\Ordene
 Route::post('/ordenes/eliminarEquipoOrden', 'App\Http\Controllers\Admin\OrdenesController@eliminarEquipoOrden');
 Route::post('/ordenes/entregarEquiposOrden', 'App\Http\Controllers\Admin\OrdenesController@entregarEquiposOrden');
 
+// utileria sistema
 Route::get('/pdfs/generarPdfOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admin\PDFs\PdfController@generarPdfOrdenServicio');
