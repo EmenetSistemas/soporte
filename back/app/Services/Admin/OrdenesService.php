@@ -102,7 +102,7 @@ class OrdenesService
             $this->ordenesRepository->actualizarOrdenServicio($orden);
             foreach ($orden['equipos'] as $equipo) {
                 if (isset($equipo['data']['pkTblDetalleOrdenServicio'])) {
-                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data']);
+                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data'], $orden['token']);
                 } else {
                     $this->ordenesRepository->registrarDetalleOrdenServicio($orden['pkTblOrdenServicio'], $equipo['itemType'], $equipo['data']);
                 }
@@ -155,7 +155,7 @@ class OrdenesService
                 }
         
                 if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
-                    $this->ordenesRepository->cancelarOrdenServicio($pkOrden);
+                    $this->ordenesRepository->cancelarOrdenServicio($pkOrden, $dataCambio['token']);
 
                     DB::commit();
                     return response()->json(
@@ -179,7 +179,7 @@ class OrdenesService
 
     public function cancelarOrdenServicio ($dataCancelacion) {
         DB::beginTransaction();
-            $this->ordenesRepository->cancelarOrdenServicio($dataCancelacion['pkTblOrdenServicio']);
+            $this->ordenesRepository->cancelarOrdenServicio($dataCancelacion['pkTblOrdenServicio'], $dataCancelacion['token']);
             $this->ordenesRepository->cancelarEquiposOrden($dataCancelacion['pkTblOrdenServicio']);
         DB::commit();
 
@@ -246,7 +246,7 @@ class OrdenesService
         }
 
         if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
-            $this->ordenesRepository->cancelarOrdenServicio($pkOrden);
+            $this->ordenesRepository->cancelarOrdenServicio($pkOrden, $dataEliminacion['token']);
             return response()->json(
                 [
                     'status' => 300,
@@ -272,7 +272,7 @@ class OrdenesService
 
 
         DB::beginTransaction();
-            $this->ordenesRepository->entregarOrden($pkOrden, $dataEntregar['folioTicket']);
+            $this->ordenesRepository->entregarOrden($pkOrden, $dataEntregar);
             $this->ordenesRepository->entregarEquiposOrden($pkOrden);
         DB::commit();
 

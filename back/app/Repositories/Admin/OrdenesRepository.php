@@ -4,12 +4,21 @@ namespace App\Repositories\Admin;
 
 use App\Models\TblDetalleOrdenServicio;
 use App\Models\TblOrdenesServicio;
+use App\Services\Auth\UsuarioService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class OrdenesRepository
 {
+    protected $usuarioService;
+
+    public function __construct(
+        UsuarioService $UsuarioService
+    ) {
+        $this->usuarioService = $UsuarioService;
+    }
+
     public function registrarOrdenServicio ($orden) {
         $registro = new TblOrdenesServicio();
         $registro->cliente           = $this->formatString($orden, 'cliente');
@@ -19,7 +28,7 @@ class OrdenesRepository
         $registro->aCuenta           = trim(str_replace(['$', ','], '', $orden['aCuenta']));
         $registro->codigo            = Str::random(6);
         $registro->nota              = $this->formatString($orden, 'nota');
-        $registro->fkUsuarioRegistro = 1;
+        $registro->fkUsuarioRegistro = $this->usuarioService->obtenerPkPorToken($orden['token']);
         $registro->fechaRegistro     = Carbon::now();
         $registro->status            = 1;
         $registro->save();
@@ -110,7 +119,7 @@ class OrdenesRepository
                 $query->orderBy('tblOrdenesServicio.fechaRegistro', 'asc');
             break;
             case 2:
-                $query->orderBy('tblOrdenesServicio.fechaConclucion', 'desc');
+                $query->orderBy('tblOrdenesServicio.fechaConclucion', 'asc');
             break;
             case 3:
                 $query->orderBy('tblOrdenesServicio.fechaEntrega', 'desc');
@@ -216,12 +225,12 @@ class OrdenesRepository
                               'direccion'             => $this->formatString($orden, 'direccion'),
                               'aCuenta'               => trim(str_replace(['$', ','], '', $orden['aCuenta'])),
                               'nota'                  => $this->formatString($orden, 'nota'),
-                              'fkUsuarioModificacion' => 1,
+                              'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($orden['token']),
                               'fechaModificacion'     => Carbon::now(),
                           ]);
     }
 
-    public function actualizarDetalleOrdenServicio ($equipo) {
+    public function actualizarDetalleOrdenServicio ($equipo, $token) {
         TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $equipo['pkTblDetalleOrdenServicio'])
                                ->update([
                                    'nombre'                => $this->formatString($equipo, 'equipo'),
@@ -254,7 +263,7 @@ class OrdenesRepository
                                    'detalles'              => $this->formatString($equipo, 'detalles'),
                                    'costoReparacion'       => trim(str_replace(['$', ','], '', $equipo['costoReparacion'])),
                                    'diagnosticoFinal'      => $this->formatString($equipo, 'diagnosticoFinal'),
-                                   'fkUsuarioModificacion' => 1,
+                                   'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($token),
                                    'fechaModificacion'     => Carbon::now(),
                                ]);
     }
@@ -280,14 +289,14 @@ class OrdenesRepository
             break;
             case 2:
                 $update = [
-                    'fkUsuarioConclucion' => 1,
+                    'fkUsuarioConclucion' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaConclucion' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
             break;
             case 3:
                 $update = [
-                    'fkUsuarioEntrega' => 1,
+                    'fkUsuarioEntrega' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaEntrega' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
@@ -296,7 +305,7 @@ class OrdenesRepository
                 $update = [
                     'fkUsuarioConclucion' => null,
                     'fechaConclucion' => null,
-                    'fkUsuarioCancelacion' => 1,
+                    'fkUsuarioCancelacion' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaCancelacion' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
@@ -308,10 +317,10 @@ class OrdenesRepository
         return $query->get()[0]->fkTblOrdenServicio ?? 0;
     }
 
-    public function cancelarOrdenServicio ($pkOrden) {
+    public function cancelarOrdenServicio ($pkOrden, $token) {
         TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
                           ->update([
-                              'fkUsuarioCancelacion' => 1,
+                              'fkUsuarioCancelacion' => $this->usuarioService->obtenerPkPorToken($token),
                               'fechaCancelacion' => Carbon::now(),
                               'status' => 4
                           ]);
@@ -357,7 +366,7 @@ class OrdenesRepository
     public function concluirOrdenServicio ($dataConclucion) {
         TblOrdenesServicio::where('pkTblOrdenServicio', $dataConclucion['pkTblOrdenServicio'])
                           ->update([
-                              'fkUsuarioConclucion' => 1,
+                              'fkUsuarioConclucion' => $this->usuarioService->obtenerPkPorToken($dataConclucion['token']),
                               'fechaConclucion' => Carbon::now(),
                               'status' => 2
                           ]);
@@ -401,12 +410,12 @@ class OrdenesRepository
         return $query->get()[0]->pkTblOrdenServicio ?? null;
     }
 
-    public function entregarOrden ($pkOrden, $folioTicket) {
+    public function entregarOrden ($pkOrden, $dataEntregar) {
         TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
                           ->update([
-                              'fkUsuarioEntrega' => 1,
+                              'fkUsuarioEntrega' => $this->usuarioService->obtenerPkPorToken($dataEntregar['token']),
                               'fechaEntrega' => Carbon::now(),
-                              'folioTicket' => $folioTicket,
+                              'folioTicket' => $dataEntregar['folioTicket'],
                               'status' => 3
                           ]);
     }

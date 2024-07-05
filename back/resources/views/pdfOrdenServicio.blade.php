@@ -106,8 +106,8 @@
         <div class="col-1 tabla1">
             <table id="tablaOrden">
                 <thead>
-                    <tr style="background:#00A5F4;">
-                        <th color="#3364DC" align="center"><b>Folio</b></th>
+                    <tr>
+                        <th @if($dataOrden['orden']->status == 4) style="background-color: #FF6666 !important;" @else style="background:#00A5F4; !important" @endif color="#3364DC" align="center"><b>Folio</b></th>
                     </tr>
                 </thead>
                 <tbody>
