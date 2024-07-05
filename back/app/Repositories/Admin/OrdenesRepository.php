@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Models\TblDetalleOrdenServicio;
 use App\Models\TblOrdenesServicio;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class OrdenesRepository
@@ -132,24 +133,25 @@ class OrdenesRepository
                                        'tblordenesservicio.aCuenta as aCuenta',
                                        'tblordenesservicio.nota as nota',
                                        'tblordenesservicio.codigo as codigo',
-                                       'usuarioRegistro.nombre as usuarioRegistro',
                                        'tblordenesservicio.fechaRegistro as fechaRegistro',
-                                       'usuarioConclucion.nombre as usuarioConclucion',
                                        'tblordenesservicio.fechaConclucion as fechaConclucion',
-                                       'usuarioEntrega.nombre as usuarioEntrega',
                                        'tblordenesservicio.fechaEntrega as fechaEntrega',
-                                       'usuarioCancelacion.nombre as usuarioCancelacion',
                                        'tblordenesservicio.fechaCancelacion as fechaCancelacion',
-                                       'usuarioModificacion.nombre as usuarioModificacion',
                                        'tblordenesservicio.fechaModificacion as fechaModificacion',
                                        'tblordenesservicio.status as status'
                                    )
+                                   ->selectRaw('concat(usuarioRegistro.nombre, " ", usuarioRegistro.aPaterno) as usuarioRegistro')
+                                   ->selectRaw('concat(usuarioConclucion.nombre, " ", usuarioConclucion.aPaterno) as usuarioConclucion')
+                                   ->selectRaw('concat(usuarioEntrega.nombre, " ", usuarioEntrega.aPaterno) as usuarioEntrega')
+                                   ->selectRaw('concat(usuarioCancelacion.nombre, " ", usuarioCancelacion.aPaterno) as usuarioCancelacion')
+                                   ->selectRaw('concat(usuarioModificacion.nombre, " ", usuarioModificacion.aPaterno) as usuarioModificacion')
                                    ->leftJoin('tblUsuarios as usuarioRegistro', 'usuarioRegistro.pkTblUsuario', 'tblordenesservicio.fkUsuarioRegistro')
                                    ->leftJoin('tblUsuarios as usuarioConclucion', 'usuarioConclucion.pkTblUsuario', 'tblordenesservicio.fkUsuarioConclucion')
                                    ->leftJoin('tblUsuarios as usuarioEntrega', 'usuarioEntrega.pkTblUsuario', 'tblordenesservicio.fkUsuarioEntrega')
                                    ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioCancelacion')
                                    ->leftJoin('tblUsuarios as usuarioModificacion', 'usuarioModificacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioModificacion')
                                    ->where('tblOrdenesServicio.pkTblOrdenServicio', $pkOrden);
+
         return $query->get()[0] ?? [];
     }
 
@@ -186,16 +188,16 @@ class OrdenesRepository
                                             'tblDetalleOrdenServicio.detalles as detalles',
                                             'tblDetalleOrdenServicio.costoReparacion as costoReparacion',
                                             'tblDetalleOrdenServicio.diagnosticoFinal as diagnosticoFinal',
-                                            'usuarioConclucion.nombre as usuarioConclucion',
                                             'tblDetalleOrdenServicio.fechaConclucion as fechaConclucion',
-                                            'usuarioEntrega.nombre as usuarioEntrega',
                                             'tblDetalleOrdenServicio.fechaEntrega as fechaEntrega',
-                                            'usuarioCancelacion.nombre as usuarioCancelacion',
                                             'tblDetalleOrdenServicio.fechaCancelacion as fechaCancelacion',
-                                            'usuarioModificacion.nombre as usuarioModificacion',
                                             'tblDetalleOrdenServicio.fechaModificacion as fechaModificacion',
                                             'tblDetalleOrdenServicio.status as status'
                                         )
+                                        ->selectRaw('concat(usuarioConclucion.nombre, " ", usuarioConclucion.aPaterno) as usuarioConclucion')
+                                        ->selectRaw('concat(usuarioEntrega.nombre, " ", usuarioEntrega.aPaterno) as usuarioEntrega')
+                                        ->selectRaw('concat(usuarioCancelacion.nombre, " ", usuarioCancelacion.aPaterno) as usuarioCancelacion')
+                                        ->selectRaw('concat(usuarioModificacion.nombre, " ", usuarioModificacion.aPaterno) as usuarioModificacion')
                                         ->leftJoin('tblUsuarios as usuarioConclucion', 'usuarioConclucion.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioConclucion')
                                         ->leftJoin('tblUsuarios as usuarioEntrega', 'usuarioEntrega.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioEntrega')
                                         ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblDetalleOrdenServicio.fkUsuarioCancelacion')
