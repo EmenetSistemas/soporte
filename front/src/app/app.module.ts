@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { EquipoComponent } from './admin/templates/equipo/equipo.component';
 import { ModalOrdenPdfComponent } from './admin/modules/ordenes/modal-orden-pdf/modal-orden-pdf.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { LoginComponent } from './auth/login/login.component';
+import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     DropdownComponent,
     DatatableComponent,
     EquipoComponent,
-    ModalOrdenPdfComponent
+    ModalOrdenPdfComponent,
+    LoginComponent,
+    InvalidRouteComponent
   ],
   imports: [
     BrowserModule,

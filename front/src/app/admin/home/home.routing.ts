@@ -3,11 +3,13 @@ import { HomeComponent } from "./home.component";
 import { DashboardComponent } from "../modules/dashboard/dashboard.component";
 import { OrdenComponent } from "../modules/orden/orden.component";
 import { ConsultaOrdenesComponent } from "../modules/ordenes/consulta-ordenes/consulta-ordenes.component";
+import { AdminGuard } from "../guards/admin/admin.guard";
 
 export const HomeRoutes: Routes = [
     {
         path: '',
         component: HomeComponent,
+        canActivate: [AdminGuard],
         children: [
             {
                 path: '',
