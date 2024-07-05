@@ -187,6 +187,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 				const orden = {
 					...this.formCliente.value,
+					token: localStorage.getItem('token_soporte'),
 					equipos: this.listaEquipos.map(({ component, pk, ...rest }) => rest)
 				};
 				
@@ -317,6 +318,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 				const orden = {
 					...this.formCliente.value,
+					token: localStorage.getItem('token_soporte'),
 					equipos: equipos.map(({ component, pk, ...rest }) => rest)
 				};
 
@@ -387,7 +389,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				this.mensajes.mensajeEsperar();
 
 				const dataCancelacion = {
-					pkTblOrdenServicio: this.pkOrden
+					pkTblOrdenServicio: this.pkOrden,
+					token: localStorage.getItem('token_soporte')
 				};
 		
 				this.apiOrdenes.cancelarOrdenServicio(dataCancelacion).subscribe(
@@ -443,7 +446,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				this.mensajes.mensajeEsperar();
 
 				const dataConclucion = {
-					pkTblOrdenServicio: this.pkOrden
+					pkTblOrdenServicio: this.pkOrden,
+					token: localStorage.getItem('token_soporte')
 				};
 
 				this.apiOrdenes.concluirOrdenServicio(dataConclucion).subscribe(

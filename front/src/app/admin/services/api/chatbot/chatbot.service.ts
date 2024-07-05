@@ -57,6 +57,8 @@ export class ChatbotService {
 		}).then((result: any) => {
 			if (!result.isConfirmed) return;
 
+			this.mensajes.mensajeEsperar();
+
 			const data = {
 				telefono: telefono.replace(/\s+/g, '').trim(),
 				mensaje: result.value

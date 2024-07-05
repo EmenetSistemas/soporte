@@ -3,11 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrdenComponent } from '../../modules/orden/orden.component';
 import FGenerico from 'src/shared/util/funciones-genericas';
 import { invalidZeroValidator } from 'src/app/shared/validators/cero-validator';
-import { laptop_checks } from 'src/app/shared/util/laptop-checks';
-import { impresora_checks } from 'src/app/shared/util/impresora-checks';
-import { pc_checks } from 'src/app/shared/util/pc-checks';
-import { monitor_checks } from 'src/app/shared/util/monitor-checks';
-import { otro_checks } from 'src/app/shared/util/otro-checks';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
@@ -43,19 +38,253 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	private inicializarChecks(): void {
 		switch (this.data.itemType) {
 			case 'laptop':
-				this.checks = laptop_checks;
+				this.checks = [
+					{
+						identificador: 'teclado',
+						label: 'Teclado',
+						checked: false
+					}, {
+						identificador: 'puertoUsb',
+						label: 'Puerto USB',
+						checked: false
+					}, {
+						identificador: 'pantalla',
+						label: 'Pantalla',
+						checked: false
+					}, {
+						identificador: 'bisagras',
+						label: 'Bisagras',
+						checked: false
+					}, {
+						identificador: 'centroDeCarga',
+						label: 'Centro de carga',
+						checked: false
+					}, {
+						identificador: 'padDeBotones',
+						label: 'Pad de botones',
+						checked: false
+					}, {
+						identificador: 'unidadDeCd',
+						label: 'Unidad de CD',
+						checked: false
+					}, {
+						identificador: 'puertoVga',
+						label: 'Puerto VGA',
+						checked: false
+					}, {
+						identificador: 'puertoHdmi',
+						label: 'Puerto HDMI',
+						checked: false
+					}, {
+						identificador: 'botonEncendido',
+						label: 'Botón encendido',
+						checked: false
+					}, {
+						identificador: 'tornillos',
+						label: 'Tornillos',
+						checked: false
+					}, {
+						identificador: 'carcasa',
+						label: 'Carcasa',
+						checked: false
+					}
+				];
 			break;
 			case 'impresora':
-				this.checks = impresora_checks;
+				this.checks = [
+					{
+						identificador: 'botones',
+						label: 'Botones',
+						checked: false
+					},{
+						identificador: 'puertoUsb',
+						label: 'Puerto USB',
+						checked: false
+					},{
+						identificador: 'pantalla',
+						label: 'Pantalla',
+						checked: false
+					},{
+						identificador: 'tornillos',
+						label: 'Tornillos',
+						checked: false
+					},{
+						identificador: 'carcasa',
+						label: 'Carcasa',
+						checked: false
+					},{
+						identificador: 'charolaHojas',
+						label: 'Charola de hojas',
+						checked: false
+					},{
+						identificador: 'cableCorriente',
+						label: 'Cable de corriente',
+						checked: false
+					},{
+						identificador: 'escaner',
+						label: 'Escaner',
+						checked: false
+					},{
+						identificador: 'cartuchos',
+						label: 'Cartuchos',
+						checked: false
+					}
+				];
 			break;
 			case 'pc':
-				this.checks = pc_checks;
+				this.checks = [
+					{
+						identificador: 'botones',
+						label: 'Botones',
+						checked: false
+					}, {
+						identificador: 'puertoUsb',
+						label: 'Puerto USB',
+						checked: false
+					}, {
+						identificador: 'puertoVga',
+						label: 'Puerto VGA',
+						checked: false
+					}, {
+						identificador: 'puertoHdmi',
+						label: 'Puerto HDMI',
+						checked: false
+					}, {
+						identificador: 'displayPort',
+						label: 'Display Port',
+						checked: false
+					}, {
+						identificador: 'tornillos',
+						label: 'Tornillos',
+						checked: false
+					}, {
+						identificador: 'carcasa',
+						label: 'Carcasa(Gabinete)',
+						checked: false
+					}, {
+						identificador: 'unidadDeCd',
+						label: 'Unidad de CD',
+						checked: false
+					}
+				];
 			break;
 			case 'monitor':
-				this.checks = monitor_checks;
+				this.checks = [
+					{
+						identificador: 'base',
+						label: 'Base',
+						checked: false
+					}, {
+						identificador: 'puertoVga',
+						label: 'Puerto VGA',
+						checked: false
+					}, {
+						identificador: 'puertoDvi',
+						label: 'Puerto DVI',
+						checked: false
+					}, {
+						identificador: 'puertoHdmi',
+						label: 'Puerto HDMI',
+						checked: false
+					}, {
+						identificador: 'displayPort',
+						label: 'Puerto Display Port',
+						checked: false
+					}, {
+						identificador: 'tornillos',
+						label: 'Tornillos',
+						checked: false
+					}, {
+						identificador: 'pantalla',
+						label: 'Pantalla',
+						checked: false
+					}
+				];
 			break;
 			case 'otro':
-				this.checks = otro_checks;
+				this.checks = [
+					{
+						identificador: 'teclado',
+						label: 'Teclado',
+						checked: false
+					}, {
+						identificador: 'puertoUsb',
+						label: 'Puerto USB',
+						checked: false
+					}, {
+						identificador: 'pantalla',
+						label: 'Pantalla',
+						checked: false
+					}, {
+						identificador: 'bisagras',
+						label: 'Bisagras',
+						checked: false
+					}, {
+						identificador: 'centroDeCarga',
+						label: 'Centro de carga',
+						checked: false
+					}, {
+						identificador: 'padDeBotones',
+						label: 'Pad de botones',
+						checked: false
+					}, {
+						identificador: 'unidadDeCd',
+						label: 'Unidad de CD',
+						checked: false
+					}, {
+						identificador: 'puertoVga',
+						label: 'Puerto VGA',
+						checked: false
+					}, {
+						identificador: 'puertoHdmi',
+						label: 'Puerto HDMI',
+						checked: false
+					}, {
+						identificador: 'puertoDvi',
+						label: 'Puerto DVI',
+						checked: false
+					}, {
+						identificador: 'displayPort',
+						label: 'Display Port',
+						checked: false
+					}, {
+						identificador: 'botonEncendido',
+						label: 'Boton de encendido',
+						checked: false
+					}, {
+						identificador: 'tornillos',
+						label: 'Tornillos',
+						checked: false
+					}, {
+						identificador: 'carcasa',
+						label: 'Carcasa',
+						checked: false
+					}, {
+						identificador: 'base',
+						label: 'Base',
+						checked: false
+					}, {
+						identificador: 'botones',
+						label: 'Botones',
+						checked: false
+					}, {
+						identificador: 'charolaHojas',
+						label: 'Charola de hojas',
+						checked: false
+					}, {
+						identificador: 'cableCorriente',
+						label: 'Cable de corriente',
+						checked: false
+					}, {
+						identificador: 'escaner',
+						label: 'Escaner',
+						checked: false
+					}, {
+						identificador: 'cartuchos',
+						label: 'Cartuchos',
+						checked: false
+					}
+				];
 			break;
 		}
 	}
@@ -110,6 +339,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 		}
 
 		const data = {
+			token: localStorage.getItem('token_soporte'),
 			...this.formEquipo.value,
 			...this.checks.reduce((acc: any, item: any) => {
 				acc[item.identificador] = item.checked;
@@ -174,6 +404,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 
 				const data = {
 					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio,
+					token: localStorage.getItem('token_soporte'),
 					status
 				};
 
@@ -196,6 +427,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 				this.mensajes.mensajeEsperar();
 
 				const dataEliminacion = {
+					token: localStorage.getItem('token_soporte'),
 					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio
 				};
 
