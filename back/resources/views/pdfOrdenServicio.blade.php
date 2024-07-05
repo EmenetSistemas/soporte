@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Orden de servicio #{{$dataOrden['orden']->pkTblOrdenServicio}}</title>
+    <title>Orden de servicio {{($dataOrden['orden']->status == 1) ? 'pendiente' : (($dataOrden['orden']->status == 2) ? 'concluida' : (($dataOrden['orden']->status == 3) ? 'entregada' : 'cancelada'))}} #{{$dataOrden['orden']->pkTblOrdenServicio}}</title>
+
     <link rel="icon" type="image/png" href="http://shop.m-net.mx/assets/img/logo_emenet.png">
 
     <style>
@@ -150,7 +151,7 @@
             <table style="margin-top: 15px !important; page-break-inside: avoid;">
                 <thead>
                     <tr>
-                        <th colspan="2">{{$equipo->nombre}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ {{ number_format($equipo->costoReparacion, 0, ',', ',') }}</th>
+                        <th @if($equipo->status == 4) style="background-color: #FF6666 !important;" @endif colspan="2">{{$equipo->nombre}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ {{ number_format($equipo->costoReparacion, 0, ',', ',') }}</th>
                     </tr>
                 </thead>
                 <tbody>
