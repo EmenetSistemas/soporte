@@ -134,31 +134,31 @@ class OrdenesRepository
 
     public function obtenerOrdenServicio ($pkOrden) {
         $query = TblOrdenesServicio::select(
-                                       'tblordenesservicio.pkTblOrdenServicio as pkTblOrdenServicio',
-                                       'tblordenesservicio.cliente as cliente',
-                                       'tblordenesservicio.telefono as telefono',
-                                       'tblordenesservicio.correo as correo',
-                                       'tblordenesservicio.direccion as direccion',
-                                       'tblordenesservicio.aCuenta as aCuenta',
-                                       'tblordenesservicio.nota as nota',
-                                       'tblordenesservicio.codigo as codigo',
-                                       'tblordenesservicio.fechaRegistro as fechaRegistro',
-                                       'tblordenesservicio.fechaConclucion as fechaConclucion',
-                                       'tblordenesservicio.fechaEntrega as fechaEntrega',
-                                       'tblordenesservicio.fechaCancelacion as fechaCancelacion',
-                                       'tblordenesservicio.fechaModificacion as fechaModificacion',
-                                       'tblordenesservicio.status as status'
+                                       'tblOrdenesServicio.pkTblOrdenServicio as pkTblOrdenServicio',
+                                       'tblOrdenesServicio.cliente as cliente',
+                                       'tblOrdenesServicio.telefono as telefono',
+                                       'tblOrdenesServicio.correo as correo',
+                                       'tblOrdenesServicio.direccion as direccion',
+                                       'tblOrdenesServicio.aCuenta as aCuenta',
+                                       'tblOrdenesServicio.nota as nota',
+                                       'tblOrdenesServicio.codigo as codigo',
+                                       'tblOrdenesServicio.fechaRegistro as fechaRegistro',
+                                       'tblOrdenesServicio.fechaConclucion as fechaConclucion',
+                                       'tblOrdenesServicio.fechaEntrega as fechaEntrega',
+                                       'tblOrdenesServicio.fechaCancelacion as fechaCancelacion',
+                                       'tblOrdenesServicio.fechaModificacion as fechaModificacion',
+                                       'tblOrdenesServicio.status as status'
                                    )
                                    ->selectRaw('concat(usuarioRegistro.nombre, " ", usuarioRegistro.aPaterno) as usuarioRegistro')
                                    ->selectRaw('concat(usuarioConclucion.nombre, " ", usuarioConclucion.aPaterno) as usuarioConclucion')
                                    ->selectRaw('concat(usuarioEntrega.nombre, " ", usuarioEntrega.aPaterno) as usuarioEntrega')
                                    ->selectRaw('concat(usuarioCancelacion.nombre, " ", usuarioCancelacion.aPaterno) as usuarioCancelacion')
                                    ->selectRaw('concat(usuarioModificacion.nombre, " ", usuarioModificacion.aPaterno) as usuarioModificacion')
-                                   ->leftJoin('tblUsuarios as usuarioRegistro', 'usuarioRegistro.pkTblUsuario', 'tblordenesservicio.fkUsuarioRegistro')
-                                   ->leftJoin('tblUsuarios as usuarioConclucion', 'usuarioConclucion.pkTblUsuario', 'tblordenesservicio.fkUsuarioConclucion')
-                                   ->leftJoin('tblUsuarios as usuarioEntrega', 'usuarioEntrega.pkTblUsuario', 'tblordenesservicio.fkUsuarioEntrega')
-                                   ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioCancelacion')
-                                   ->leftJoin('tblUsuarios as usuarioModificacion', 'usuarioModificacion.pkTblUsuario', 'tblordenesservicio.fkUsuarioModificacion')
+                                   ->leftJoin('tblUsuarios as usuarioRegistro', 'usuarioRegistro.pkTblUsuario', 'tblOrdenesServicio.fkUsuarioRegistro')
+                                   ->leftJoin('tblUsuarios as usuarioConclucion', 'usuarioConclucion.pkTblUsuario', 'tblOrdenesServicio.fkUsuarioConclucion')
+                                   ->leftJoin('tblUsuarios as usuarioEntrega', 'usuarioEntrega.pkTblUsuario', 'tblOrdenesServicio.fkUsuarioEntrega')
+                                   ->leftJoin('tblUsuarios as usuarioCancelacion', 'usuarioCancelacion.pkTblUsuario', 'tblOrdenesServicio.fkUsuarioCancelacion')
+                                   ->leftJoin('tblUsuarios as usuarioModificacion', 'usuarioModificacion.pkTblUsuario', 'tblOrdenesServicio.fkUsuarioModificacion')
                                    ->where('tblOrdenesServicio.pkTblOrdenServicio', $pkOrden);
 
         return $query->get()[0] ?? [];
@@ -401,13 +401,13 @@ class OrdenesRepository
     }
 
     public function validarEntregaEquiposOrden ($dataEntregar) {
-        $query = TblOrdenesServicio::select('pkTblOrdenServicio')
+        $query = TblOrdenesServicio::select('status')
                                    ->where([
                                        ['pkTblOrdenServicio', $dataEntregar['folio']],
                                        ['codigo', $dataEntregar['codigo']]
                                    ]);
 
-        return $query->get()[0]->pkTblOrdenServicio ?? null;
+        return $query->get()[0]->status ?? null;
     }
 
     public function entregarOrden ($pkOrden, $dataEntregar) {

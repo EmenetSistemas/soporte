@@ -258,9 +258,9 @@ class OrdenesService
     }
 
     public function entregarEquiposOrden ($dataEntregar) {
-        $pkOrden = $this->ordenesRepository->validarEntregaEquiposOrden($dataEntregar);
+        $status = $this->ordenesRepository->validarEntregaEquiposOrden($dataEntregar);
 
-        if ($pkOrden == null) {
+        if ($status == null) {
             return response()->json(
                 [
                     'status' => 300,
@@ -268,12 +268,19 @@ class OrdenesService
                 ],
                 200
             );
+        } else if ($status != 2) {
+            return response()->json(
+                [
+                    'status' => 300,
+                    'mensaje' => 'La orden de servicio se debe encontrar en status "concluida" para poder realizar la entrega de los equipos'
+                ],
+                200
+            );
         }
 
-
         DB::beginTransaction();
-            $this->ordenesRepository->entregarOrden($pkOrden, $dataEntregar);
-            $this->ordenesRepository->entregarEquiposOrden($pkOrden);
+            $this->ordenesRepository->entregarOrden($dataEntregar['folio'], $dataEntregar);
+            $this->ordenesRepository->entregarEquiposOrden($dataEntregar['folio']);
         DB::commit();
 
         return response()->json(
