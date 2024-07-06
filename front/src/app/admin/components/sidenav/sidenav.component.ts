@@ -59,6 +59,8 @@ export class SidenavComponent {
         }).then((result: any) => {
             if (result.isConfirmed) {
                 this.mensajes.mensajeEsperar();
+
+                result.value.token = localStorage.getItem('token_soporte');
                 
                 this.apiOrdenes.entregarEquiposOrden(result.value).subscribe(
                     respuesta => {
