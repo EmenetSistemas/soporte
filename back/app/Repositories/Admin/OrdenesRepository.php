@@ -142,6 +142,7 @@ class OrdenesRepository
                                        'tblOrdenesServicio.aCuenta as aCuenta',
                                        'tblOrdenesServicio.nota as nota',
                                        'tblOrdenesServicio.codigo as codigo',
+                                       'tblOrdenesServicio.folioTicket as folioTicket',
                                        'tblOrdenesServicio.fechaRegistro as fechaRegistro',
                                        'tblOrdenesServicio.fechaConclucion as fechaConclucion',
                                        'tblOrdenesServicio.fechaEntrega as fechaEntrega',
