@@ -146,6 +146,16 @@
                                     </div>
                                 </div>
                             </form>
+                            <div *ngIf="pkOrden != 0 && detalleOrden.status == 3" class="row g-3" style="margin-top: 5px;">
+                                <div class="col-sm-6">
+                                    <label class="form-label">Código:</label>
+                                    <input type="text" class="form-control t-center" placeholder="Código" [value]="detalleOrden.codigo" disabled>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label">Ticket:</label>
+                                    <input type="text" class="form-control t-center" placeholder="Ticket" [value]="detalleOrden.folioTicket ?? ''" disabled>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
