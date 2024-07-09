@@ -104,6 +104,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				telefono: this.detalleOrden.telefono,
 				cliente: this.detalleOrden.cliente
 			};
+			componentRef.instance.data.status = this.detalleOrden.status;
 		};
 
 		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType });

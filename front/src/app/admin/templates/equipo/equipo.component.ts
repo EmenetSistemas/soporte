@@ -380,7 +380,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			check.checked = this.data.datosEquipo[check.identificador] == 1;
 		});
 
-		if (this.data.datosEquipo.status >= 3) this.formEquipo.disable();
+		if (this.data.status >= 3) this.formEquipo.disable();
 
 		this.parent.cacharDatosComponent(
 			{costoReparacion : this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0'},
