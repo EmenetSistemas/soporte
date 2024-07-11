@@ -32,7 +32,10 @@ class PdfController extends Controller
             $pdfContent = $dompdf->output();
             $base64Pdf = base64_encode($pdfContent);
 
-            return response()->json(['pdf' => $base64Pdf]);
+            return response()->json([
+                'telefono' => $dataOrden['orden']->telefono,
+                'pdf' => $base64Pdf
+            ]);
 
         } catch (\Throwable $error) {
             Log::error('Error al generar el PDF: ' . $error->getMessage());

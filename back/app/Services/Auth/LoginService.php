@@ -46,7 +46,19 @@ class LoginService
         return response()->json(
             [
                 'data' => [
-                    'token'     => $token
+                    'token'     => $token,
+                    'permisos'  => [
+                        "perfil"                    => $usuarioActivo->perfil,
+                        "generarOrden"              => $usuarioActivo->generarOrden,
+                        "entregarOrden"             => $usuarioActivo->entregarOrden,
+                        "detalleOrden"              => $usuarioActivo->detalleOrden,
+                        "ordenActualizarCantidades" => $usuarioActivo->ordenActualizarCantidades,
+                        "ordenActualizar"           => $usuarioActivo->ordenActualizar,
+                        "ordenConcluir"             => $usuarioActivo->ordenConcluir,
+                        "ordenCancelar"             => $usuarioActivo->ordenCancelar,
+                        "ordenRetomar"              => $usuarioActivo->ordenRetomar,
+                        "ordenEliminar"             => $usuarioActivo->ordenEliminar
+                    ]
                 ],
                 'mensaje' => 'Bienvenido a SCOSM',
                 'status' => 200

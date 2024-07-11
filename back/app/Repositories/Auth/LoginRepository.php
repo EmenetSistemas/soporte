@@ -25,7 +25,7 @@ class LoginRepository
                                  ['activo', 1]
                               ]);
 
-        return $usuario->count() > 0;
+        return $usuario->get()[0] ?? null;
     }
 
     public function crearSesionYAsignarToken ( $pkUsuario ){
