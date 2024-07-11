@@ -45,7 +45,7 @@ export class ModalOrdenPdfComponent implements OnInit{
 	}
 
 	protected enviarPdfCliente(): void {
-		this.mensajes.mensajeConfirmacionCustom('Estás seguro de reenviar el PDF al cliente', 'question', 'Reenviar PDF').then(
+		this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de reenviar el PDF al cliente?', 'question', 'Reenviar PDF').then(
 			res => {
 				if (!res.isConfirmed) return;
 

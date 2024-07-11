@@ -15,6 +15,8 @@ import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
 export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	@Input() data: any = null;
 
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	protected formEquipo!: FormGroup;
 	protected checks: any[] = [];
 
@@ -386,6 +388,8 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			{costoReparacion : this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0'},
 			this.data.idItem
 		);
+
+		if (this.permisos.ordenActualizarCantidades !== 1) this.formEquipo.get('costoReparacion')?.disable();
 	}
 
 	protected cambioStatusServicio(tipoCambio: string, status: number): void {

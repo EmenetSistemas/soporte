@@ -9,10 +9,47 @@
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
+            <li *ngIf="informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
+                <a class="nav-link nav-icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="badge bg-success badge-number">3</span>
+                </a><!-- End Messages Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
+                    style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-25px, 35px);"
+                    data-popper-placement="bottom-end">
+                    <li class="dropdown-header">
+                        Tienes 3 solicitudes pendientes
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todas</span></a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li class="message-item">
+                        <a href="#">
+                            <div>
+                                <h4>Max</h4>
+                                <p>Hoy 3:41 pm | Actualización orden</p>
+                                <hr style="margin-top: 4px; margin-bottom: 4px;">
+                                <p>Se actualiza el precio ya que el cliente no quiso el disco de estado solido y se eliminó de la orden</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    
+                    <li class="dropdown-footer">
+                        <a href="#">Ver todas las solicitudes</a>
+                    </li>
+
+                </ul><!-- End Messages Dropdown Items -->
+            </li>
+
             <li class="nav-item dropdown pe-3" *ngIf="informacionUsuario">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="https://m-net.mx/scosm/images/log.png" alt="Profile"
-                        class="rounded-circle">
+                    <img src="https://m-net.mx/scosm/images/log.png" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{informacionUsuario.nombre}}
                         {{informacionUsuario.aPaterno}}</span>
                 </a>

@@ -9,6 +9,7 @@ import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 import { ModalService } from '../../services/modal/modal.service';
 import { ModalOrdenPdfComponent } from '../ordenes/modal-orden-pdf/modal-orden-pdf.component';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'app-orden',
@@ -129,7 +130,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected writeACuenta(): void {
-		let aCuenta = parseFloat(this.formCliente.value.aCuenta.replace(/[,$]/g, ''));
+		let aCuenta = parseFloat((this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, ''));
 		aCuenta = isNaN(aCuenta) ? 0 : aCuenta;
 
 		if (+aCuenta > +this.obtenerTotalItems().replace(/[,$]/g, '')) {
@@ -139,7 +140,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected cambioAcuenta(): void {
-		let aCuenta = parseFloat(this.formCliente.value.aCuenta.replace(/[,$]/g, ''));
+		let aCuenta = parseFloat((this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, ''));
 		aCuenta = isNaN(aCuenta) ? 0 : aCuenta;
 
 		if (+aCuenta > +this.obtenerTotalItems().replace(/[,$]/g, '')) {
@@ -153,7 +154,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			return total + (isNaN(cost) ? 0 : cost);
 		}, 0);
 
-		const aCuenta = parseFloat(this.formCliente.value.aCuenta.replace(/[,$]/g, ''));
+		const aCuenta = parseFloat((this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, ''));
 
 		return '$ '+(total - (isNaN(aCuenta) ? 0 : aCuenta)).toLocaleString();
 	}
@@ -281,13 +282,15 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.formCliente.get('direccion')?.setValue(data.direccion);
 		this.formCliente.get('aCuenta')?.setValue('$ '+data.aCuenta);
 
-		let aCuenta = parseFloat(this.formCliente.value.aCuenta.replace(/[,$]/g, ''));
+		let aCuenta = parseFloat((this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, ''));
 		aCuenta = isNaN(aCuenta) ? 0 : aCuenta;
 
 		if (+aCuenta > +this.obtenerTotalItems().replace(/[,$]/g, '')) {
 			this.formCliente.get('aCuenta')?.setValue('$ 0');
 			this.mensajes.mensajeGenericoToast('La cantidad a cuenta no puede ser mayor al total', 'warning');
 		}
+
+		if (this.permisos.ordenActualizarCantidades !== 1) this.formCliente.get('aCuenta')?.disable();
 
 		this.formCliente.get('nota')?.setValue(data.nota);
 		this.formCliente.get('codigo')?.setValue(data.codigo);
@@ -313,21 +316,26 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			return;
 		}
 
+		const orden = {
+			...this.formCliente.value,
+			token: localStorage.getItem('token_soporte'),
+			equipos: equipos.map(({ component, pk, ...rest }) => rest)
+		};
+
+		if (this.pkOrden != 0) {
+			orden.pkTblOrdenServicio = this.pkOrden;
+		}
+
+		if (this.permisos.ordenActualizar !== 1) {
+			this.validarCambioOrden('actualizar', orden);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom('Favor de asegurarse que los datos sean correctos', 'info', 'Actualizar orden de servicio').then(
 			res => {
 				if (!res.isConfirmed) return;
 
 				this.mensajes.mensajeEsperar();
-
-				const orden = {
-					...this.formCliente.value,
-					token: localStorage.getItem('token_soporte'),
-					equipos: equipos.map(({ component, pk, ...rest }) => rest)
-				};
-
-				if (this.pkOrden != 0) {
-					orden.pkTblOrdenServicio = this.pkOrden;
-				}
 
 				this.apiOrdenes.actualizarOrdenServicio(orden).subscribe(
 					respuesta => {
@@ -357,7 +365,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.formCliente.value.telefono == this.detalleOrden.telefono &&
 			this.formCliente.value.correo == this.detalleOrden.correo &&
 			this.formCliente.value.direccion == this.detalleOrden.direccion &&
-			this.formCliente.value.aCuenta.replace(/[,$]/g, '').trim() == this.detalleOrden.aCuenta &&
+			(this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, '').trim() == this.detalleOrden.aCuenta &&
 			this.formCliente.value.nota == this.detalleOrden.nota
 		) {
 			return false;
@@ -482,5 +490,59 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		};
 
 		this.modal.abrirModalConComponente(ModalOrdenPdfComponent, dataModal);
+	}
+
+	private validarCambioOrden(actividad: string, data: any = null): void {
+		let cargaSolicitud: any = null;
+
+		let titulo: string = '', mensaje: string = '', confirmacion: string = '';
+
+		switch (actividad) {
+			case 'actualizar':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización actualización';
+				mensaje = '¿Estás seguro de solicitar la actualización de la orden en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar actualización';
+			break;
+		}
+
+		Swal.fire({
+			title: titulo,
+			html: mensaje,
+			icon: 'question',
+			input: 'textarea',
+			inputLabel: 'Motivo:',
+			inputPlaceholder: 'Agrega un motivo para el cambio',
+			showCancelButton: true,
+			confirmButtonText: 'Enviar',
+			cancelButtonText: 'Cancelar',
+			buttonsStyling: false,
+			allowOutsideClick: false,
+			customClass: {
+				confirmButton: 'order-1 btn btn-primary me-2',
+				cancelButton: 'order-2 btn btn-danger',
+				denyButton: 'order-3'
+			},
+			allowEscapeKey: false,
+			inputValidator: (value): any => {
+				if (!value) {
+					return 'Es necesario colocar un motivo para poder continuar'
+				}
+			}
+		}).then((result: any) => {
+			if (!result.isConfirmed) return;
+
+			this.mensajes.mensajeEsperar();
+
+			cargaSolicitud.motivo = result.value;
+
+			this.refrescarDatos(confirmacion);
+		});
 	}
 }
