@@ -9,7 +9,7 @@
 
         <li class="nav-heading">Administración</li>
 
-        <li class="nav-item" [routerLink]="['orden']">
+        <li *ngIf="permisos.generarOrden == 1" class="nav-item" [routerLink]="['orden']">
             <a class="nav-link collapsed">
                 <i class="bi bi-ear"></i>
                 <span>Generar orden</span>
@@ -23,7 +23,7 @@
             </a>
         </li>
 
-        <li class="nav-item" (click)="entregarEquipo()">
+        <li *ngIf="permisos.entregarOrden == 1" class="nav-item" (click)="entregarEquipo()">
             <a class="nav-link collapsed">
                 <i class="bi bi-truck"></i>
                 <span>Entregar equipo(s)</span>

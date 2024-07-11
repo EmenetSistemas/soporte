@@ -33,6 +33,7 @@ export class NavbarComponent {
 					this.informacionUsuario = respuesta[0];
 				}, error => {
 					localStorage.removeItem('token_soporte');
+					localStorage.removeItem('permisos_soporte');
 					this.router.navigate(['/login']);
 					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
 				}
@@ -50,6 +51,7 @@ export class NavbarComponent {
 				this.apiLogin.logout(token).subscribe(
 					respuesta => {
 						localStorage.removeItem('token_soporte');
+						localStorage.removeItem('permisos_soporte');
 						this.router.navigate(['/login']);
 						this.mensajes.mensajeGenerico(respuesta.mensaje, 'info');
 					},

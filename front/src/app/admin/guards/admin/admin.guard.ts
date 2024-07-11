@@ -36,8 +36,15 @@ export class AdminGuard implements CanActivate {
 
 		if (token == undefined || token == null) {
 			localStorage.removeItem('token_soporte');
+			localStorage.removeItem('permisos_soporte');
 			this.router.navigate(['/login']);
 			this.mensajes.mensajeGenerico('Para navegar dentro de SCOSM es necesario inicar sesión', 'warning');
+			return false;
+		}
+
+		if (!this.validarPermisos(url)) {
+			this.router.navigate(['/']);
+			this.mensajes.mensajeGenerico('Al parecer no tienes permitido realizar esta acción', 'error');
 			return false;
 		}
 
@@ -47,6 +54,7 @@ export class AdminGuard implements CanActivate {
 					return true;
 				} else {
 					localStorage.removeItem('token_soporte');
+					localStorage.removeItem('permisos_soporte');
 					this.router.navigate(['/login']);
 					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
 					return false;
@@ -54,10 +62,25 @@ export class AdminGuard implements CanActivate {
 			},
 			error => {
 				localStorage.removeItem('token_soporte');
+				localStorage.removeItem('permisos_soporte');
 				this.router.navigate(['/login']);
 				this.mensajes.mensajeGenerico('error', 'error');
 				return false;
 			}
 		);
+	}
+
+	private validarPermisos(url: string, retorno: boolean = true): boolean {
+		const permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
+		if (url === '/orden' && permisos.generarOrden !== 1) {
+			retorno = false;
+		}
+
+		if (url.includes('/detalle-orden/') && permisos.detalleOrden !== 1) {
+			retorno = false;
+		}
+
+		return retorno;
 	}
 }

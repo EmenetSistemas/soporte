@@ -25,6 +25,7 @@ export class InvalidRouteComponent implements AfterViewInit {
 						this.router.navigate(['/']);
 					} else {
 						localStorage.removeItem('token_soporte');
+						localStorage.removeItem('permisos_soporte');
 						this.router.navigate(['/login']);
 					}
 				},

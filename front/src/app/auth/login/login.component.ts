@@ -65,6 +65,7 @@ export class LoginComponent implements OnInit {
 				}
 
 				localStorage.setItem('token_soporte', respuesta.data.token);
+				localStorage.setItem('permisos_soporte', JSON.stringify(respuesta.data.permisos));
 				this.router.navigate(['/']);
 				this.mensajes.cerrarMensajes();
 			}, error => {

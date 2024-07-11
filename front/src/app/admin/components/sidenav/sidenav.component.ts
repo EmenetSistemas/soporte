@@ -10,11 +10,13 @@ import { Router } from '@angular/router';
     styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
+    protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
     constructor (
         private mensajes: MensajesService,
         private apiOrdenes: OrdenesService,
         private router: Router
-    ) {}
+    ) { }
 
     public entregarEquipo(folio: any = null, codigo: any = null): void {
         Swal.fire({
