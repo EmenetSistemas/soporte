@@ -18,6 +18,8 @@ import { ModalOrdenPdfComponent } from '../ordenes/modal-orden-pdf/modal-orden-p
 export class OrdenComponent extends FGenerico implements OnInit {
 	@ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	protected formCliente!: FormGroup;
 
 	protected listaEquipos: any[] = [];

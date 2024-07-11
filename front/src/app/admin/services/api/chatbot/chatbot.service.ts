@@ -29,6 +29,21 @@ export class ChatbotService {
 		);
 	}
 
+	public enviarMediaOnline(telefono: string, media: string): Promise<any> {
+		const data = {
+			telefono: telefono.replace(/\s+/g, ''),
+			media
+		};
+
+		return this.apiChatbotMedia(data).toPromise().then(
+			respuesta => {
+				this.mensajes.mensajeGenerico('Se envió el archivo con éxito', 'success');
+			}, error => {
+				this.mensajes.mensajeGenerico('El servicio de mensajería no se encuentra disponible', 'warning');
+			}
+		);
+	}
+
 	public enviarMensajeTextoConfirmacion(telefono: string, mensaje: string, title: string, extra: any): any {
 		Swal.fire({
 			title,
@@ -76,5 +91,9 @@ export class ChatbotService {
 
 	public apiChatbot(dataMensaje: any): Observable<any> {
 		return this.http.post<any>(`${api_bot}/enviarMensajeTexto`, dataMensaje);
+	}
+
+	public apiChatbotMedia(dataMensaje: any): Observable<any> {
+		return this.http.post<any>(`${api_bot}/enviarMediaOnline`, dataMensaje);
 	}
 }

@@ -203,7 +203,7 @@
 
                         <div *ngIf="detalleOrden.status <= 2" class="btn btn-warning me-2" (click)="actualizarOrden()">
                             Actualizar</div>
-                        <div *ngIf="detalleOrden.status == 2" class="btn btn-primary me-2"
+                        <div *ngIf="detalleOrden.status == 2 && permisos.entregarOrden == 1" class="btn btn-primary me-2"
                             (click)="child.entregarEquipo(detalleOrden.pkTblOrdenServicio, detalleOrden.codigo)">
                             Entregar equipo(s)</div>
                         <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning"
