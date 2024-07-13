@@ -439,16 +439,21 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	}
 
 	protected eliminarEquipoOrden(): void {
+		const dataEliminacion = {
+			token: localStorage.getItem('token_soporte'),
+			pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio
+		};
+
+		if (this.permisos.ordenEliminar !== 1) {
+			this.parent.validarCambioOrden('eliminar-equipo', dataEliminacion);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom('¿Estás seguro de eliminar el equipo en cuestión de la orden de servicio?', 'question', 'Eliminar equipo "'+this.data.datosEquipo.nombre+'" de orden de servicio').then(
 			res => {
 				if (!res.isConfirmed) return;
 
 				this.mensajes.mensajeEsperar();
-
-				const dataEliminacion = {
-					token: localStorage.getItem('token_soporte'),
-					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio
-				};
 
 				this.apiOrdenes.eliminarEquipoOrden(dataEliminacion).subscribe(
 					respuesta => {

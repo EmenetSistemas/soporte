@@ -603,6 +603,19 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				mensaje = '¿Estás seguro de solicitar retomar el servicio del equipo en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar retomar el servicio del equipo';
 			break;
+			case 'eliminar-equipo':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					type: 'equipo',
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización para eliminar equipo';
+				mensaje = '¿Estás seguro de solicitar eliminar el servicio del equipo en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar eliminar el servicio del equipo';
+			break;
 		}
 
 		Swal.fire({
