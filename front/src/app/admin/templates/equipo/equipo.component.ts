@@ -406,6 +406,11 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			status
 		};
 
+		if (status == 1 && this.permisos.ordenRetomar !== 1) {
+			this.parent.validarCambioOrden('retomar-equipo', data);
+			return;
+		}
+
 		if (status == 2 && this.permisos.ordenConcluir !== 1) {
 			this.parent.validarCambioOrden('concluir-equipo', data);
 			return;

@@ -547,7 +547,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					token: localStorage.getItem('token')
 				};
 
-				titulo = 'Solicitar autorización concluir servicio equipo';
+				titulo = 'Solicitar autorización para concluir servicio equipo';
 				mensaje = '¿Estás seguro de solicitar concluir el servicio del equipo en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar concluir el servicio del equipo';
 			break;
@@ -573,7 +573,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					token: localStorage.getItem('token')
 				};
 
-				titulo = 'Solicitar autorización cancelar servicio equipo';
+				titulo = 'Solicitar autorización para cancelar servicio equipo';
 				mensaje = '¿Estás seguro de solicitar cancelar el servicio del equipo en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar cancelar el servicio del equipo';
 			break;
@@ -585,10 +585,23 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					data,
 					token: localStorage.getItem('token')
 				};
-
+				
 				titulo = 'Solicitar autorización retomar orden';
 				mensaje = '¿Estás seguro de solicitar retomar la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar retomar la orden';
+			break;
+			case 'retomar-equipo':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					type: 'equipo',
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización para retomar servicio equipo';
+				mensaje = '¿Estás seguro de solicitar retomar el servicio del equipo en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar retomar el servicio del equipo';
 			break;
 		}
 
