@@ -261,7 +261,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			}
 		);
 	}
-	  
 
 	private crearComponentesEquipos(equipos: any): void{
 		equipos.forEach((equipo: any) => {
@@ -446,6 +445,16 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			return;
 		}
 
+		const dataConclucion = {
+			pkTblOrdenServicio: this.pkOrden,
+			token: localStorage.getItem('token_soporte')
+		};
+
+		if (this.permisos.ordenConcluir !== 1) {
+			this.validarCambioOrden('concluir', dataConclucion);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom(
 			`¿Estás seguro de concluir la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessageConclusion()} a "servicio concluido"`,
 			'question', 
@@ -455,11 +464,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				if (!res.isConfirmed) return;
 
 				this.mensajes.mensajeEsperar();
-
-				const dataConclucion = {
-					pkTblOrdenServicio: this.pkOrden,
-					token: localStorage.getItem('token_soporte')
-				};
 
 				this.apiOrdenes.concluirOrdenServicio(dataConclucion).subscribe(
 					respuesta => {
@@ -510,6 +514,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				mensaje = '¿Estás seguro de solicitar la actualización de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar actualización';
 			break;
+			case 'concluir':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización concluir orden';
+				mensaje = '¿Estás seguro de solicitar la conclución de la orden en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar conclución de la orden';
+			break;
 		}
 
 		Swal.fire({
@@ -518,7 +534,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			icon: 'question',
 			input: 'textarea',
 			inputLabel: 'Motivo:',
-			inputPlaceholder: 'Agrega un motivo para el cambio',
+			inputPlaceholder: 'Agrega un motivo',
 			showCancelButton: true,
 			confirmButtonText: 'Enviar',
 			cancelButtonText: 'Cancelar',
