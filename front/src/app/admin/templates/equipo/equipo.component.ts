@@ -400,17 +400,27 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			'cancelado'
 		];
 
+		const data = {
+			pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio,
+			token: localStorage.getItem('token_soporte'),
+			status
+		};
+
+		if (status == 2 && this.permisos.ordenConcluir !== 1) {
+			this.parent.validarCambioOrden('concluir-equipo', data);
+			return;
+		}
+
+		if (status == 4 && this.permisos.ordenCancelar !== 1) {
+			this.parent.validarCambioOrden('cancelar-equipo', data);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom('¿Estás seguro cambiar el status del equipo en cuestión a "'+statusList[status-1]+'"?', 'question', tipoCambio+' servicio equipo "'+this.data.datosEquipo.nombre+'"').then(
 			res => {
 				if (!res.isConfirmed) return;
 
-				this.mensajes.mensajeEsperar();		
-
-				const data = {
-					pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio,
-					token: localStorage.getItem('token_soporte'),
-					status
-				};
+				this.mensajes.mensajeEsperar();
 
 				this.apiOrdenes.cambioStatusServicio(data).subscribe(
 					respuesta => {

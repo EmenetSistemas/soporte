@@ -506,7 +506,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.modal.abrirModalConComponente(ModalOrdenPdfComponent, dataModal);
 	}
 
-	private validarCambioOrden(actividad: string, data: any = null): void {
+	public validarCambioOrden(actividad: string, data: any = null): void {
 		let cargaSolicitud: any = null;
 
 		let titulo: string = '', mensaje: string = '', confirmacion: string = '';
@@ -515,6 +515,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			case 'actualizar':
 				cargaSolicitud = {
 					pkOrden: this.pkOrden,
+					type: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -527,6 +528,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			case 'concluir':
 				cargaSolicitud = {
 					pkOrden: this.pkOrden,
+					type: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -536,21 +538,49 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				mensaje = '¿Estás seguro de solicitar la conclución de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar conclución de la orden';
 			break;
-			case 'cancelar':
+			case 'concluir-equipo':
 				cargaSolicitud = {
 					pkOrden: this.pkOrden,
+					type: 'equipo',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
 				};
 
+				titulo = 'Solicitar autorización concluir servicio equipo';
+				mensaje = '¿Estás seguro de solicitar concluir el servicio del equipo en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar concluir el servicio del equipo';
+			break;
+			case 'cancelar':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					type: 'orden',
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+				
 				titulo = 'Solicitar autorización cancelar orden';
 				mensaje = '¿Estás seguro de solicitar la cancelación de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar cancelación de la orden';
 			break;
+			case 'cancelar-equipo':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					type: 'equipo',
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización cancelar servicio equipo';
+				mensaje = '¿Estás seguro de solicitar cancelar el servicio del equipo en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar cancelar el servicio del equipo';
+			break;
 			case 'retomar':
 				cargaSolicitud = {
 					pkOrden: this.pkOrden,
+					type: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
