@@ -420,6 +420,11 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected retomarOrdenServicio(): void {
+		if (this.permisos.ordenRetomar !== 1) {
+			this.validarCambioOrden('retomar', this.pkOrden);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom(
 			`¿Estás seguro de retomar la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessage()} a "servicio pendiente"`,
 			'question', 
@@ -542,6 +547,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				titulo = 'Solicitar autorización cancelar orden';
 				mensaje = '¿Estás seguro de solicitar la cancelación de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar cancelación de la orden';
+			break;
+			case 'retomar':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización retomar orden';
+				mensaje = '¿Estás seguro de solicitar retomar la orden en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar retomar la orden';
 			break;
 		}
 
