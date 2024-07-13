@@ -388,6 +388,16 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected cancelarOrdenServicio(): void {
+		const dataCancelacion = {
+			pkTblOrdenServicio: this.pkOrden,
+			token: localStorage.getItem('token_soporte')
+		};
+
+		if (this.permisos.ordenCancelar !== 1) {
+			this.validarCambioOrden('cancelar', dataCancelacion);
+			return;
+		}
+
 		this.mensajes.mensajeConfirmacionCustom(
 			`¿Estás seguro de cancelar la orden de servicio?<br><br><b>Cambiará el status de la orden de servicio${this.extraMessage()} a "servicio cancelado"`,
 			'question', 
@@ -397,11 +407,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				if (!res.isConfirmed) return;
 
 				this.mensajes.mensajeEsperar();
-
-				const dataCancelacion = {
-					pkTblOrdenServicio: this.pkOrden,
-					token: localStorage.getItem('token_soporte')
-				};
 		
 				this.apiOrdenes.cancelarOrdenServicio(dataCancelacion).subscribe(
 					respuesta => {
@@ -525,6 +530,18 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				titulo = 'Solicitar autorización concluir orden';
 				mensaje = '¿Estás seguro de solicitar la conclución de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar conclución de la orden';
+			break;
+			case 'cancelar':
+				cargaSolicitud = {
+					pkOrden: this.pkOrden,
+					actividad,
+					data,
+					token: localStorage.getItem('token')
+				};
+
+				titulo = 'Solicitar autorización cancelar orden';
+				mensaje = '¿Estás seguro de solicitar la cancelación de la orden en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar cancelación de la orden';
 			break;
 		}
 
