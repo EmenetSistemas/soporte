@@ -514,8 +514,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		switch (actividad) {
 			case 'actualizar':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'orden',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -527,8 +527,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'concluir':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'orden',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -540,8 +540,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'concluir-equipo':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'equipo',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'equipo',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -553,8 +553,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'cancelar':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'orden',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -566,8 +566,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'cancelar-equipo':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'equipo',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'equipo',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -579,8 +579,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'retomar':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'orden',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'orden',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -592,8 +592,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'retomar-equipo':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'equipo',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'equipo',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -605,8 +605,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			break;
 			case 'eliminar-equipo':
 				cargaSolicitud = {
-					pkOrden: this.pkOrden,
-					type: 'equipo',
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'equipo',
 					actividad,
 					data,
 					token: localStorage.getItem('token')
@@ -648,7 +648,13 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 			cargaSolicitud.motivo = result.value;
 
-			this.refrescarDatos(confirmacion);
+			this.apiOrdenes.registrarSolicitudOrden(cargaSolicitud).subscribe(
+				respuesta => {
+					this.refrescarDatos(confirmacion);
+				}, error => {
+					this.mensajes.mensajeGenerico('error', 'error');
+				}
+			);
 		});
 	}
 }

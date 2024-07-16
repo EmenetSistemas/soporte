@@ -50,4 +50,12 @@ export class OrdenesService {
 	public entregarEquiposOrden(dataEntregar: any): Observable<any> {
 		return this.http.post<any>(`${api}/ordenes/entregarEquiposOrden`, dataEntregar);
 	}
+
+	public registrarSolicitudOrden(dataSolicitud: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/registrarSolicitudOrden`, dataSolicitud);
+	}
+
+	public obtenerSolicitudesOrdenes(status: string): Observable<any> {
+		return this.http.get<any>(`${api}/ordenes/obtenerSolicitudesOrdenes/${status}`);
+	}
 }
