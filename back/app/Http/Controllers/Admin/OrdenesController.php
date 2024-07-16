@@ -166,4 +166,34 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function registrarSolicitudOrden (Request $request) {
+        try{
+            return $this->ordenesService->registrarSolicitudOrden($request->all());
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
+    public function obtenerSolicitudesOrdenes ($status) {
+        try{
+            return $this->ordenesService->obtenerSolicitudesOrdenes($status);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }

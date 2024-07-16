@@ -290,4 +290,29 @@ class OrdenesService
             200
         );
     }
+
+    public function registrarSolicitudOrden ($solicitud) {
+        $this->ordenesRepository->registrarSolicitudOrden($solicitud);
+
+        return response()->json(
+            [
+                'mensaje' => 'Se registró la solicitud con éxito'
+            ],
+            200
+        );
+    }
+
+    public function obtenerSolicitudesOrdenes ($status) {
+        $solicitudes = $this->ordenesRepository->obtenerSolicitudesOrdenes($status);
+
+        return response()->json(
+            [
+                'data' => [
+                    'solicitudes' => $solicitudes
+                ],
+                'mensaje' => 'Se registró la solicitud con éxito'
+            ],
+            200
+        );
+    }
 }

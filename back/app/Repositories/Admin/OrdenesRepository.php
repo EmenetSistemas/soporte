@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Models\TblDetalleOrdenServicio;
 use App\Models\TblOrdenesServicio;
+use App\Models\TblSolicitudesOrdenes;
 use App\Services\Auth\UsuarioService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -426,5 +427,37 @@ class OrdenesRepository
                           ->update([
                               'status' => 3
                           ]);
+    }
+
+    public function registrarSolicitudOrden ($solicitud) {
+        $registro = new TblSolicitudesOrdenes();
+        $registro->fkTblOrdenServicio  = $solicitud['fkTblOrdenServicio'];
+        $registro->tipoSolicitud       = $solicitud['tipoSolicitud'];
+        $registro->actividad           = $solicitud['actividad'];
+        $registro->data                = is_array($solicitud['data']) ? serialize($solicitud['data']) : $solicitud['data'];
+        $registro->motivo              = $solicitud['motivo'];
+        $registro->fkUsuarioSolicitud  = $this->usuarioService->obtenerPkPorToken($solicitud['token']);
+        $registro->fechaSolicitud      = Carbon::now();
+        $registro->status              = $solicitud['status'];
+    }
+
+    public function obtenerSolicitudesOrdenes ($status) {
+        $query = TblSolicitudesOrdenes::select(    
+                                          'pkTblSolicitudOrden',
+                                          'fkTblOrdenServicio',
+                                          'tipoSolicitud',
+                                          'actividad',
+                                          'data',
+                                          'motivo',
+                                          'fkUsuarioSolicitud',
+                                          'fechaSolicitud',
+                                          'status',
+                                      );
+
+        if ($status != 0) {
+            $query->where('status', $status);
+        }
+
+        return $query->get();
     }
 }
