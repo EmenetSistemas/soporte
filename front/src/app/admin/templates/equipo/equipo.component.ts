@@ -338,6 +338,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			this.formEquipo.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
 			this.formEquipo.value.costoReparacion = this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0';
 			this.formEquipo.value.status = this.data.datosEquipo.status;
+			this.formEquipo.value.costoReparacion = this.formEquipo.value.costoReparacion ?? this.data.datosEquipo.costoReparacion;
 		}
 
 		const data = {

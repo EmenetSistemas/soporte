@@ -55,7 +55,7 @@ export class OrdenesService {
 		return this.http.post<any>(`${api}/ordenes/registrarSolicitudOrden`, dataSolicitud);
 	}
 
-	public obtenerSolicitudesOrdenes(status: string): Observable<any> {
+	public obtenerSolicitudesOrdenes(status: number): Observable<any> {
 		return this.http.get<any>(`${api}/ordenes/obtenerSolicitudesOrdenes/${status}`);
 	}
 }

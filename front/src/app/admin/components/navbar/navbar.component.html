@@ -12,39 +12,46 @@
             <li *ngIf="informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
                 <a class="nav-link nav-icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
                     <i class="bi bi-chat-left-text"></i>
-                    <span class="badge bg-success badge-number">3</span>
-                </a><!-- End Messages Icon -->
+                    <span class="badge bg-success badge-number">{{solicitudesOrdenes.length}}</span>
+                </a>
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
                     style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-25px, 35px);"
                     data-popper-placement="bottom-end">
-                    <li class="dropdown-header">
-                        Tienes 3 solicitudes pendientes
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                    <section *ngIf="solicitudesOrdenes.length > 0">
+                        <li class="dropdown-header">
+                            Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}} pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+    
+                        <section *ngFor="let solicitud of solicitudesOrdenes">
+                            <li class="message-item">
+                                <a href="#">
+                                    <div>
+                                        <h4>{{solicitud.solicitante}}</h4>
+                                        <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
+                                        <hr style="margin-top: 4px; margin-bottom: 4px;">
+                                        <p>{{solicitud.motivo}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </section>
+                        
+                        <li class="dropdown-footer">
+                            <a href="#">Ver todas las solicitudes</a>
+                        </li>
+                    </section>
 
-                    <li class="message-item">
-                        <a href="#">
-                            <div>
-                                <h4>Max</h4>
-                                <p>Hoy 3:41 pm | Actualización orden</p>
-                                <hr style="margin-top: 4px; margin-bottom: 4px;">
-                                <p>Se actualiza el precio ya que el cliente no quiso el disco de estado solido y se eliminó de la orden</p>
-                            </div>
-                        </a>
+                    <li class="dropdown-header" *ngIf="solicitudesOrdenes.length == 0">
+                        No hay solicitudes para mostrar
                     </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    
-                    <li class="dropdown-footer">
-                        <a href="#">Ver todas las solicitudes</a>
-                    </li>
-
-                </ul><!-- End Messages Dropdown Items -->
+                </ul>
             </li>
 
             <li class="nav-item dropdown pe-3" *ngIf="informacionUsuario">

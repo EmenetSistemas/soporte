@@ -518,7 +518,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'orden',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización actualización';
@@ -531,7 +531,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'orden',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización concluir orden';
@@ -544,7 +544,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'equipo',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización para concluir servicio equipo';
@@ -557,7 +557,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'orden',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 				
 				titulo = 'Solicitar autorización cancelar orden';
@@ -570,7 +570,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'equipo',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización para cancelar servicio equipo';
@@ -583,7 +583,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'orden',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 				
 				titulo = 'Solicitar autorización retomar orden';
@@ -596,7 +596,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'equipo',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización para retomar servicio equipo';
@@ -609,7 +609,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 					tipoSolicitud: 'equipo',
 					actividad,
 					data,
-					token: localStorage.getItem('token')
+					token: localStorage.getItem('token_soporte')
 				};
 
 				titulo = 'Solicitar autorización para eliminar equipo';
