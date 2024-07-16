@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Repositories\Admin\OrdenesRepository;
+use App\Repositories\Auth\UsuarioRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -11,11 +12,14 @@ use Mockery\Undefined;
 class OrdenesService
 {
     protected $ordenesRepository;
+    protected $usuarioRepository;
 
     public function __construct(
-        OrdenesRepository $OrdenesRepository
+        OrdenesRepository $OrdenesRepository,
+        UsuarioRepository $UsuarioRepository
     ) {
         $this->ordenesRepository = $OrdenesRepository;
+        $this->usuarioRepository = $UsuarioRepository;
     }
 
     public function registrarOrdenServicio ($orden) {
@@ -304,6 +308,22 @@ class OrdenesService
 
     public function obtenerSolicitudesOrdenes ($status) {
         $solicitudes = $this->ordenesRepository->obtenerSolicitudesOrdenes($status);
+
+        $tituloSolicitud = [
+            'actualizar'      => 'Actualizar orden',
+            'concluir'        => 'Concluir orden',
+            'concluir-equipo' => 'Concluir equipo',
+            'cancelar'        => 'Cancelar orden',
+            'cancelar-equipo' => 'Cancelar equipo',
+            'retomar'         => 'Retomar orden',
+            'retomar-equipo'  => 'Retomar equipo',
+            'eliminar-equipo' => 'Eliminar equipo'
+        ];
+
+        foreach ($solicitudes as $solicitud) {
+            $solicitud->fechaSolicitud = $this->formatearFecha($solicitud->fechaSolicitud);
+            $solicitud->tituloSolicitud = $tituloSolicitud[$solicitud->actividad];
+        }
 
         return response()->json(
             [

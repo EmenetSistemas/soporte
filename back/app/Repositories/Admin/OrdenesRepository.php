@@ -438,7 +438,8 @@ class OrdenesRepository
         $registro->motivo              = $solicitud['motivo'];
         $registro->fkUsuarioSolicitud  = $this->usuarioService->obtenerPkPorToken($solicitud['token']);
         $registro->fechaSolicitud      = Carbon::now();
-        $registro->status              = $solicitud['status'];
+        $registro->status              = 1;
+        $registro->save();
     }
 
     public function obtenerSolicitudesOrdenes ($status) {
@@ -452,7 +453,9 @@ class OrdenesRepository
                                           'fkUsuarioSolicitud',
                                           'fechaSolicitud',
                                           'status',
-                                      );
+                                      )
+                                      ->selectRaw('CONCAT(tblUsuarios.nombre, " ", tblUsuarios.aPaterno) as solicitante')
+                                      ->leftJoin('tblUsuarios', 'tblUsuarios.pkTblUsuario', 'tblSolicitudesOrdenes.fkUsuarioSolicitud');
 
         if ($status != 0) {
             $query->where('status', $status);
