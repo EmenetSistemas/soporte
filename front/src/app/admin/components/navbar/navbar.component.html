@@ -20,14 +20,15 @@
                     data-popper-placement="bottom-end">
                     <section *ngIf="solicitudesOrdenes.length > 0">
                         <li class="dropdown-header">
-                            Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}} pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
+                            Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
+                            pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-    
-                        <section *ngFor="let solicitud of solicitudesOrdenes">
+
+                        <section *ngFor="let solicitud of solicitudesOrdenes.slice(0, 3)">
                             <li class="message-item" (click)="detalleSolicitud(solicitud)">
                                 <a href="javascript:void(0);">
                                     <div>
@@ -42,7 +43,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                         </section>
-                        
+
                         <li class="dropdown-footer">
                             <a href="#">Ver todas las solicitudes</a>
                         </li>
