@@ -467,7 +467,8 @@ class OrdenesRepository
                                       ->leftJoin('tblOrdenesServicio', 'tblOrdenesServicio.pkTblOrdenServicio', 'tblSolicitudesOrdenes.fkTblOrdenServicio');
 
         if ($status != 0) {
-            $query->where('tblSolicitudesOrdenes.status', $status);
+            $query->where('tblSolicitudesOrdenes.status', $status)
+                  ->orderBy('tblSolicitudesOrdenes.pkTblSolicitudOrden', $status == 1 ? 'asc' : 'desc');
         }
 
         return $query->get();
