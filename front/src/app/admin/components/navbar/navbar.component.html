@@ -11,8 +11,8 @@
         <ul class="d-flex align-items-center">
             <li *ngIf="informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
                 <a class="nav-link nav-icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
-                    <i class="bi bi-chat-left-text"></i>
-                    <span class="badge bg-success badge-number">{{solicitudesOrdenes.length}}</span>
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-primary badge-number">{{solicitudesOrdenes.length}}</span>
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
@@ -28,8 +28,8 @@
                         </li>
     
                         <section *ngFor="let solicitud of solicitudesOrdenes">
-                            <li class="message-item">
-                                <a href="#">
+                            <li class="message-item" (click)="detalleSolicitud(solicitud)">
+                                <a href="javascript:void(0);">
                                     <div>
                                         <h4>{{solicitud.solicitante}}</h4>
                                         <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>

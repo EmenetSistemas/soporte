@@ -21,6 +21,7 @@ import { ModalOrdenPdfComponent } from './admin/modules/ordenes/modal-orden-pdf/
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './auth/login/login.component';
 import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.component';
+import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-status-orden/cambio-status-orden.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.comp
     EquipoComponent,
     ModalOrdenPdfComponent,
     LoginComponent,
-    InvalidRouteComponent
+    InvalidRouteComponent,
+    CambioStatusOrdenComponent
   ],
   imports: [
     BrowserModule,

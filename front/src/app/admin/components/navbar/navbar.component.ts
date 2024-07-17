@@ -5,6 +5,8 @@ import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { LoginService } from 'src/app/auth/services/login/login.service';
 import { UsuariosService } from 'src/app/auth/services/usuarios/usuarios.service';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
+import { ModalService } from '../../services/modal/modal.service';
+import { CambioStatusOrdenComponent } from '../modals/cambio-status-orden/cambio-status-orden.component';
 
 @Component({
 	selector: 'app-navbar',
@@ -23,7 +25,8 @@ export class NavbarComponent implements OnDestroy{
 		private router: Router,
 		private mensajes: MensajesService,
 		private apiLogin: LoginService,
-		private apiOrdenes: OrdenesService
+		private apiOrdenes: OrdenesService,
+		private modal: ModalService
 	) { }
 
 	async ngOnInit(): Promise<void> {
@@ -93,6 +96,22 @@ export class NavbarComponent implements OnDestroy{
 
 	protected prueba(): void {
 		this.dataService.claseSidebar = this.dataService.claseSidebar == '' ? 'toggle-sidebar' : '';
+	}
+
+	protected detalleSolicitud(solicitud: any): void {
+		const dataModal = {
+			solicitud: solicitud
+		};
+
+		switch (solicitud.actividad) {
+			case 'retomar':
+			case 'concluir':
+			case 'concluir-equipo':
+			case 'cancelar':
+			case 'eliminar-equipo':
+				this.modal.abrirModalConComponente(CambioStatusOrdenComponent, dataModal, 'lg-modal');
+			break;
+		}
 	}
 
 	ngOnDestroy(): void {

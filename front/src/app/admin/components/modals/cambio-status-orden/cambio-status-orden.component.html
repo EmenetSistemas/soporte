@@ -1,0 +1,50 @@
+<div class="modal-body">
+    <div class="pagetitle">
+        <h1>{{solicitud.tituloSolicitud}} - Orden #{{solicitud.fkTblOrdenServicio}}</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">{{solicitud.tituloSolicitud}}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="section dashboard">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card info-card warning">
+                        <div class="card-body t-center">
+                            <h5 class="card-title"><span>Ahora</span><br>{{solicitud.statusActual}}</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-bar-chart-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="card info-card {{solicitud.fondoPosterior}}">
+                        <div class="card-body t-center">
+                            <h5 class="card-title"><span>Después</span><br>{{solicitud.statusPosterior}}</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi {{solicitud.iconoPosterior}}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer" style="text-align: center;">
+    <button type="button" class="btn btn-success">Ver orden</button>
+    <button type="button" class="btn btn-primary">Aprobar cambio</button>
+    <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
+</div>

@@ -26,6 +26,10 @@ export class ModalService {
 			modalConfig.class = 'modal-lg modal-dialog-centered'
 		}
 
+		if (typeModal == 'sm-modal') {
+			modalConfig.class = 'modal-sm modal-dialog-centered'
+		}
+
 		this.modalRef = this.modalService.show(component, modalConfig);
 	}
 
