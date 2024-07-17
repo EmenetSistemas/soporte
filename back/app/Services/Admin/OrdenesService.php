@@ -320,9 +320,61 @@ class OrdenesService
             'eliminar-equipo' => 'Eliminar equipo'
         ];
 
+        $statusPosterior = [
+            'concluir'        => 'Orden concluida',
+            'concluir-equipo' => 'Equipo concluido',
+            'entregar'        => 'Orden entregada',
+            'entregar-equipo' => 'Equipo entregado',
+            'cancelar'        => 'Orden cancelada',
+            'cancelar-equipo' => 'Equipo cancelado',
+            'retomar'         => 'Orden pendiente',
+            'retomar-equipo'  => 'Equipo pendiente',
+            'eliminar-equipo' => 'Equipo eliminado'
+        ];
+
+        $bg = [
+            'concluir'        => 'primary',
+            'concluir-equipo' => 'primary',
+            'entregar'        => 'success',
+            'entregar-equipo' => 'success',
+            'cancelar'        => 'danger',
+            'cancelar-equipo' => 'danger',
+            'retomar'         => 'warning',
+            'retomar-equipo'  => 'warning',
+            'eliminar-equipo' => 'danger'
+        ];
+
+        $icon = [
+            'concluir'        => 'bi-clipboard-check',
+            'concluir-equipo' => 'bi-clipboard-check',
+            'cancelar'        => 'bi-clipboard-x',
+            'cancelar-equipo' => 'bi-clipboard-x',
+            'retomar'         => 'bi-bar-chart-fill',
+            'retomar-equipo'  => 'bi-bar-chart-fill',
+            'eliminar-equipo' => 'bi-trash2-fill'
+        ];
+        
         foreach ($solicitudes as $solicitud) {
-            $solicitud->fechaSolicitud = $this->formatearFecha($solicitud->fechaSolicitud);
+            $solicitud->fechaSolicitud  = $this->formatearFecha($solicitud->fechaSolicitud);
             $solicitud->tituloSolicitud = $tituloSolicitud[$solicitud->actividad];
+            $solicitud->data = unserialize($solicitud->data);
+            
+            if ($solicitud->actividad != 'actualizar') {
+                $solicitud->statusPosterior = $statusPosterior[$solicitud->actividad];
+                $solicitud->fondoPosterior  = $bg[$solicitud->actividad];
+                $solicitud->iconoPosterior  = $icon[$solicitud->actividad];
+
+                $actividadActual = $solicitud->statusActual;
+                $solicitud->statusActual = $statusPosterior[$actividadActual];
+
+                if (isset($solicitud->pkTblDetalleOrdenServicio)) {
+                    $actividadActual = $this->ordenesRepository->obtenerStatusEquipo($solicitud->data['pkTblDetalleOrdenServicio']);
+                    $solicitud->statusActual = $statusPosterior[$actividadActual];
+                }
+
+                $solicitud->fondoActual  = $bg[$actividadActual];
+                $solicitud->iconoActual  = $icon[$actividadActual];
+            }
         }
 
         return response()->json(

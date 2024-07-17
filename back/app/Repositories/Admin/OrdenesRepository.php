@@ -444,23 +444,46 @@ class OrdenesRepository
 
     public function obtenerSolicitudesOrdenes ($status) {
         $query = TblSolicitudesOrdenes::select(    
-                                          'pkTblSolicitudOrden',
-                                          'fkTblOrdenServicio',
-                                          'tipoSolicitud',
-                                          'actividad',
-                                          'data',
-                                          'motivo',
-                                          'fkUsuarioSolicitud',
-                                          'fechaSolicitud',
-                                          'status',
+                                          'tblSolicitudesOrdenes.pkTblSolicitudOrden as pkTblSolicitudOrden',
+                                          'tblSolicitudesOrdenes.fkTblOrdenServicio as fkTblOrdenServicio',
+                                          'tblSolicitudesOrdenes.tipoSolicitud as tipoSolicitud',
+                                          'tblSolicitudesOrdenes.actividad as actividad',
+                                          'tblSolicitudesOrdenes.data as data',
+                                          'tblSolicitudesOrdenes.motivo as motivo',
+                                          'tblSolicitudesOrdenes.fkUsuarioSolicitud as fkUsuarioSolicitud',
+                                          'tblSolicitudesOrdenes.fechaSolicitud as fechaSolicitud',
+                                          'tblSolicitudesOrdenes.status as status',
                                       )
                                       ->selectRaw('CONCAT(tblUsuarios.nombre, " ", tblUsuarios.aPaterno) as solicitante')
-                                      ->leftJoin('tblUsuarios', 'tblUsuarios.pkTblUsuario', 'tblSolicitudesOrdenes.fkUsuarioSolicitud');
+                                      ->selectRaw("
+                                          CASE
+                                              WHEN tblOrdenesServicio.status = 1 THEN 'retomar-equipo'
+                                              WHEN tblOrdenesServicio.status = 2 THEN 'concluir-equipo'
+                                              WHEN tblOrdenesServicio.status = 3 THEN 'entregar-equipo'
+                                              WHEN tblOrdenesServicio.status = 4 THEN 'cancelar-equipo'
+                                          END as statusActual
+                                      ")
+                                      ->leftJoin('tblUsuarios', 'tblUsuarios.pkTblUsuario', 'tblSolicitudesOrdenes.fkUsuarioSolicitud')
+                                      ->leftJoin('tblOrdenesServicio', 'tblOrdenesServicio.pkTblOrdenServicio', 'tblSolicitudesOrdenes.fkTblOrdenServicio');
 
         if ($status != 0) {
-            $query->where('status', $status);
+            $query->where('tblSolicitudesOrdenes.status', $status);
         }
 
         return $query->get();
+    }
+
+    public function obtenerStatusEquipo ($pkEquipo) {
+        $query = TblDetalleOrdenServicio::selectRaw("
+                                              CASE
+                                                  WHEN status = 1 THEN 'retomar-equipo'
+                                                  WHEN status = 2 THEN 'concluir-equipo'
+                                                  WHEN status = 3 THEN 'entregar-equipo'
+                                                  WHEN status = 4 THEN 'cancelar-equipo'
+                                              END as status
+                                        ")
+                                        ->where('pkTblDetalleOrdenServicio', $pkEquipo);
+
+        return $query->get()[0]->status ?? '';
     }
 }
