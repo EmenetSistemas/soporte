@@ -457,10 +457,10 @@ class OrdenesRepository
                                       ->selectRaw('CONCAT(tblUsuarios.nombre, " ", tblUsuarios.aPaterno) as solicitante')
                                       ->selectRaw("
                                           CASE
-                                              WHEN tblOrdenesServicio.status = 1 THEN 'retomar-equipo'
-                                              WHEN tblOrdenesServicio.status = 2 THEN 'concluir-equipo'
-                                              WHEN tblOrdenesServicio.status = 3 THEN 'entregar-equipo'
-                                              WHEN tblOrdenesServicio.status = 4 THEN 'cancelar-equipo'
+                                              WHEN tblOrdenesServicio.status = 1 THEN 'retomar'
+                                              WHEN tblOrdenesServicio.status = 2 THEN 'concluir'
+                                              WHEN tblOrdenesServicio.status = 3 THEN 'entregar'
+                                              WHEN tblOrdenesServicio.status = 4 THEN 'cancelar'
                                           END as statusActual
                                       ")
                                       ->leftJoin('tblUsuarios', 'tblUsuarios.pkTblUsuario', 'tblSolicitudesOrdenes.fkUsuarioSolicitud')
@@ -474,8 +474,12 @@ class OrdenesRepository
         return $query->get();
     }
 
-    public function obtenerStatusEquipo ($pkEquipo) {
-        $query = TblDetalleOrdenServicio::selectRaw("
+    public function obtenerDataEquipo ($pkEquipo) {
+        $query = TblDetalleOrdenServicio::select(
+                                            'tipoEquipo',
+                                            'nombre'
+                                        )
+                                        ->selectRaw("
                                               CASE
                                                   WHEN status = 1 THEN 'retomar-equipo'
                                                   WHEN status = 2 THEN 'concluir-equipo'
@@ -485,6 +489,6 @@ class OrdenesRepository
                                         ")
                                         ->where('pkTblDetalleOrdenServicio', $pkEquipo);
 
-        return $query->get()[0]->status ?? '';
+        return $query->get();
     }
 }

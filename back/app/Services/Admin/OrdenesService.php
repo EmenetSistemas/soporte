@@ -367,8 +367,9 @@ class OrdenesService
                 $actividadActual = $solicitud->statusActual;
                 $solicitud->statusActual = $statusPosterior[$actividadActual];
 
-                if (isset($solicitud->pkTblDetalleOrdenServicio)) {
-                    $actividadActual = $this->ordenesRepository->obtenerStatusEquipo($solicitud->data['pkTblDetalleOrdenServicio']);
+                if (isset($solicitud->data['pkTblDetalleOrdenServicio'])) {
+                    $solicitud->dataEquipo = $this->ordenesRepository->obtenerDataEquipo($solicitud->data['pkTblDetalleOrdenServicio'])[0];
+                    $actividadActual = $solicitud->dataEquipo->status;
                     $solicitud->statusActual = $statusPosterior[$actividadActual];
                 }
 
