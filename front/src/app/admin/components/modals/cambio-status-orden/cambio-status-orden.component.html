@@ -1,6 +1,6 @@
 <div class="modal-body">
     <div class="pagetitle">
-        <h1>{{solicitud.tituloSolicitud}} - Orden #{{solicitud.fkTblOrdenServicio}}</h1>
+        <h1>{{solicitud.tituloSolicitud}} <span *ngIf="solicitud.dataEquipo">{{solicitud.dataEquipo.tipoEquipo}} {{solicitud.dataEquipo.nombre}}</span> - Orden #{{solicitud.fkTblOrdenServicio}}</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active">{{solicitud.tituloSolicitud}}</li>
@@ -52,7 +52,8 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button type="button" class="btn btn-success">Ver orden</button>
-    <button type="button" class="btn btn-primary">Aprobar cambio</button>
+    <button type="button" class="btn btn-success" (click)="verOrden()">Ver orden</button>
+    <button type="button" class="btn btn-primary">Aprobar</button>
+    <button type="button" class="btn btn-warning">Eliminar</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>
