@@ -388,4 +388,15 @@ class OrdenesService
             200
         );
     }
+
+    public function eliminarSolicitudOrden ($pkSolicitud) {
+        $this->ordenesRepository->eliminarSolicitudOrden($pkSolicitud);
+        
+        return response()->json(
+            [
+                'mensaje' => 'Se eliminó la solicitud con éxito'
+            ],
+            200
+        );
+    }
 }

@@ -196,4 +196,19 @@ class OrdenesController extends Controller
             );
         }
     }
+
+    public function eliminarSolicitudOrden ($pkSolicitud) {
+        try{
+            return $this->ordenesService->eliminarSolicitudOrden($pkSolicitud);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
 }

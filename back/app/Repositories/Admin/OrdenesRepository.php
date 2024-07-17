@@ -491,4 +491,9 @@ class OrdenesRepository
 
         return $query->get();
     }
+
+    public function eliminarSolicitudOrden ($pkSolicitud) {
+        TblSolicitudesOrdenes::where('pkTblSolicitudOrden', $pkSolicitud)
+                             ->delete();
+    }
 }
