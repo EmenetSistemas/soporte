@@ -71,16 +71,25 @@ export class AdminGuard implements CanActivate {
 	}
 
 	private validarPermisos(url: string, retorno: boolean = true): boolean {
-		const permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
-
-		if (url === '/orden' && permisos.generarOrden !== 1) {
-			retorno = false;
+		try {
+			const permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+	
+			if (url === '/orden' && permisos.generarOrden !== 1) {
+				retorno = false;
+			}
+	
+			if (url.includes('/detalle-orden/') && permisos.detalleOrden !== 1) {
+				retorno = false;
+			}
+	
+			return retorno;
+		} catch (e) {
+			localStorage.removeItem('token_soporte');
+			localStorage.removeItem('permisos_soporte');
+			this.router.navigate(['/login']);
+			this.mensajes.mensajeGenerico('error', 'error');
+			
+			return false;
 		}
-
-		if (url.includes('/detalle-orden/') && permisos.detalleOrden !== 1) {
-			retorno = false;
-		}
-
-		return retorno;
 	}
 }
