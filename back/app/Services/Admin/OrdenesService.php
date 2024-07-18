@@ -426,6 +426,9 @@ class OrdenesService
 
         DB::beginTransaction();
             switch ($solicitud->actividad) {
+                case 'actualizar':
+                    $message = $this->actualizarOrdenServicio($dataCambio);
+                break;
                 case 'retomar':
                     $message = $this->retomarOrdenServicio($dataCambio);
                 break;

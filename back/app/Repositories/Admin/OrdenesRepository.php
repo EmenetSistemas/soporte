@@ -219,17 +219,21 @@ class OrdenesRepository
     }
 
     public function actualizarOrdenServicio ($orden) {
+        $update = [
+            'cliente'               => $this->formatString($orden, 'cliente'),
+            'telefono'              => $this->formatString($orden, 'telefono'),
+            'correo'                => $this->formatString($orden, 'correo'),
+            'direccion'             => $this->formatString($orden, 'direccion'),
+            'nota'                  => $this->formatString($orden, 'nota'),
+            'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($orden['token']),
+            'fechaModificacion'     => Carbon::now(),
+        ];
+
+        
+        if (isset($orden['aCuenta'])) $update['aCuenta'] = trim(str_replace(['$', ','], '', $orden['aCuenta']));
+
         TblOrdenesServicio::where('pkTblOrdenServicio', $orden['pkTblOrdenServicio'])
-                          ->update([
-                              'cliente'               => $this->formatString($orden, 'cliente'),
-                              'telefono'              => $this->formatString($orden, 'telefono'),
-                              'correo'                => $this->formatString($orden, 'correo'),
-                              'direccion'             => $this->formatString($orden, 'direccion'),
-                              'aCuenta'               => trim(str_replace(['$', ','], '', $orden['aCuenta'])),
-                              'nota'                  => $this->formatString($orden, 'nota'),
-                              'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($orden['token']),
-                              'fechaModificacion'     => Carbon::now(),
-                          ]);
+                          ->update($update);
     }
 
     public function actualizarDetalleOrdenServicio ($equipo, $token) {
