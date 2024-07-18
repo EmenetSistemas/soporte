@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 export class OrdenComponent extends FGenerico implements OnInit {
 	@Input() pkOrdenSolicitud: any = 0;
 	@Input() cambiosSolicitud: any = null;
+	@Input() solicitante: any = null;
 	@ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
 	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
@@ -435,7 +436,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.mensajes.mensajeGenerico('Aún tienes cambios pendientes por guardar, antes de continuar con la conclusión del servicio se recomienda actualizar la orden de servicio para no perder los mismos', 'warning', 'Cambios pendientes');
 			return;
 		}
-		
+
 		const dataCancelacion = {
 			pkTblOrdenServicio: this.pkOrden,
 			token: localStorage.getItem('token_soporte')

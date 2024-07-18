@@ -17,7 +17,7 @@
                     <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"></app-orden>
                 </div>
                 <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
-                    <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data"></app-orden>
+                    <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
             </div>
         </div>
