@@ -428,6 +428,14 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected cancelarOrdenServicio(): void {
+		const equipoInvalidoIndex = this.listaEquipos.findIndex(equipo => !equipo.data || (Object.keys(equipo.data).length > 1 && equipo.data?.costoReparacion == '$ 0') || (equipo.data && equipo.data?.pkTblDetalleOrdenServicio && Object.keys(equipo.data).length > 1) || (equipo.data && Object.keys(equipo.data).length > 1 && !equipo.data?.formValid));
+		const equipos = this.listaEquipos.filter(item => item.hasOwnProperty('data') && Object.keys(item.data).length > 1);
+
+		if (equipoInvalidoIndex !== -1 || (this.validaCambios() && equipos.length > 0)) {
+			this.mensajes.mensajeGenerico('Aún tienes cambios pendientes por guardar, antes de continuar con la conclusión del servicio se recomienda actualizar la orden de servicio para no perder los mismos', 'warning', 'Cambios pendientes');
+			return;
+		}
+		
 		const dataCancelacion = {
 			pkTblOrdenServicio: this.pkOrden,
 			token: localStorage.getItem('token_soporte')
