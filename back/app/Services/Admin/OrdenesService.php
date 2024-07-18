@@ -378,7 +378,12 @@ class OrdenesService
         foreach ($solicitudes as $solicitud) {
             $solicitud->fechaSolicitud  = $this->formatearFecha($solicitud->fechaSolicitud);
             $solicitud->tituloSolicitud = $tituloSolicitud[$solicitud->actividad];
-            $solicitud->data = unserialize($solicitud->data);
+
+            try {
+                $solicitud->data = unserialize($solicitud->data);
+            } catch ( \Throwable $error ) {
+                
+            }
             
             if ($solicitud->actividad != 'actualizar') {
                 $solicitud->statusPosterior = $statusPosterior[$solicitud->actividad];
@@ -413,10 +418,23 @@ class OrdenesService
     public function aprobarSolicitudOrden ($pkSolicitud) {
         $solicitud = $this->ordenesRepository->obtenerSolicitudesOrdenes(0, $pkSolicitud)[0];
 
-        $dataCambio = json_decode(json_encode(unserialize($solicitud->data)), true);
+        try {
+            $dataCambio = json_decode(json_encode(unserialize($solicitud->data)), true);
+        } catch ( \Throwable $error ) {
+            $dataCambio = $solicitud->data;
+        }
 
         DB::beginTransaction();
             switch ($solicitud->actividad) {
+                case 'retomar':
+                    $message = $this->retomarOrdenServicio($dataCambio);
+                break;
+                case 'concluir':
+                    $message = $this->concluirOrdenServicio($dataCambio);
+                break;
+                case 'cancelar':
+                    $message = $this->cancelarOrdenServicio($dataCambio);
+                break;
                 case 'eliminar-equipo':
                     $message = $this->eliminarEquipoOrden($dataCambio);
                 break;
