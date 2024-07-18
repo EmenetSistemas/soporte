@@ -197,6 +197,21 @@ class OrdenesController extends Controller
         }
     }
 
+    public function aprobarSolicitudOrden ($pkSolicitud) {
+        try{
+            return $this->ordenesService->aprobarSolicitudOrden($pkSolicitud);
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error inesperado'
+                ],
+                500
+            );
+        }
+    }
+
     public function eliminarSolicitudOrden ($pkSolicitud) {
         try{
             return $this->ordenesService->eliminarSolicitudOrden($pkSolicitud);

@@ -54,6 +54,17 @@ class OrdenesService
     }
 
     public function obtenerDetalleOrdenServicio ($pkOrden) {
+        if ($pkOrden == 0) return response()->json(
+            [
+                'data' => [
+                    'orden' => [],
+                    'detalleOrden' => []
+                ],
+                'mensaje' => 'Se consultó el detalle de la orden de servicio con éxito'
+            ],
+            200
+        );
+
         $orden = $this->ordenesRepository->obtenerOrdenServicio($pkOrden);
 
         $orden->fechaRegistro     = $this->formatearFecha($orden->fechaRegistro);
@@ -143,7 +154,8 @@ class OrdenesService
         
                 if ($this->ordenesRepository->validaStatusOrden($pkOrden, 2) > 0) {
                     $dataConclucion = [
-                        'pkTblOrdenServicio' => $pkOrden
+                        'pkTblOrdenServicio' => $pkOrden,
+                        'token' => $dataCambio['token']
                     ];
 
                     $this->ordenesRepository->concluirOrdenServicio($dataConclucion);
@@ -224,6 +236,15 @@ class OrdenesService
     }
 
     public function eliminarEquipoOrden ($dataEliminacion) {
+        if ($this->ordenesRepository->validarEquipoEliminar($dataEliminacion) == 1) {
+            return response()->json(
+                [
+                    'mensaje' => 'No se puede eliminar el equipo de orden de servicio ya que no puede quedar una orden sin equipos'
+                ],
+                200
+            );
+        }
+
         $pkOrden = $this->ordenesRepository->eliminarEquipoOrden($dataEliminacion);
 
         if ($this->ordenesRepository->validaStatusOrden($pkOrden, 1) > 0) {
@@ -384,6 +405,42 @@ class OrdenesService
                     'solicitudes' => $solicitudes
                 ],
                 'mensaje' => 'Se registró la solicitud con éxito'
+            ],
+            200
+        );
+    }
+
+    public function aprobarSolicitudOrden ($pkSolicitud) {
+        $solicitud = $this->ordenesRepository->obtenerSolicitudesOrdenes(0, $pkSolicitud)[0];
+
+        $dataCambio = json_decode(json_encode(unserialize($solicitud->data)), true);
+
+        DB::beginTransaction();
+            switch ($solicitud->actividad) {
+                case 'eliminar-equipo':
+                    $message = $this->eliminarEquipoOrden($dataCambio);
+                break;
+                default:
+                    $message = $this->cambioStatusServicio($dataCambio);
+                break;
+            }
+
+            $this->ordenesRepository->aprobarSolicitudOrden($pkSolicitud);
+
+            $pattern = '/\{.*\}/';
+
+            preg_match($pattern, $message, $matches);
+            
+            if (isset($matches[0])) {
+                $jsonString = $matches[0];
+                
+                $jsonArray = json_decode($jsonString, true);
+            }
+        DB::commit();
+
+        return response()->json(
+            [
+                'mensaje' => $jsonArray['mensaje'] ?? 'Se aprobó la solicitud con éxito'
             ],
             200
         );

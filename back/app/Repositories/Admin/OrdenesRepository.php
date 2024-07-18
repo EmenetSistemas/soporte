@@ -384,6 +384,14 @@ class OrdenesRepository
                                ]);
     }
 
+    public function validarEquipoEliminar ($dataEliminacion) {
+        $query = TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $dataEliminacion['pkTblDetalleOrdenServicio']);
+        $pkOrden = $query->get()[0]->fkTblOrdenServicio;
+
+        $query1 = TblDetalleOrdenServicio::where('fkTblOrdenServicio', $pkOrden);
+        return $query1->count();
+    }
+
     public function eliminarEquipoOrden ($dataEliminacion) {
         $query = TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $dataEliminacion['pkTblDetalleOrdenServicio']);
 
@@ -442,7 +450,7 @@ class OrdenesRepository
         $registro->save();
     }
 
-    public function obtenerSolicitudesOrdenes ($status) {
+    public function obtenerSolicitudesOrdenes ($status, $pkSolicitud = null) {
         $query = TblSolicitudesOrdenes::select(    
                                           'tblSolicitudesOrdenes.pkTblSolicitudOrden as pkTblSolicitudOrden',
                                           'tblSolicitudesOrdenes.fkTblOrdenServicio as fkTblOrdenServicio',
@@ -471,6 +479,8 @@ class OrdenesRepository
                   ->orderBy('tblSolicitudesOrdenes.pkTblSolicitudOrden', $status == 1 ? 'asc' : 'desc');
         }
 
+        if ($pkSolicitud != null) $query->where('tblSolicitudesOrdenes.pkTblSolicitudOrden', $pkSolicitud);
+
         return $query->get();
     }
 
@@ -490,6 +500,13 @@ class OrdenesRepository
                                         ->where('pkTblDetalleOrdenServicio', $pkEquipo);
 
         return $query->get();
+    }
+
+    public function aprobarSolicitudOrden ($pkSolicitud) {
+        TblSolicitudesOrdenes::where('pkTblSolicitudOrden', $pkSolicitud)
+                             ->update([
+                                 'status' => 2
+                             ]);
     }
 
     public function eliminarSolicitudOrden ($pkSolicitud) {
