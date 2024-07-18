@@ -348,7 +348,12 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	public refrescarDatos(mensaje: string, status: number = 0): void {
-		this.resetForm();
+		try {
+			this.resetForm();
+		} catch (e) {
+			
+		}
+		
 		this.obtenerDetalleOrdenServicio().then(()=> {
 			if (status == 300) {
 				this.mensajes.mensajeGenerico(mensaje, 'warning');

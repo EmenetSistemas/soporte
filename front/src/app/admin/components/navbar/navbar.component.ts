@@ -105,9 +105,11 @@ export class NavbarComponent implements OnDestroy{
 
 		switch (solicitud.actividad) {
 			case 'retomar':
+			case 'retomar-equipo':
 			case 'concluir':
 			case 'concluir-equipo':
 			case 'cancelar':
+			case 'cancelar-equipo':
 			case 'eliminar-equipo':
 				this.modal.abrirModalConComponente(CambioStatusOrdenComponent, dataModal, 'lg-modal');
 			break;

@@ -20,13 +20,13 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <div class="card info-card warning">
+                    <div class="card info-card {{solicitud.fondoActual}}">
                         <div class="card-body t-center">
                             <h5 class="card-title"><span>Ahora</span><br>{{solicitud.statusActual}}</h5>
 
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-bar-chart-fill"></i>
+                                    <i class="bi {{solicitud.iconoActual}}"></i>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
 
 <div class="modal-footer" style="text-align: center;">
     <button type="button" class="btn btn-success" (click)="verOrden()">Ver orden</button>
-    <button type="button" class="btn btn-primary">Aprobar</button>
+    <button type="button" class="btn btn-primary" (click)="aprobarSolicitud()">Aprobar</button>
     <button type="button" class="btn btn-warning" (click)="eliminarSolicitud()">Eliminar</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

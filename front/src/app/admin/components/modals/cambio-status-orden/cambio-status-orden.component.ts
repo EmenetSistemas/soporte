@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { OrdenesService } from 'src/app/admin/services/api/ordenes/ordenes.service';
 import { MensajesService } from 'src/app/admin/services/mensajes/mensajes.service';
 import { ModalService } from 'src/app/admin/services/modal/modal.service';
+import { EquipoComponent } from 'src/app/admin/templates/equipo/equipo.component';
 
 @Component({
 	selector: 'app-cambio-status-orden',
@@ -24,6 +25,25 @@ export class CambioStatusOrdenComponent {
 		this.router.navigate(['/detalle-orden', this.solicitud.fkTblOrdenServicio]);
 	}
 
+	protected aprobarSolicitud(): void {
+		this.mensajes.mensajeConfirmacionCustom('¿Está seguro de aprobar la solicitud en cuestión?', 'question', 'Aprobar solicitud').then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+				this.cerrarModal();
+		
+				this.apiOrdenes.aprobarSolicitudOrden(this.solicitud.pkTblSolicitudOrden).subscribe(
+					respuesta => {
+						this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
 	protected eliminarSolicitud(): void {
 		this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar la solicitud en cuestión?', 'question', 'Eliminar solicitud').then(
 			res => {
@@ -31,7 +51,7 @@ export class CambioStatusOrdenComponent {
 
 				this.mensajes.mensajeEsperar();
 				this.cerrarModal();
-				
+
 				this.apiOrdenes.eliminarSolicitudOrden(this.solicitud.pkTblSolicitudOrden).subscribe(
 					respuesta => {
 						this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
