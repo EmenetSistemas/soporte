@@ -22,6 +22,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './auth/login/login.component';
 import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.component';
 import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-status-orden/cambio-status-orden.component';
+import { ActualizacionOrdenComponent } from './admin/components/modals/actualizacion-orden/actualizacion-orden.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-sta
     ModalOrdenPdfComponent,
     LoginComponent,
     InvalidRouteComponent,
-    CambioStatusOrdenComponent
+    CambioStatusOrdenComponent,
+    ActualizacionOrdenComponent
   ],
   imports: [
     BrowserModule,

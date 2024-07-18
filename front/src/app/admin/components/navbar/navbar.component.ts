@@ -7,6 +7,7 @@ import { UsuariosService } from 'src/app/auth/services/usuarios/usuarios.service
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { CambioStatusOrdenComponent } from '../modals/cambio-status-orden/cambio-status-orden.component';
+import { ActualizacionOrdenComponent } from '../modals/actualizacion-orden/actualizacion-orden.component';
 
 @Component({
 	selector: 'app-navbar',
@@ -104,13 +105,10 @@ export class NavbarComponent implements OnDestroy{
 		};
 
 		switch (solicitud.actividad) {
-			case 'retomar':
-			case 'retomar-equipo':
-			case 'concluir':
-			case 'concluir-equipo':
-			case 'cancelar':
-			case 'cancelar-equipo':
-			case 'eliminar-equipo':
+			case 'actualizar':
+				this.modal.abrirModalConComponente(ActualizacionOrdenComponent, dataModal, 'modal-xxl');
+			break;
+			default:
 				this.modal.abrirModalConComponente(CambioStatusOrdenComponent, dataModal, 'lg-modal');
 			break;
 		}

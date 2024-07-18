@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import FGenerico from 'src/shared/util/funciones-genericas';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 	styleUrls: ['./orden.component.css']
 })
 export class OrdenComponent extends FGenerico implements OnInit {
+	@Input() pkOrdenSolicitud: any = 0;
 	@ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
 	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
@@ -59,6 +60,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				this.pkOrden = params.get('pkOrden') ?? 0;
 			});
 	
+			this.pkOrden = this.pkOrden == 0 ? this.pkOrdenSolicitud : this.pkOrden;
+
 			if (this.pkOrden == 0) {
 				return;
 			}
@@ -108,6 +111,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				cliente: this.detalleOrden.cliente
 			};
 			componentRef.instance.data.status = this.detalleOrden.status;
+
+			if (this.pkOrdenSolicitud != 0) componentRef.instance.data.type = 'readonly';
 		};
 
 		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType });
@@ -273,7 +278,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	private cargarDatosFormularioCliente(data: any): void {
-		if (data.status >= 3) this.formCliente.disable();
+		if (this.pkOrdenSolicitud != 0 || data.status >= 3) this.formCliente.disable();
 
 		this.formCliente.get('cliente')?.setValue(data.cliente);
 		this.formCliente.get('telefono')?.setValue(data.telefono);

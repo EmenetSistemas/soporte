@@ -1376,3 +1376,8 @@ form label {
 .f-right {
 	float: right !important;
 }
+
+.modal-xxl {
+	width: 90vw !important;
+    max-width: none !important;
+}
