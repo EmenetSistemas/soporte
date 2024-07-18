@@ -325,7 +325,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.mensajes.mensajeGenericoToast('La cantidad a cuenta no puede ser mayor al total', 'warning');
 		}
 
-		if (this.permisos.ordenActualizarCantidades !== 1) this.formCliente.get('aCuenta')?.disable();
+		if (this.permisos.ordenActualizarCantidades != 1) this.formCliente.get('aCuenta')?.disable();
 
 		this.formCliente.get('nota')?.setValue(data.nota);
 		this.formCliente.get('codigo')?.setValue(data.codigo);
@@ -361,7 +361,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			orden.pkTblOrdenServicio = this.pkOrden;
 		}
 
-		if (this.permisos.ordenActualizar !== 1) {
+		if (this.permisos.ordenActualizar != 1) {
 			this.validarCambioOrden('actualizar', orden);
 			return;
 		}
@@ -442,7 +442,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			token: localStorage.getItem('token_soporte')
 		};
 
-		if (this.permisos.ordenCancelar !== 1) {
+		if (this.permisos.ordenCancelar != 1) {
 			this.validarCambioOrden('cancelar', dataCancelacion);
 			return;
 		}
@@ -469,7 +469,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	}
 
 	protected retomarOrdenServicio(): void {
-		if (this.permisos.ordenRetomar !== 1) {
+		if (this.permisos.ordenRetomar != 1) {
 			this.validarCambioOrden('retomar', this.pkOrden);
 			return;
 		}
@@ -509,7 +509,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			token: localStorage.getItem('token_soporte')
 		};
 
-		if (this.permisos.ordenConcluir !== 1) {
+		if (this.permisos.ordenConcluir != 1) {
 			this.validarCambioOrden('concluir', dataConclucion);
 			return;
 		}

@@ -390,7 +390,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			this.data.idItem
 		);
 
-		if (this.permisos.ordenActualizarCantidades !== 1) this.formEquipo.get('costoReparacion')?.disable();
+		if (this.permisos.ordenActualizarCantidades != 1) this.formEquipo.get('costoReparacion')?.disable();
 	}
 
 	protected cambioStatusServicio(tipoCambio: string, status: number): void {
@@ -407,17 +407,17 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			status
 		};
 
-		if (status == 1 && this.permisos.ordenRetomar !== 1) {
+		if (status == 1 && this.permisos.ordenRetomar != 1) {
 			this.parent.validarCambioOrden('retomar-equipo', data);
 			return;
 		}
 
-		if (status == 2 && this.permisos.ordenConcluir !== 1) {
+		if (status == 2 && this.permisos.ordenConcluir != 1) {
 			this.parent.validarCambioOrden('concluir-equipo', data);
 			return;
 		}
 
-		if (status == 4 && this.permisos.ordenCancelar !== 1) {
+		if (status == 4 && this.permisos.ordenCancelar != 1) {
 			this.parent.validarCambioOrden('cancelar-equipo', data);
 			return;
 		}
@@ -445,7 +445,7 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 			pkTblDetalleOrdenServicio: this.data.datosEquipo.pkTblDetalleOrdenServicio
 		};
 
-		if (this.permisos.ordenEliminar !== 1) {
+		if (this.permisos.ordenEliminar != 1) {
 			this.parent.validarCambioOrden('eliminar-equipo', dataEliminacion);
 			return;
 		}

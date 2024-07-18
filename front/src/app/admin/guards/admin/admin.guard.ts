@@ -74,11 +74,11 @@ export class AdminGuard implements CanActivate {
 		try {
 			const permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
 	
-			if (url === '/orden' && permisos.generarOrden !== 1) {
+			if (url === '/orden' && permisos.generarOrden != 1) {
 				retorno = false;
 			}
 	
-			if (url.includes('/detalle-orden/') && permisos.detalleOrden !== 1) {
+			if (url.includes('/detalle-orden/') && permisos.detalleOrden != 1) {
 				retorno = false;
 			}
 	
