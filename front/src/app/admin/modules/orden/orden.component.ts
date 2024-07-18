@@ -115,7 +115,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			componentRef.instance.data.status = this.detalleOrden.status;
 
 			if (this.pkOrdenSolicitud != 0) componentRef.instance.data.type = 'readonly';
-			console.log(this.pkOrdenSolicitud);
 		};
 
 		this.listaEquipos.push({ component: componentRef, pk: this.count, itemType });
