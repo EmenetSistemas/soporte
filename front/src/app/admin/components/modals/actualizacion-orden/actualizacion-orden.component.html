@@ -17,7 +17,7 @@
                     <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"></app-orden>
                 </div>
                 <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
-                    <app-orden></app-orden>
+                    <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data"></app-orden>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button type="button" class="btn btn-primary">Aprobar</button>
-    <button type="button" class="btn btn-warning">Eliminar</button>
+    <button type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
+    <button type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">Eliminar</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

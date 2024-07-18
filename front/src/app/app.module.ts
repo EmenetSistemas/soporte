@@ -53,7 +53,8 @@ import { ActualizacionOrdenComponent } from './admin/components/modals/actualiza
     ModalModule.forRoot()
   ],
   providers: [
-    SidenavComponent
+    SidenavComponent,
+    CambioStatusOrdenComponent
   ],
   bootstrap: [AppComponent],
   exports: [RouterModule]

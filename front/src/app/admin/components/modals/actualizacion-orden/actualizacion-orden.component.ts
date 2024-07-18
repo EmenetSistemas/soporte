@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalService } from 'src/app/admin/services/modal/modal.service';
+import { CambioStatusOrdenComponent } from '../cambio-status-orden/cambio-status-orden.component';
 
 @Component({
 	selector: 'app-actualizacion-orden',
@@ -10,7 +11,8 @@ export class ActualizacionOrdenComponent {
 	@Input() solicitud: any = {};
 
 	constructor(
-		private modal: ModalService
+		private modal: ModalService,
+		protected patern: CambioStatusOrdenComponent
 	) { }
 
 	protected cerrarModal(): void {

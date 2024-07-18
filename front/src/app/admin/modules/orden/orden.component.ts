@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 })
 export class OrdenComponent extends FGenerico implements OnInit {
 	@Input() pkOrdenSolicitud: any = 0;
+	@Input() cambiosSolicitud: any = null;
 	@ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
 	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
@@ -255,6 +256,35 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	private obtenerDetalleOrdenServicio(): Promise<any> {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
+				if (this.cambiosSolicitud != null) {
+					respuesta.data.cliente = this.cambiosSolicitud.cliente;
+					respuesta.data.telefono = this.cambiosSolicitud.telefono;
+					respuesta.data.correo = this.cambiosSolicitud.correo;
+					respuesta.data.direccion = this.cambiosSolicitud.direccion;
+					respuesta.data.nota = this.cambiosSolicitud.nota;
+				
+					this.cambiosSolicitud.equipos.forEach((equipo: any) => {
+						const detalle = respuesta.data.detalleOrden.find((d: any) => d.pkTblDetalleOrdenServicio == equipo.data.pkTblDetalleOrdenServicio);
+						if (detalle) {
+							detalle.nombre = equipo.data.equipo;
+							detalle.noSerie = equipo.data.noSerie;
+							detalle.descripcionFalla = equipo.data.descripcionFalla;
+							detalle.observaciones = equipo.data.observaciones;
+							detalle.detalles = equipo.data.detalles;
+							detalle.diagnosticoFinal = equipo.data.diagnosticoFinal;
+							detalle.costoReparacion = equipo.data.costoReparacion;
+							detalle.status = equipo.data.status;
+							detalle.base = equipo.data.base ? 1 : 0;
+							detalle.puertoVga = equipo.data.puertoVga ? 1 : 0;
+							detalle.puertoDvi = equipo.data.puertoDvi ? 1 : 0;
+							detalle.puertoHdmi = equipo.data.puertoHdmi ? 1 : 0;
+							detalle.displayPort = equipo.data.displayPort ? 1 : 0;
+							detalle.tornillos = equipo.data.tornillos ? 1 : 0;
+							detalle.pantalla = equipo.data.pantalla ? 1 : 0;
+						}
+					});
+				}
+
 				this.detalleOrden = respuesta.data.orden;
 				this.equiposOrden = respuesta.data.detalleOrden;
 				this.crearComponentesEquipos(this.equiposOrden);

@@ -25,7 +25,7 @@ export class CambioStatusOrdenComponent {
 		this.router.navigate(['/detalle-orden', this.solicitud.fkTblOrdenServicio]);
 	}
 
-	protected aprobarSolicitud(): void {
+	public aprobarSolicitud(pkSolicitud: number = this.solicitud.pkTblSolicitudOrden): void {
 		this.mensajes.mensajeConfirmacionCustom('¿Está seguro de aprobar la solicitud en cuestión?', 'question', 'Aprobar solicitud').then(
 			res => {
 				if (!res.isConfirmed) return;
@@ -33,7 +33,7 @@ export class CambioStatusOrdenComponent {
 				this.mensajes.mensajeEsperar();
 				this.cerrarModal();
 		
-				this.apiOrdenes.aprobarSolicitudOrden(this.solicitud.pkTblSolicitudOrden).subscribe(
+				this.apiOrdenes.aprobarSolicitudOrden(pkSolicitud).subscribe(
 					respuesta => {
 						this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
 					}, error => {
@@ -44,7 +44,7 @@ export class CambioStatusOrdenComponent {
 		);
 	}
 
-	protected eliminarSolicitud(): void {
+	public eliminarSolicitud(pkSolicitud: number = this.solicitud.pkTblSolicitudOrden): void {
 		this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar la solicitud en cuestión?', 'question', 'Eliminar solicitud').then(
 			res => {
 				if (!res.isConfirmed) return;
@@ -52,7 +52,7 @@ export class CambioStatusOrdenComponent {
 				this.mensajes.mensajeEsperar();
 				this.cerrarModal();
 
-				this.apiOrdenes.eliminarSolicitudOrden(this.solicitud.pkTblSolicitudOrden).subscribe(
+				this.apiOrdenes.eliminarSolicitudOrden(pkSolicitud).subscribe(
 					respuesta => {
 						this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
 					}, error => {
