@@ -394,9 +394,13 @@ class OrdenesService
                 $solicitud->statusActual = $statusPosterior[$actividadActual];
 
                 if (isset($solicitud->data['pkTblDetalleOrdenServicio'])) {
-                    $solicitud->dataEquipo = $this->ordenesRepository->obtenerDataEquipo($solicitud->data['pkTblDetalleOrdenServicio'])[0];
-                    $actividadActual = $solicitud->dataEquipo->status;
-                    $solicitud->statusActual = $statusPosterior[$actividadActual];
+                    try {
+                        $solicitud->dataEquipo = $this->ordenesRepository->obtenerDataEquipo($solicitud->data['pkTblDetalleOrdenServicio'])[0];
+                        $actividadActual = $solicitud->dataEquipo->status;
+                        $solicitud->statusActual = $statusPosterior[$actividadActual];
+                    } catch ( \Throwable $error ) {
+
+                    }
                 }
 
                 $solicitud->fondoActual  = $bg[$actividadActual];
@@ -409,7 +413,7 @@ class OrdenesService
                 'data' => [
                     'solicitudes' => $solicitudes
                 ],
-                'mensaje' => 'Se registró la solicitud con éxito'
+                'mensaje' => 'Se obtuvieron las solicitudes de orden con éxito'
             ],
             200
         );
