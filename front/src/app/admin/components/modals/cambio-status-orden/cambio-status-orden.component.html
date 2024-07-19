@@ -19,28 +19,30 @@
                     <label>{{solicitud.fechaSolicitud}}</label>
                 </div>
 
-                <div class="col-sm-6">
-                    <div class="card info-card {{solicitud.fondoActual}}">
-                        <div class="card-body t-center">
-                            <h5 class="card-title"><span>Ahora</span><br>{{solicitud.statusActual}}</h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi {{solicitud.iconoActual}}"></i>
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="col-sm-6" style="margin-bottom: -5px;" *ngIf="!solicitud.type">
+                        <div class="card info-card {{solicitud.fondoActual}}">
+                            <div class="card-body t-center">
+                                <h5 class="card-title"><span>Ahora</span><br>{{solicitud.statusActual}}</h5>
+    
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi {{solicitud.iconoActual}}"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="card info-card {{solicitud.fondoPosterior}}">
-                        <div class="card-body t-center">
-                            <h5 class="card-title"><span>Después</span><br>{{solicitud.statusPosterior}}</h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi {{solicitud.iconoPosterior}}"></i>
+    
+                    <div class="col-sm-6" style="margin-bottom: -5px;">
+                        <div class="card info-card {{solicitud.fondoPosterior}}">
+                            <div class="card-body t-center">
+                                <h5 class="card-title"><span>{{!solicitud.type ? 'Después' : 'Cambio'}}</span><br>{{solicitud.statusPosterior}}</h5>
+    
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi {{solicitud.iconoPosterior}}"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +54,8 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button type="button" class="btn btn-success" (click)="verOrden()">Ver orden</button>
-    <button type="button" class="btn btn-primary" (click)="aprobarSolicitud()">Aprobar</button>
-    <button type="button" class="btn btn-warning" (click)="eliminarSolicitud()">Eliminar</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-success" (click)="verOrden()">Ver orden</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-primary" (click)="aprobarSolicitud()">Aprobar</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-warning" (click)="eliminarSolicitud()">Eliminar</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

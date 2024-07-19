@@ -6,7 +6,7 @@
                     <button class="nav-link active" id="orden-ahora" data-bs-toggle="tab" data-bs-target="#bordered-home"
                         type="button" role="tab" aria-controls="home" aria-selected="true">Ahora</button>
                 </li>
-                <li class="nav-item" role="presentation">
+                <li *ngIf="!solicitud.type" class="nav-item" role="presentation">
                     <button class="nav-link" id="orden-despues" data-bs-toggle="tab" data-bs-target="#bordered-profile"
                         type="button" role="tab" aria-controls="profile" aria-selected="false"
                         tabindex="-1">Después</button>
@@ -14,9 +14,10 @@
             </ul>
             <div class="tab-content pt-2" id="borderedTabContent">
                 <div class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="orden-ahora">
-                    <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"></app-orden>
+                    <app-orden *ngIf="!solicitud.type" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"></app-orden>
+                    <app-orden *ngIf="solicitud.type" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
-                <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
+                <div *ngIf="!solicitud.type" class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
                     <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
             </div>
@@ -25,7 +26,7 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
-    <button type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">Eliminar</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">Eliminar</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

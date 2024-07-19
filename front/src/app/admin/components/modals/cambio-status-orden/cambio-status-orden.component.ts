@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { OrdenesService } from 'src/app/admin/services/api/ordenes/ordenes.service';
 import { MensajesService } from 'src/app/admin/services/mensajes/mensajes.service';
 import { ModalService } from 'src/app/admin/services/modal/modal.service';
-import { EquipoComponent } from 'src/app/admin/templates/equipo/equipo.component';
 
 @Component({
 	selector: 'app-cambio-status-orden',

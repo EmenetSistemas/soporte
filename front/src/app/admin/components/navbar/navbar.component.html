@@ -10,7 +10,7 @@
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
             <li *ngIf="informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
-                <a class="nav-link nav-icon show" href="#" data-bs-toggle="dropdown" aria-expanded="true">
+                <a class="nav-link nav-icon show" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
                     <i class="bi bi-bell"></i>
                     <span class="badge bg-primary badge-number">{{solicitudesOrdenes.length}}</span>
                 </a>
@@ -22,7 +22,7 @@
                         <li class="dropdown-header">
                             Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
                             pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver</span></a>
+                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2" [routerLink]="['solicitudes-orden']">Ver</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -45,18 +45,18 @@
                         </section>
 
                         <li class="dropdown-footer">
-                            <a href="#">Ver todas las solicitudes</a>
+                            <a href="javascript:void(0);">Ver todas las solicitudes</a>
                         </li>
                     </section>
 
-                    <li class="dropdown-header" *ngIf="solicitudesOrdenes.length == 0">
+                    <li *ngIf="solicitudesOrdenes.length == 0" class="dropdown-header" [routerLink]="['solicitudes-orden']">
                         No hay solicitudes para mostrar
                     </li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown pe-3" *ngIf="informacionUsuario">
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <img src="https://m-net.mx/scosm/images/log.png" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{informacionUsuario.nombre}}
                         {{informacionUsuario.aPaterno}}</span>

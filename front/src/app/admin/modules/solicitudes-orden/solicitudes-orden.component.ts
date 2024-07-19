@@ -107,12 +107,13 @@ export class SolicitudesOrdenComponent implements OnDestroy{
 			this.repetitiveInstruction();
 		});
 	}
+
 	protected actionSelected(data: any): void {
 		if (data.idAccion == 'orden') {
 			this.router.navigate(['/detalle-orden', data.action]);
 		}
 
-		if (data.idAccion == 'orden') {
+		if (data.idAccion == 'solicitud') {
 			const solicitud = this.datosTabla.find((solicitud: any) => solicitud.pkTblSolicitudOrden == data.action);
 
 			solicitud.type = 'past';
