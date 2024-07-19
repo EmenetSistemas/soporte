@@ -23,6 +23,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.component';
 import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-status-orden/cambio-status-orden.component';
 import { ActualizacionOrdenComponent } from './admin/components/modals/actualizacion-orden/actualizacion-orden.component';
+import { SolicitudesOrdenComponent } from './admin/modules/solicitudes-orden/solicitudes-orden.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ActualizacionOrdenComponent } from './admin/components/modals/actualiza
     LoginComponent,
     InvalidRouteComponent,
     CambioStatusOrdenComponent,
-    ActualizacionOrdenComponent
+    ActualizacionOrdenComponent,
+    SolicitudesOrdenComponent
   ],
   imports: [
     BrowserModule,

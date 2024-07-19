@@ -7,11 +7,11 @@
             </a>
         </li>
 
-        <li class="nav-heading">Administración</li>
+        <li class="nav-heading">Gestión</li>
 
         <li *ngIf="permisos.generarOrden == 1" class="nav-item" [routerLink]="['orden']">
             <a class="nav-link collapsed">
-                <i class="bi bi-ear"></i>
+                <i class="bi bi-file-earmark-break"></i>
                 <span>Generar orden</span>
             </a>
         </li>
@@ -27,6 +27,22 @@
             <a class="nav-link collapsed">
                 <i class="bi bi-truck"></i>
                 <span>Entregar equipo(s)</span>
+            </a>
+        </li>
+
+        <li *ngIf="permisos.perfil == 'Administrador'" class="nav-heading">Administración</li>
+
+        <li *ngIf="permisos.perfil == 'Administrador'" class="nav-item" [routerLink]="['solicitudes-orden']">
+            <a class="nav-link collapsed">
+                <i class="bi bi-journal-check"></i>
+                <span>Solicitudes orden</span>
+            </a>
+        </li>
+        
+        <li *ngIf="permisos.perfil == 'Administrador'" class="nav-item">
+            <a class="nav-link collapsed">
+                <i class="bi bi-person-rolodex"></i>
+                <span>Usuarios</span>
             </a>
         </li>
     </ul>

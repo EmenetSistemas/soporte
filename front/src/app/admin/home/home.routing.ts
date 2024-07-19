@@ -4,6 +4,7 @@ import { DashboardComponent } from "../modules/dashboard/dashboard.component";
 import { OrdenComponent } from "../modules/orden/orden.component";
 import { ConsultaOrdenesComponent } from "../modules/ordenes/consulta-ordenes/consulta-ordenes.component";
 import { AdminGuard } from "../guards/admin/admin.guard";
+import { SolicitudesOrdenComponent } from "../modules/solicitudes-orden/solicitudes-orden.component";
 
 export const HomeRoutes: Routes = [
     {
@@ -23,6 +24,9 @@ export const HomeRoutes: Routes = [
             }, {
                 path: 'detalle-orden/:pkOrden',
                 component: OrdenComponent
+            }, {
+                path: 'solicitudes-orden',
+                component: SolicitudesOrdenComponent
             }
         ]
     }
