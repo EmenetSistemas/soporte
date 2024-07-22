@@ -47,6 +47,31 @@ export class SolicitudesOrdenComponent implements OnDestroy{
 		},
 		'actividad' : {
 			'selectColumn': true,
+			'dadges': true,
+			'dadgesCases': [
+				{
+					'text': 'actualizar',
+					'color': 'info'
+				}, {
+					'text': 'retomar',
+					'color': 'warning'
+				}, {
+					'text': 'retomar-equipo',
+					'color': 'warning'
+				}, {
+					'text': 'cancelar',
+					'color': 'danger'
+				}, {
+					'text': 'cancelar-equipo',
+					'color': 'danger'
+				}, {
+					'text': 'concluir',
+					'color': 'primary'
+				}, {
+					'text': 'concluir-equipo',
+					'color': 'primary'
+				}
+			],
 			'center': true
 		},
 		'tipoSolicitud' : {
