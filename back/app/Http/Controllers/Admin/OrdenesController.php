@@ -182,9 +182,9 @@ class OrdenesController extends Controller
         }
     }
 
-    public function obtenerSolicitudesOrdenes ($status) {
+    public function obtenerSolicitudesOrdenes (Request $request) {
         try{
-            return $this->ordenesService->obtenerSolicitudesOrdenes($status);
+            return $this->ordenesService->obtenerSolicitudesOrdenes($request->all()['status'], $request->all()['token'] ?? null);
         } catch( \Throwable $error ) {
             Log::alert($error);
             return response()->json(

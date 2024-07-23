@@ -327,8 +327,8 @@ class OrdenesService
         );
     }
 
-    public function obtenerSolicitudesOrdenes ($status) {
-        $solicitudes = $this->ordenesRepository->obtenerSolicitudesOrdenes($status);
+    public function obtenerSolicitudesOrdenes ($status, $tokenUsuario) {
+        $solicitudes = $this->ordenesRepository->obtenerSolicitudesOrdenes($status, null, $tokenUsuario);
 
         $tituloSolicitud = [
             'actualizar'      => 'Actualizar orden',

@@ -76,7 +76,7 @@ class LoginService
         
         return response()->json(
             [
-                'mensaje' => 'Vuelva pronto'
+                'mensaje' => 'Hasta pronto...!'
             ],
             200
         );

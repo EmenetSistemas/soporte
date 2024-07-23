@@ -454,7 +454,7 @@ class OrdenesRepository
         $registro->save();
     }
 
-    public function obtenerSolicitudesOrdenes ($status, $pkSolicitud = null) {
+    public function obtenerSolicitudesOrdenes ($status, $pkSolicitud = null, $tokenUsuario = null) {
         $query = TblSolicitudesOrdenes::select(    
                                           'tblSolicitudesOrdenes.pkTblSolicitudOrden as pkTblSolicitudOrden',
                                           'tblSolicitudesOrdenes.fkTblOrdenServicio as fkTblOrdenServicio',
@@ -484,6 +484,8 @@ class OrdenesRepository
         }
 
         if ($pkSolicitud != null) $query->where('tblSolicitudesOrdenes.pkTblSolicitudOrden', $pkSolicitud);
+
+        if ($tokenUsuario != null) $query->where('tblSolicitudesOrdenes.fkUsuarioSolicitud', $this->usuarioService->obtenerPkPorToken($tokenUsuario));
 
         return $query->get();
     }

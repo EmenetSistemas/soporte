@@ -23,7 +23,8 @@ Route::post('/ordenes/concluirOrdenServicio', 'App\Http\Controllers\Admin\Ordene
 Route::post('/ordenes/eliminarEquipoOrden', 'App\Http\Controllers\Admin\OrdenesController@eliminarEquipoOrden');
 Route::post('/ordenes/entregarEquiposOrden', 'App\Http\Controllers\Admin\OrdenesController@entregarEquiposOrden');
 Route::post('/ordenes/registrarSolicitudOrden', 'App\Http\Controllers\Admin\OrdenesController@registrarSolicitudOrden');
-Route::get('/ordenes/obtenerSolicitudesOrdenes/{status}', 'App\Http\Controllers\Admin\OrdenesController@obtenerSolicitudesOrdenes');
+Route::post('/ordenes/obtenerSolicitudesOrdenes', 'App\Http\Controllers\Admin\OrdenesController@obtenerSolicitudesOrdenes');
+Route::post('/ordenes/obtenerMisSolicitudesOrdenes', 'App\Http\Controllers\Admin\OrdenesController@obtenerSolicitudesOrdenes');
 Route::get('/ordenes/aprobarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@aprobarSolicitudOrden');
 Route::get('/ordenes/eliminarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@eliminarSolicitudOrden');
 
