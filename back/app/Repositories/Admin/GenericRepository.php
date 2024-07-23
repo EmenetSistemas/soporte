@@ -52,6 +52,7 @@ class GenericRepository
                                    )
                                    ->orderBy('tblOrdenesServicio.status', 'asc')
                                    ->orderBy('dias', 'desc')
+                                   ->orderBy('cliente', 'asc')
                                    ->limit(10);
     
         return $query->get();
