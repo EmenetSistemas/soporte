@@ -30,6 +30,13 @@
             </a>
         </li>
 
+        <li *ngIf="permisos.perfil != 'Administrador'" class="nav-item" [routerLink]="['solicitudes-orden']">
+            <a class="nav-link collapsed">
+                <i class="bi bi-journal-check"></i>
+                <span>Mis solicitudes</span>
+            </a>
+        </li>
+
         <li *ngIf="permisos.perfil == 'Administrador'" class="nav-heading">Administración</li>
 
         <li *ngIf="permisos.perfil == 'Administrador'" class="nav-item" [routerLink]="['solicitudes-orden']">

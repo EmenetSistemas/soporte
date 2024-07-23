@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
 import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,9 @@ import { CambioStatusOrdenComponent } from '../../components/modals/cambio-statu
 	templateUrl: './solicitudes-orden.component.html',
 	styleUrls: ['./solicitudes-orden.component.css']
 })
-export class SolicitudesOrdenComponent implements OnDestroy{
+export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	protected options: any[] = [
 		{
 			label: 'Pendientes',
@@ -101,14 +103,32 @@ export class SolicitudesOrdenComponent implements OnDestroy{
 		private modal: ModalService
 	) {}
 
+	ngOnInit(): void {
+		if (this.permisos.perfil != 'Administrador') {
+			delete this.columnasTabla.solicitante;
+			delete this.tableConfig.solicitante;
+		}
+	}
+
 	private obtenerSolicitudesOrdenes(): Promise<any> {
-		return this.apiOrdenes.obtenerSolicitudesOrdenes(this.status).toPromise().then(
-			respuesta => {
-				this.datosTabla = respuesta.data.solicitudes;
-			}, error => {
-				this.mensajes.mensajeGenerico('error', 'error');
-			}
-		);
+		if (this.permisos.perfil == 'Administrador') {
+			return this.apiOrdenes.obtenerSolicitudesOrdenes(this.status).toPromise().then(
+				respuesta => {
+					this.datosTabla = respuesta.data.solicitudes;
+				}, error => {
+					this.mensajes.mensajeGenerico('error', 'error');
+				}
+			);
+		} else {
+			const token = localStorage.getItem('token_soporte');
+			return this.apiOrdenes.obtenerMisSolicitudesOrdenes(this.status, token).toPromise().then(
+				respuesta => {
+					this.datosTabla = respuesta.data.solicitudes;
+				}, error => {
+					this.mensajes.mensajeGenerico('error', 'error');
+				}
+			);
+		}
 	}
 
 	private repetitiveInstruction(): void {
