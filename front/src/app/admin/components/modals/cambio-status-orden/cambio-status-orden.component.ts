@@ -12,6 +12,8 @@ import { ModalService } from 'src/app/admin/services/modal/modal.service';
 export class CambioStatusOrdenComponent {
 	@Input() solicitud: any = {};
 
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	constructor(
 		private modal: ModalService,
 		private router: Router,
@@ -44,7 +46,7 @@ export class CambioStatusOrdenComponent {
 	}
 
 	public eliminarSolicitud(pkSolicitud: number = this.solicitud.pkTblSolicitudOrden): void {
-		this.mensajes.mensajeConfirmacionCustom('¿Está seguro de eliminar la solicitud en cuestión?', 'question', 'Eliminar solicitud').then(
+		this.mensajes.mensajeConfirmacionCustom(`¿Está seguro de ${this.permisos.perfil == 'Administrador' ? 'eliminar' : 'cancelar'} la solicitud en cuestión?`, 'question', `${this.permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'} solicitud`).then(
 			res => {
 				if (!res.isConfirmed) return;
 
@@ -53,7 +55,7 @@ export class CambioStatusOrdenComponent {
 
 				this.apiOrdenes.eliminarSolicitudOrden(pkSolicitud).subscribe(
 					respuesta => {
-						this.mensajes.mensajeGenerico(respuesta.mensaje, 'success');
+						this.mensajes.mensajeGenerico(this.permisos.perfil == 'Administrador' ? respuesta.mensaje : 'Se canceló la solicitud con éxito', 'success');
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}

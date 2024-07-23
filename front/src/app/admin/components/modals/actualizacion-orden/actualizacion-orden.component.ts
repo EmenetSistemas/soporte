@@ -10,6 +10,8 @@ import { CambioStatusOrdenComponent } from '../cambio-status-orden/cambio-status
 export class ActualizacionOrdenComponent {
 	@Input() solicitud: any = {};
 
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	constructor(
 		private modal: ModalService,
 		protected patern: CambioStatusOrdenComponent

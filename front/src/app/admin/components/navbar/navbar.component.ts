@@ -36,7 +36,11 @@ export class NavbarComponent implements OnDestroy{
 
 	private repetitiveInstruction(): void {
 		this.intervalo = setInterval(async () => {
-			await this.obtenerSolicitudesOrdenes();
+			if (this.informacionUsuario.perfil == 'Administrador') {
+				await this.obtenerSolicitudesOrdenes();
+			} else {
+				await this.obtenerMisSolicitudesOrdenes();
+			}
 		}, 6000);
 	}
 
@@ -49,6 +53,10 @@ export class NavbarComponent implements OnDestroy{
 
 					if (this.informacionUsuario.perfil == 'Administrador') {
 						this.obtenerSolicitudesOrdenes().then(() => {
+							this.repetitiveInstruction();
+						});
+					} else {
+						this.obtenerMisSolicitudesOrdenes().then(() => {
 							this.repetitiveInstruction();
 						});
 					}
@@ -64,6 +72,17 @@ export class NavbarComponent implements OnDestroy{
 
 	private obtenerSolicitudesOrdenes(): Promise<any> {
 		return this.apiOrdenes.obtenerSolicitudesOrdenes(1).toPromise().then(
+			respuesta => {
+				this.solicitudesOrdenes = respuesta.data.solicitudes;
+			}, error => {
+				this.mensajes.mensajeGenerico('error', 'error');
+			}
+		);
+	}
+
+	private obtenerMisSolicitudesOrdenes(): Promise<any> {
+		const token = localStorage.getItem('token_soporte');
+		return this.apiOrdenes.obtenerMisSolicitudesOrdenes(1, token).toPromise().then(
 			respuesta => {
 				this.solicitudesOrdenes = respuesta.data.solicitudes;
 			}, error => {

@@ -9,8 +9,57 @@
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
-            <li *ngIf="informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
-                <a class="nav-link nav-icon show" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="true">
+            <li *ngIf="informacionUsuario.perfil && informacionUsuario.perfil != 'Administrador'" class="nav-item dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span class="badge bg-danger badge-number">{{solicitudesOrdenes.length}}</span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
+                    style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-25px, 35px);"
+                    data-popper-placement="bottom-end">
+                    <section *ngIf="solicitudesOrdenes.length > 0">
+                        <li class="dropdown-header">
+                            Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
+                            pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
+                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
+                                    [routerLink]="['solicitudes-orden']">Ver</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <section *ngFor="let solicitud of solicitudesOrdenes.slice(0, 3)">
+                            <li class="message-item" (click)="detalleSolicitud(solicitud)">
+                                <a href="javascript:void(0);">
+                                    <div>
+                                        <h4 *ngIf="informacionUsuario.perfil == 'Administrador'">{{solicitud.solicitante}}</h4>
+                                        <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
+                                        <hr style="margin-top: 4px; margin-bottom: 4px;">
+                                        <p>{{solicitud.motivo}}</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </section>
+
+                        <li class="dropdown-footer">
+                            <a href="javascript:void(0);">Ver todas las solicitudes</a>
+                        </li>
+                    </section>
+
+                    <li *ngIf="solicitudesOrdenes.length == 0" class="dropdown-header"
+                        [routerLink]="['solicitudes-orden']">
+                        No tienes solicitudes pendientes
+                    </li>
+                </ul>
+            </li>
+
+            <li *ngIf="informacionUsuario.perfil && informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
+                <a class="nav-link nav-icon show" href="javascript:void(0);" data-bs-toggle="dropdown"
+                    aria-expanded="true">
                     <i class="bi bi-bell"></i>
                     <span class="badge bg-primary badge-number">{{solicitudesOrdenes.length}}</span>
                 </a>
@@ -22,7 +71,8 @@
                         <li class="dropdown-header">
                             Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
                             pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
-                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2" [routerLink]="['solicitudes-orden']">Ver</span></a>
+                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
+                                    [routerLink]="['solicitudes-orden']">Ver</span></a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -49,14 +99,16 @@
                         </li>
                     </section>
 
-                    <li *ngIf="solicitudesOrdenes.length == 0" class="dropdown-header" [routerLink]="['solicitudes-orden']">
-                        No hay solicitudes para mostrar
+                    <li *ngIf="solicitudesOrdenes.length == 0" class="dropdown-header"
+                        [routerLink]="['solicitudes-orden']">
+                        No hay solicitudes pendientes para validar
                     </li>
                 </ul>
             </li>
 
             <li class="nav-item dropdown pe-3" *ngIf="informacionUsuario">
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="javascript:void(0);"
+                    data-bs-toggle="dropdown">
                     <img src="https://m-net.mx/scosm/images/log.png" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{informacionUsuario.nombre}}
                         {{informacionUsuario.aPaterno}}</span>

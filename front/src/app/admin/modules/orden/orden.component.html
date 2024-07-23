@@ -15,7 +15,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li *ngIf="pkOrdenSolicitud == 0" class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes de servicio</li>
-                    <li class="breadcrumb-item active">Detalle orden</li>
+                    <li class="breadcrumb-item active">{{solicitante != null ? 'Solicitud' : 'Detalle orden'}}</li>
                 </ol>
             </nav>
         </div>
@@ -161,10 +161,10 @@
                 </div>
 
                 <div *ngIf="solicitante != null" class="col-12 t-center" style="margin-top: 10px;">
-                    <label style="color: #008FFF !important;">
+                    <label *ngIf="permisos.perfil == 'Administrador'" style="color: #008FFF !important;">
                         {{solicitante.solicitante}}
                     </label>
-                    |
+                    <span *ngIf="permisos.perfil == 'Administrador'"> | </span>
                     <label>{{solicitante.fechaSolicitud}}</label>
                 </div>
             </div>

@@ -56,7 +56,11 @@ export class OrdenesService {
 	}
 
 	public obtenerSolicitudesOrdenes(status: number): Observable<any> {
-		return this.http.get<any>(`${api}/ordenes/obtenerSolicitudesOrdenes/${status}`);
+		return this.http.post<any>(`${api}/ordenes/obtenerSolicitudesOrdenes`, {status});
+	}
+
+	public obtenerMisSolicitudesOrdenes(status: number, token: any): Observable<any> {
+		return this.http.post<any>(`${api}/ordenes/obtenerMisSolicitudesOrdenes`, {status, token});
 	}
 
 	public aprobarSolicitudOrden(pkSolicitud: number): Observable<any> {
