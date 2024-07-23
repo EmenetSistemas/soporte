@@ -22,14 +22,14 @@
                         <li class="dropdown-header">
                             Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
                             pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
-                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
+                            <a *ngIf="solicitudesOrdenes.length > 3" href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
                                     [routerLink]="['solicitudes-orden']">Ver</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
                         </li>
 
                         <section *ngFor="let solicitud of solicitudesOrdenes.slice(0, 3)">
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li class="message-item" (click)="detalleSolicitud(solicitud)">
                                 <a href="javascript:void(0);">
                                     <div>
@@ -40,13 +40,14 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                         </section>
 
-                        <li class="dropdown-footer">
-                            <a href="javascript:void(0);">Ver todas las solicitudes</a>
+                        <li *ngIf="solicitudesOrdenes.length > 3">
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li *ngIf="solicitudesOrdenes.length > 3" class="dropdown-footer">
+                            <a href="javascript:void(0);">Ver todas mis solicitudes</a>
                         </li>
                     </section>
 
@@ -71,14 +72,15 @@
                         <li class="dropdown-header">
                             Tienes {{solicitudesOrdenes.length}} solicitud{{solicitudesOrdenes.length > 1 ? 'es' : ''}}
                             pendiente{{solicitudesOrdenes.length > 1 ? 's' : ''}}
-                            <a href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
+                            <a *ngIf="solicitudesOrdenes.length > 3" href="javascript:void(0);"><span class="badge rounded-pill bg-primary p-2 ms-2"
                                     [routerLink]="['solicitudes-orden']">Ver</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
                         </li>
 
                         <section *ngFor="let solicitud of solicitudesOrdenes.slice(0, 3)">
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            
                             <li class="message-item" (click)="detalleSolicitud(solicitud)">
                                 <a href="javascript:void(0);">
                                     <div>
@@ -89,12 +91,13 @@
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                         </section>
 
-                        <li class="dropdown-footer">
+                        <li *ngIf="solicitudesOrdenes.length > 3">
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li *ngIf="solicitudesOrdenes.length > 3" class="dropdown-footer">
                             <a href="javascript:void(0);">Ver todas las solicitudes</a>
                         </li>
                     </section>

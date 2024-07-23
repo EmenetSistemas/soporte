@@ -2,3 +2,7 @@
     padding-left: 25px !important;
     padding-right: 25px !important;
 }
+
+.dropdown-menu {
+    min-width: 300px !important;
+}
