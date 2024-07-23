@@ -207,7 +207,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 						this.resetForm();
 						this.pkOrden = respuesta.data.pkOrden;
 
-						const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+respuesta.data.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🔑 Código de entrega: *'+respuesta.data.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
+						const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+respuesta.data.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🆔 Folio de servicio: *'+respuesta.data.pkOrden+'*\n🔑 Código de entrega: *'+respuesta.data.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
 
 						this.apiChatbot.enviarMensajeTexto(respuesta.data.telefono, mensaje);
 						this.obtenerDetalleOrdenServicio().then(()=> {
@@ -223,7 +223,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	protected enviarCodigo(): void {
 		const telefono = this.detalleOrden.telefono;
-		const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+this.detalleOrden.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🔑 Código de entrega: *'+this.detalleOrden.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
+		const mensaje = '🤖 Hola '+this.obtenerSaludo()+' *'+this.detalleOrden.cliente+'* a continuación te comparto los datos correspondientes a la orden de servicio de tus equipos para reparación en Emenet Comunicaciones 🛠️\n\n🆔 Folio de servicio: *'+this.detalleOrden.pkTblOrdenServicio+'*\n🔑 Código de entrega: *'+this.detalleOrden.codigo+'*\n\nEl cual es importante tener a la vista para poder recoger tus equipos una vez se encuentren listos ✅';
 
 		this.apiChatbot.enviarMensajeTextoConfirmacion(telefono, mensaje, 'Reenviar código orden de servicio', '¿Está seguro de enviar de nuevo el código de la orden de servicio?');
 	}
