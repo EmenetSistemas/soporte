@@ -1,0 +1,29 @@
+<div class="pagetitle">
+    <h1>Usuarios</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item" [routerLink]="'/'">Dashboard</li>
+            <li class="breadcrumb-item active">Usuarios</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row g-3" style="margin-top: 0px;">
+                    <div class="form-group" style="width: auto !important;">
+                        <label for="dropDown" class="form-label t-bold">Status: <b
+                            style="color: brown;">*</b></label><br>
+                        <div class="btn-group group-dropdown-form" role="group">
+                            <app-dropdown [options]="statusSelect" (selectionChange)="selectionChange($event)" [font]="'statusUsuarios'" [type]="'simple'"></app-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-datatable [columnasTabla]="columnasTabla" [datosTabla]="datosTabla" [tableConfig]="tableConfig" (actionSelected)="actionSelected($event)" [tableType]="'dynamic'"></app-datatable>
+    </div>
+</section>

@@ -24,6 +24,7 @@ import { InvalidRouteComponent } from './shared/invalid-route/invalid-route.comp
 import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-status-orden/cambio-status-orden.component';
 import { ActualizacionOrdenComponent } from './admin/components/modals/actualizacion-orden/actualizacion-orden.component';
 import { SolicitudesOrdenComponent } from './admin/modules/solicitudes-orden/solicitudes-orden.component';
+import { ConsultaUsuariosComponent } from './admin/modules/usuarios/consulta-usuarios/consulta-usuarios.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { SolicitudesOrdenComponent } from './admin/modules/solicitudes-orden/sol
     InvalidRouteComponent,
     CambioStatusOrdenComponent,
     ActualizacionOrdenComponent,
-    SolicitudesOrdenComponent
+    SolicitudesOrdenComponent,
+    ConsultaUsuariosComponent
   ],
   imports: [
     BrowserModule,

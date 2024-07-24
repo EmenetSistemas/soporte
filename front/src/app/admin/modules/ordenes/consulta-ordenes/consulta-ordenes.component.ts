@@ -86,7 +86,7 @@ export class ConsultaOrdenesComponent implements OnDestroy{
 					'color': 'danger'
 				}
 			]
-		},
+		}
 	};
 
 	private columnasBase: any = {

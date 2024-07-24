@@ -46,7 +46,7 @@
             </a>
         </li>
         
-        <li *ngIf="permisos.perfil == 'Administrador'" class="nav-item">
+        <li *ngIf="permisos.perfil == 'Administrador'" class="nav-item" [routerLink]="['usuarios']">
             <a class="nav-link collapsed">
                 <i class="bi bi-person-rolodex"></i>
                 <span>Usuarios</span>

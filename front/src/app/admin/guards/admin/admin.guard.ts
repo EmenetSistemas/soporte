@@ -81,6 +81,10 @@ export class AdminGuard implements CanActivate {
 			if (url.includes('/detalle-orden/') && permisos.detalleOrden != 1) {
 				retorno = false;
 			}
+
+			if (url === '/usuarios' && permisos.perfil != 'Administrador') {
+				retorno = false;
+			}
 	
 			return retorno;
 		} catch (e) {
