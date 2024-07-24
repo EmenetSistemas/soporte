@@ -9,11 +9,11 @@ class TblUsuarios extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $primaryKey = 'pkTblUsuarioAdmin';
+    protected $primaryKey = 'pkTblUsuario';
     protected $table = 'tblUsuarios';
     protected $fillable = 
     [
-        'pkTblUsuarioAdmin',
+        'pkTblUsuario',
         'nombre',
         'aPaterno',
         'aMaterno',

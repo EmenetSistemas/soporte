@@ -28,5 +28,7 @@ Route::post('/ordenes/obtenerMisSolicitudesOrdenes', 'App\Http\Controllers\Admin
 Route::get('/ordenes/aprobarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@aprobarSolicitudOrden');
 Route::get('/ordenes/eliminarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@eliminarSolicitudOrden');
 
+Route::get('/usuarios/obtenerListaUsuarios/{status}', 'App\Http\Controllers\Auth\UsuarioController@obtenerListaUsuarios');
+
 // utileria sistema
 Route::get('/pdfs/generarPdfOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admin\PDFs\PdfController@generarPdfOrdenServicio');
