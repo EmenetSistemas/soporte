@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { UsuariosService } from 'src/app/admin/services/api/usuarios/usuarios.service';
 import { MensajesService } from 'src/app/admin/services/mensajes/mensajes.service';
+import { ModalService } from 'src/app/admin/services/modal/modal.service';
+import { ModificarUsuarioComponent } from '../modificar-usuario/modificar-usuario.component';
 
 @Component({
 	selector: 'app-consulta-usuarios',
@@ -30,7 +32,9 @@ export class ConsultaUsuariosComponent {
 
 	protected tableConfig: any = {
 		'pkTblUsuario' : {
-			'center': true
+			'center': true,
+			'emitId': true,
+			'value': 'pkTblUsuario'
 		},
 		'nombreCompleto' : {
 			'center': true
@@ -65,7 +69,8 @@ export class ConsultaUsuariosComponent {
 
 	constructor (
 		private apiUsuarios: UsuariosService,
-		private mensajes: MensajesService
+		private mensajes: MensajesService,
+		private modal: ModalService
 	) {}
 
 	protected obtenerListaUsuarios(status: number): Promise<any> {
@@ -101,6 +106,10 @@ export class ConsultaUsuariosComponent {
 	}
 
 	protected actionSelected(data: any): void {
+		const dataModal = {
+			pkUsuario: data.action
+		};
 
+		this.modal.abrirModalConComponente(ModificarUsuarioComponent, dataModal, 'lg-modal');
 	}
 }

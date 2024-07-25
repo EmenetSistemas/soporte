@@ -8,6 +8,7 @@ import { OrdenesService } from '../../services/api/ordenes/ordenes.service';
 import { ModalService } from '../../services/modal/modal.service';
 import { CambioStatusOrdenComponent } from '../modals/cambio-status-orden/cambio-status-orden.component';
 import { ActualizacionOrdenComponent } from '../modals/actualizacion-orden/actualizacion-orden.component';
+import { ModificarUsuarioComponent } from '../../modules/usuarios/modificar-usuario/modificar-usuario.component';
 
 @Component({
 	selector: 'app-navbar',
@@ -131,6 +132,10 @@ export class NavbarComponent implements OnDestroy{
 				this.modal.abrirModalConComponente(CambioStatusOrdenComponent, dataModal, 'lg-modal');
 			break;
 		}
+	}
+
+	protected abrirDetallePerfil(): void {
+		this.modal.abrirModalConComponente(ModificarUsuarioComponent, {}, 'lg-modal');
 	}
 
 	ngOnDestroy(): void {

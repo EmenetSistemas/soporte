@@ -18,6 +18,8 @@ export class MensajesService {
 			allowEscapeKey: false
 		} as any);
 		Swal.showLoading();
+
+		document.body.style.paddingRight = '';
 	}
 
 
@@ -44,6 +46,8 @@ export class MensajesService {
 			data['html'] = html;
 		}
 		Swal.fire(data);
+
+		document.body.style.paddingRight = '';
 	}
 
 	mensajeGenericoToast(mensaje: string, tipo: string, tiempo: number = 3000) {
@@ -64,6 +68,8 @@ export class MensajesService {
 			icon: tipo,
 			title: mensaje
 		});
+
+		document.body.style.paddingRight = '';
 	}
 
 	mensajeConfirmacionCustom(mensaje: string, tipo: any, titulo: string = '', btnConfirmar = 'Continuar', btnCancelar = 'Cancelar', btnDenegado = 'Denegar', showDeny = false) {
@@ -85,5 +91,7 @@ export class MensajesService {
 			},
 			allowEscapeKey: false
 		});
+
+		document.body.style.paddingRight = '';
 	}
 }

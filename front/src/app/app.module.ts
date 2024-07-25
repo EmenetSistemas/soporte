@@ -25,6 +25,7 @@ import { CambioStatusOrdenComponent } from './admin/components/modals/cambio-sta
 import { ActualizacionOrdenComponent } from './admin/components/modals/actualizacion-orden/actualizacion-orden.component';
 import { SolicitudesOrdenComponent } from './admin/modules/solicitudes-orden/solicitudes-orden.component';
 import { ConsultaUsuariosComponent } from './admin/modules/usuarios/consulta-usuarios/consulta-usuarios.component';
+import { ModificarUsuarioComponent } from './admin/modules/usuarios/modificar-usuario/modificar-usuario.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ConsultaUsuariosComponent } from './admin/modules/usuarios/consulta-usu
     CambioStatusOrdenComponent,
     ActualizacionOrdenComponent,
     SolicitudesOrdenComponent,
-    ConsultaUsuariosComponent
+    ConsultaUsuariosComponent,
+    ModificarUsuarioComponent
   ],
   imports: [
     BrowserModule,

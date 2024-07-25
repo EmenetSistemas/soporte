@@ -31,6 +31,8 @@ export class ModalService {
 		}
 
 		this.modalRef = this.modalService.show(component, modalConfig);
+
+		document.body.style.paddingRight = '';
 	}
 
 	cerrarModal() {
@@ -38,6 +40,7 @@ export class ModalService {
 			this.modalRef.hide();
 			this.modalRef = undefined;
 		}
+
 		document.body.classList.remove('modal-open');
 		document.body.style.paddingRight = '';
 		document.body.style.overflow = '';
