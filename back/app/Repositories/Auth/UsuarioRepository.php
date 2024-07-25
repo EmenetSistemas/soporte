@@ -36,4 +36,42 @@ class UsuarioRepository
         if ($status != null) $query->where('activo', $status);
         return $query->get();
     }
+
+    public function validarCorreoExiste($correo, $idUsuario){
+        $validarCorreo = TblUsuarios::where([
+                                            ['correo',$correo],
+                                            ['pkTblUsuario','!=', $idUsuario]
+                                        ]);
+        return $validarCorreo->count();
+    }
+
+    public function modificarUsuario($datosUsuario, $idUsuario, $cambioPass){
+        $actualizar = [
+            'nombre'   =>  $this->trimValidator($datosUsuario['nombre']),
+            'aPaterno' =>  $this->trimValidator($datosUsuario['aPaterno']),
+            'aMaterno' =>  $this->trimValidator($datosUsuario['aMaterno']),
+            'correo'   =>  $this->trimValidator($datosUsuario['correo'])
+        ];
+
+        if($cambioPass){
+            $actualizar['password'] = bcrypt($this->trimValidator($datosUsuario['contraseniaNueva']));
+        }
+        
+        TblUsuarios::where('pkTblUsuario', $idUsuario)
+                   ->update($actualizar);
+    }
+
+    public function validarContraseniaActual($idUsuario, $password){
+        $temporal = TblUsuarios::select(
+                                    'password'
+                                )
+                                ->where('pkTblUsuario', $idUsuario)
+                                ->first();
+
+        return password_verify($password, $temporal->password);
+    }
+
+    public function trimValidator ( $value ) {
+		return $value != null && trim($value) != '' ? trim($value) : null;
+	}
 }

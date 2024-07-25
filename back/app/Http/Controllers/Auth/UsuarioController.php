@@ -26,7 +26,7 @@ class UsuarioController extends Controller
             return response()->json(
                 [
                     'error' => $error,
-                    'mensaje' => 'Ocurrió un error al consultar' 
+                    'mensaje' => 'Ocurrió un error interno'
                 ], 
                 500
             );
@@ -41,7 +41,37 @@ class UsuarioController extends Controller
             return response()->json(
                 [
                     'error' => $error,
-                    'mensaje' => 'Ocurrió un error al consultar' 
+                    'mensaje' => 'Ocurrió un error interno'
+                ], 
+                500
+            );
+        }
+    }
+
+    public function validarContraseniaActual(Request $request){
+        try{
+            return $this->usuariosService->validarContraseniaActual( $request->all() );
+        }catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ], 
+                500
+            );
+        }
+    }
+
+    public function modificarUsuario(Request $request){
+        try{
+            return $this->usuariosService->modificarUsuario( $request->all() );
+        }catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error interno'
                 ], 
                 500
             );
