@@ -54,16 +54,17 @@ export class ConsultaUsuariosComponent implements OnInit{
 			'dadgesCases': [
 				{
 					'text': 'Activo',
-					'color': 'success'
+					'color': 'primary'
 				}, {
 					'text': 'Inactivo',
-					'color': 'danger'
+					'color': 'warning'
 				}
 			]
 		},
 		'linea': {
 			'center': true,
-			'linea': true
+			'linea': true,
+			'noFilter': true
 		}
 	};
 

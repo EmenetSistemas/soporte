@@ -135,8 +135,18 @@
                                     </ng-container>
                                 </ng-template>
                                 <ng-template #icono>
-                                    <ng-container *ngIf="tableConfig[columna]?.icono; else telefono">
+                                    <ng-container *ngIf="tableConfig[columna]?.icono; else linea">
                                         <i class="{{item[columna]}}"></i>
+                                    </ng-container>
+                                </ng-template>
+                                <ng-template #linea>
+                                    <ng-container *ngIf="tableConfig[columna]?.linea; else telefono">
+                                        <div class="spinner-grow spinner-grow-sm" role="status" [ngClass]="{
+                                            'text-success': item[columna] == 1 || item[columna] == true,
+                                            'text-danger': item[columna] == 0 || item[columna] == false
+                                        }">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
                                     </ng-container>
                                 </ng-template>
                                 <ng-template #telefono>
