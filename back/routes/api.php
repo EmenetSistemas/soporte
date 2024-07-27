@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', 'App\Http\Controllers\Auth\LoginController@login');
 Route::post('/auth', 'App\Http\Controllers\Auth\LoginController@auth');
 Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
+
 Route::post('/usuarios/obtenerInformacionUsuarioPorToken', 'App\Http\Controllers\Auth\UsuarioController@obtenerInformacionUsuarioPorToken');
+Route::get('/usuarios/obtenerInformacionUsuarioPorPk/{pkUsuario}', 'App\Http\Controllers\Auth\UsuarioController@obtenerInformacionUsuarioPorPk');
 
 // estadisticas sistema
 Route::get('/estadisticas/obtenerEstadisticas', 'App\Http\Controllers\Admin\GenericController@obtenerEstadisticas');

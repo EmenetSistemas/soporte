@@ -21,6 +21,10 @@ class UsuarioService
         return $this->usuarioRepository->obtenerInformacionUsuarioPorToken( $token['token'] );
     }
 
+    public function obtenerInformacionUsuarioPorPk ( $pkUsuario ) {
+        return $this->usuarioRepository->obtenerInformacionUsuarioPorPk( $pkUsuario );
+    }
+
     public function obtenerPkPorToken ( $token ) {
         return $this->usuarioRepository->obtenerInformacionUsuarioPorToken( $token )[0]->pkTblUsuario;
     }

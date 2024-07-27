@@ -15,6 +15,12 @@ class UsuarioRepository
         return $usuario->get();
     }
 
+    public function obtenerInformacionUsuarioPorPk( $pkUsuario ){
+        $usuario = TblUsuarios::where('tblUsuarios.pkTblUsuario', $pkUsuario);
+
+        return $usuario->get();
+    }
+
     public function obtenerListaUsuarios ($status = null) {
         $query = TblUsuarios::select(
                                 'pkTblUsuario',

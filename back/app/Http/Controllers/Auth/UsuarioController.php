@@ -33,6 +33,21 @@ class UsuarioController extends Controller
         }
     }
 
+    public function obtenerInformacionUsuarioPorPk( $pkUsuario ){
+        try{
+            return $this->usuariosService->obtenerInformacionUsuarioPorPk( $pkUsuario );
+        } catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ], 
+                500
+            );
+        }
+    }
+
     public function obtenerListaUsuarios($status){
         try{
             return $this->usuariosService->obtenerListaUsuarios($status);
