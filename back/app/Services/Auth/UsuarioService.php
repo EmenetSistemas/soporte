@@ -86,11 +86,18 @@ class UsuarioService
         }
 
         DB::beginTransaction();
-            $this->usuarioRepository->modificarUsuario(
-                $datosUsuario['perfilInformacion'],
-                $pkUsuario, 
-                $datosUsuario['perfilInformacion']['cambioContraseniaPerfil']
-            );
+            if (isset($datosUsuario['pkUsuario'])) {
+                $this->usuarioRepository->modificarUsuarioPermisos(
+                    $datosUsuario['perfilInformacion'],
+                    $pkUsuario
+                );   
+            } else {
+                $this->usuarioRepository->modificarUsuario(
+                    $datosUsuario['perfilInformacion'],
+                    $pkUsuario, 
+                    $datosUsuario['perfilInformacion']['cambioContraseniaPerfil']
+                );
+            }
         DB::commit();
 
         return response()->json(

@@ -23,23 +23,31 @@ class UsuarioRepository
 
     public function obtenerListaUsuarios ($status = null) {
         $query = TblUsuarios::select(
-                                'pkTblUsuario',
-                                'nombre',
-                                'aPaterno',
-                                'aMaterno',
-                                'correo',
-                                'password',
-                                'fechaAlta'
+                                'tblUsuarios.pkTblUsuario',
+                                'tblUsuarios.nombre',
+                                'tblUsuarios.aPaterno',
+                                'tblUsuarios.aMaterno',
+                                'tblUsuarios.correo',
+                                'tblUsuarios.password',
+                                'tblUsuarios.fechaAlta'
                             )
-                            ->selectRaw('CONCAT(nombre, " ",aPaterno) as nombreCompleto')
+                            ->selectRaw('CONCAT(tblUsuarios.nombre, " ",tblUsuarios.aPaterno) as nombreCompleto')
                             ->selectRaw('
                                 CASE
                                     WHEN activo = 1 THEN "Activo"
                                     WHEN activo = 0 THEN "Inactivo"
                                 END as status
-                            ');
+                            ')
+                            ->selectRaw('
+                                CASE
+                                    WHEN (select count(tblSesiones.fkTblUsuario) from tblSesiones where tblSesiones.fkTblUsuario = tblUsuarios.pkTblUsuario) > 0 THEN true
+                                    ELSE false
+                                END as linea
+                            ')
+                            ->distinct();
 
-        if ($status != null) $query->where('activo', $status);
+        if ($status != null) $query->where('tblUsuarios.activo', $status);
+
         return $query->get();
     }
 
@@ -62,6 +70,26 @@ class UsuarioRepository
         if($cambioPass){
             $actualizar['password'] = bcrypt($this->trimValidator($datosUsuario['contraseniaNueva']));
         }
+        
+        TblUsuarios::where('pkTblUsuario', $idUsuario)
+                   ->update($actualizar);
+    }
+
+    public function modificarUsuarioPermisos($datosUsuario, $idUsuario){
+        $actualizar = [
+            'nombre'          =>  $this->trimValidator($datosUsuario['nombre']),
+            'aPaterno'        =>  $this->trimValidator($datosUsuario['aPaterno']),
+            'aMaterno'        =>  $this->trimValidator($datosUsuario['aMaterno']),
+            'correo'          =>  $this->trimValidator($datosUsuario['correo']),
+            'generarOrden'    => $datosUsuario['generarOrden'],
+            'detalleOrden'    => $datosUsuario['detalleOrden'],
+            'entregarOrden'   => $datosUsuario['entregarOrden'],
+            'ordenActualizar' => $datosUsuario['ordenActualizar'],
+            'ordenConcluir'   => $datosUsuario['ordenConcluir'],
+            'ordenRetomar'    => $datosUsuario['ordenRetomar'],
+            'ordenCancelar'   => $datosUsuario['ordenCancelar'],
+            'ordenEliminar'   => $datosUsuario['ordenEliminar']
+        ];
         
         TblUsuarios::where('pkTblUsuario', $idUsuario)
                    ->update($actualizar);
