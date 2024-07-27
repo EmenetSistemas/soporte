@@ -14,4 +14,8 @@ export class UsuariosService {
 	public obtenerInformacionUsuarioPorToken(token: any): Observable<any> {
 		return this.http.post<any>(api + '/usuarios/obtenerInformacionUsuarioPorToken', { token });
 	}
+
+	public obtenerInformacionUsuarioPorPk(pkUsuario: number): Observable<any> {
+		return this.http.get<any>(api + `/usuarios/obtenerInformacionUsuarioPorPk/${pkUsuario}`);
+	}
 }

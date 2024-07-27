@@ -52,15 +52,27 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 	}
 
 	private obtenerDetallePerfilPorToken(): Promise<any> {
-		return this.apiAuth.obtenerInformacionUsuarioPorToken(localStorage.getItem('token_soporte')).toPromise().then(
-			respuesta => {
-				this.informacionPerfil = respuesta[0];
-				this.cargarFormModificacionPerfil();
-			},
-			error => {
-				this.mensajes.mensajeGenerico('error', 'error');
-			}
-		)
+		if (this.pkUsuario != 0) {
+			return this.apiAuth.obtenerInformacionUsuarioPorPk(this.pkUsuario).toPromise().then(
+				respuesta => {
+					this.informacionPerfil = respuesta[0];
+					this.cargarFormModificacionPerfil();
+				},
+				error => {
+					this.mensajes.mensajeGenerico('error', 'error');
+				}
+			)
+		} else {
+			return this.apiAuth.obtenerInformacionUsuarioPorToken(localStorage.getItem('token_soporte')).toPromise().then(
+				respuesta => {
+					this.informacionPerfil = respuesta[0];
+					this.cargarFormModificacionPerfil();
+				},
+				error => {
+					this.mensajes.mensajeGenerico('error', 'error');
+				}
+			)
+		}
 	}
 
 	private cargarFormModificacionPerfil(): void {

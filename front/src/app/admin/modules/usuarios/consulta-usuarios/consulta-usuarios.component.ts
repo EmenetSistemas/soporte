@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from 'src/app/admin/services/api/usuarios/usuarios.service';
 import { MensajesService } from 'src/app/admin/services/mensajes/mensajes.service';
 import { ModalService } from 'src/app/admin/services/modal/modal.service';
 import { ModificarUsuarioComponent } from '../modificar-usuario/modificar-usuario.component';
+import { UsuariosService as UsuariosServiceAuth } from 'src/app/auth/services/usuarios/usuarios.service';
 
 @Component({
 	selector: 'app-consulta-usuarios',
 	templateUrl: './consulta-usuarios.component.html',
 	styleUrls: ['./consulta-usuarios.component.css']
 })
-export class ConsultaUsuariosComponent {
+export class ConsultaUsuariosComponent implements OnInit{
 	protected statusSelect: any[] = [
 		{
 			label: 'Activos',
@@ -67,11 +68,18 @@ export class ConsultaUsuariosComponent {
 
 	private intervalo: any;
 
+	private informacionPerfil: any;
+
 	constructor (
 		private apiUsuarios: UsuariosService,
 		private mensajes: MensajesService,
-		private modal: ModalService
+		private modal: ModalService,
+		private apiAuth: UsuariosServiceAuth
 	) {}
+	
+	ngOnInit(): void {
+		this.obtenerDetallePerfilPorToken();
+	}
 
 	protected obtenerListaUsuarios(status: number): Promise<any> {
 		return this.apiUsuarios.obtenerListaUsuarios(status).toPromise().then(
@@ -105,7 +113,23 @@ export class ConsultaUsuariosComponent {
 		});
 	}
 
+	private obtenerDetallePerfilPorToken(): Promise<any> {
+		return this.apiAuth.obtenerInformacionUsuarioPorToken(localStorage.getItem('token_soporte')).toPromise().then(
+			respuesta => {
+				this.informacionPerfil = respuesta[0];
+			},
+			error => {
+				this.mensajes.mensajeGenerico('error', 'error');
+			}
+		)
+	}
+
 	protected actionSelected(data: any): void {
+		if (this.informacionPerfil.pkTblUsuario == data.action) {
+			this.mensajes.mensajeGenericoToast('Sesión actual', 'info');
+			return;
+		}
+
 		const dataModal = {
 			pkUsuario: data.action
 		};
