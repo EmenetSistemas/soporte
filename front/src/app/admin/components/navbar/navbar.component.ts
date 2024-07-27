@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { DataService } from '../../services/data/data.service';
 import { Router } from '@angular/router';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
@@ -16,10 +16,12 @@ import { ModificarUsuarioComponent } from '../../modules/usuarios/modificar-usua
 	styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnDestroy{
-	protected informacionUsuario: any = [];
+	protected informacionUsuario: any = undefined;
 	protected solicitudesOrdenes: any = [];
 
 	private intervalo: any;
+
+	protected nombre: string = '';
 	
 	constructor(
 		private dataService: DataService,
@@ -28,7 +30,8 @@ export class NavbarComponent implements OnDestroy{
 		private mensajes: MensajesService,
 		private apiLogin: LoginService,
 		private apiOrdenes: OrdenesService,
-		private modal: ModalService
+		private modal: ModalService,
+		private ref: ChangeDetectorRef
 	) { }
 
 	async ngOnInit(): Promise<void> {
@@ -45,12 +48,19 @@ export class NavbarComponent implements OnDestroy{
 		}, 6000);
 	}
 
-	private obtenerDatosUsuarios(): void {
+	public obtenerDatosUsuarios(): void {
+		this.informacionUsuario = undefined;
+		this.nombre = '';
+
+		this.ref.markForCheck();
+
 		let token = localStorage.getItem('token_soporte');
 		if (token != undefined) {
 			this.apiUsuarios.obtenerInformacionUsuarioPorToken(token).subscribe(
 				respuesta => {
 					this.informacionUsuario = respuesta[0];
+
+					this.nombre = this.informacionUsuario.nombre+' '+this.informacionUsuario.aPaterno;
 
 					if (this.informacionUsuario.perfil == 'Administrador') {
 						this.obtenerSolicitudesOrdenes().then(() => {

@@ -9,7 +9,7 @@
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
-            <li *ngIf="informacionUsuario.perfil && informacionUsuario.perfil != 'Administrador'" class="nav-item dropdown">
+            <li *ngIf="informacionUsuario && informacionUsuario.perfil != 'Administrador'" class="nav-item dropdown">
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-chat-left-text"></i>
                     <span class="badge bg-danger badge-number">{{solicitudesOrdenes.length}}</span>
@@ -58,7 +58,7 @@
                 </ul>
             </li>
 
-            <li *ngIf="informacionUsuario.perfil && informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
+            <li *ngIf="informacionUsuario && informacionUsuario.perfil == 'Administrador'" class="nav-item dropdown">
                 <a class="nav-link nav-icon show" href="javascript:void(0);" data-bs-toggle="dropdown"
                     aria-expanded="true">
                     <i class="bi bi-bell"></i>
@@ -113,13 +113,12 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="javascript:void(0);"
                     data-bs-toggle="dropdown">
                     <img src="https://m-net.mx/scosm/images/log.png" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">{{informacionUsuario.nombre}}
-                        {{informacionUsuario.aPaterno}}</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">{{nombre}}</span>
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>{{informacionUsuario.nombre}} {{informacionUsuario.aPaterno}}</h6>
+                        <h6>{{nombre}}</h6>
                         <span>{{informacionUsuario.perfil}}</span>
                     </li>
                     <li>

@@ -33,7 +33,9 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 		this.mensajes.mensajeEsperar();
 		this.crearformMoficacionPerfil();
 		this.cambioContraseniaPerfil();
-		await this.obtenerDetallePerfilPorToken();
+		await this.obtenerDetallePerfilPorToken().then(() => {
+			this.mensajes.mensajeGenericoToast('Se obtuvó la información con éxito', 'success');
+		});
 	}
 
 	private crearformMoficacionPerfil(): void {
@@ -54,7 +56,6 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			respuesta => {
 				this.informacionPerfil = respuesta[0];
 				this.cargarFormModificacionPerfil();
-				this.mensajes.mensajeGenericoToast('Se consultó la información con éxito', 'success');
 			},
 			error => {
 				this.mensajes.mensajeGenerico('error', 'error');
@@ -128,7 +129,9 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 								return;
 							}
 
-							this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+							this.obtenerDetallePerfilPorToken().then(() => {
+								this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+							});
 							return;
 						},
 

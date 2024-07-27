@@ -60,7 +60,8 @@ import { ModificarUsuarioComponent } from './admin/modules/usuarios/modificar-us
   ],
   providers: [
     SidenavComponent,
-    CambioStatusOrdenComponent
+    CambioStatusOrdenComponent,
+    NavbarComponent
   ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
