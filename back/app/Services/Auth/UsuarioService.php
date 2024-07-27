@@ -48,8 +48,9 @@ class UsuarioService
     }
 
     public function validarContraseniaActual($datosCredenciales){
-        $usuario = $this->usuarioRepository->obtenerInformacionUsuarioPorToken($datosCredenciales['token']);
-        $validarContrasenia = $this->usuarioRepository->validarContraseniaActual($usuario[0]->pkTblUsuario, $datosCredenciales['contraseniaActual']);
+        $pkUsuario = isset($datosCredenciales['pkUsuario']) ? $datosCredenciales['pkUsuario'] : $this->usuarioRepository->obtenerInformacionUsuarioPorToken($datosCredenciales['token'])[0]->pkTblUsuario;
+        
+        $validarContrasenia = $this->usuarioRepository->validarContraseniaActual($pkUsuario, $datosCredenciales['contraseniaActual']);
         
         if($validarContrasenia == false){
             return response()->json(
@@ -70,8 +71,9 @@ class UsuarioService
     }
 
     public function modificarUsuario($datosUsuario){
-        $usuario = $this->usuarioRepository->obtenerInformacionUsuarioPorToken($datosUsuario['token']);
-        $validarUsuario = $this->usuarioRepository->validarCorreoExiste($datosUsuario['perfilInformacion']['correo'],$usuario[0]->pkTblUsuario);
+        $pkUsuario = isset($datosUsuario['pkUsuario']) ? $datosUsuario['pkUsuario'] : $this->usuarioRepository->obtenerInformacionUsuarioPorToken($datosUsuario['token'])[0]->pkTblUsuario;
+
+        $validarUsuario = $this->usuarioRepository->validarCorreoExiste($datosUsuario['perfilInformacion']['correo'], $pkUsuario);
         
         if($validarUsuario > 0 ){
             return response()->json(
@@ -86,7 +88,7 @@ class UsuarioService
         DB::beginTransaction();
             $this->usuarioRepository->modificarUsuario(
                 $datosUsuario['perfilInformacion'],
-                $usuario[0]->pkTblUsuario, 
+                $pkUsuario, 
                 $datosUsuario['perfilInformacion']['cambioContraseniaPerfil']
             );
         DB::commit();
