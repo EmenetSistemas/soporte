@@ -28,7 +28,8 @@ export class ConsultaUsuariosComponent implements OnInit{
 		'nombreCompleto' : 'Usuario',
 		'correo'         : 'Correo',
 		'fechaAlta'      : 'Alta',
-		'status'         : 'Status'
+		'status'         : 'Status',
+		'linea'          : 'Línea'
 	}
 
 	protected tableConfig: any = {
@@ -59,6 +60,10 @@ export class ConsultaUsuariosComponent implements OnInit{
 					'color': 'danger'
 				}
 			]
+		},
+		'linea': {
+			'center': true,
+			'linea': true
 		}
 	};
 
