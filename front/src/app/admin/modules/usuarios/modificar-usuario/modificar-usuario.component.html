@@ -19,22 +19,26 @@
                                 <input formControlName="nombre" type="text" class="form-control"
                                     id="nombre" placeholder="Nombre" (keypress)="soloLetras($event)">
                             </div>
+
                             <div class="col-lg-4 col-md-6">
                                 <label for="aPaterno" class="form-label required">Apellido paterno:</label>
                                 <input formControlName="aPaterno" type="text" class="form-control"
                                     id="aPaterno" placeholder="Apellido paterno" (keypress)="soloLetras($event)">
                             </div>
+
                             <div class="col-lg-4 col-md-6">
                                 <label for="aMaterno" class="form-label required">Apellido materno:</label>
                                 <input formControlName="aMaterno" type="text" class="form-control"
                                     id="aMaterno" placeholder="Apellido materno" (keypress)="soloLetras($event)">
                             </div>
+
                             <div class="col-lg-12 col-md-6">
                                 <label for="correo" class="form-label required">Correo:</label>
                                 <input formControlName="correo" type="email" class="form-control" id="correo"
                                     placeholder="Correo" (keypress)="soloTexto($event)">
                             </div>
-                            <div class="col-md-12 d-flex justify-content-center">
+
+                            <div *ngIf="pkUsuario == 0" class="col-md-12 d-flex justify-content-center">
                                 <div class="form-check form-switch">
                                     <input formControlName="cambioContraseniaPerfil" class="form-check-input"
                                         type="checkbox" id="cambioContraseniaPerfil"

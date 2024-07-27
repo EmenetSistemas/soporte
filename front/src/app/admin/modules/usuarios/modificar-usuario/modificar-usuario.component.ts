@@ -101,10 +101,13 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 
 		if (this.inputContrasenia) {
 			this.mensajes.mensajeEsperar();
-			const credenciales = {
+			const credenciales: any = {
 				contraseniaActual: this.formMoficacionPerfil.get('contraseniaAntigua')?.value,
 				token: localStorage.getItem('token_soporte')
-			}
+			};
+
+			if (this.pkUsuario != 0) credenciales.pkUsuario = this.pkUsuario;
+
 			await this.apiUsuarios.validarContraseniaActual(credenciales).toPromise().then(
 				respuesta => {
 					if (respuesta.status == 204) {
@@ -130,10 +133,13 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 				if (respuestaMensaje.isConfirmed) {
 					this.mensajes.mensajeEsperar();
 
-					const datosUsuario = {
+					const datosUsuario: any = {
 						perfilInformacion: this.formMoficacionPerfil.value,
 						token: localStorage.getItem('token_soporte')
-					}
+					};
+
+					if (this.pkUsuario != 0) datosUsuario.pkUsuario = this.pkUsuario;
+
 					this.apiUsuarios.modificarUsuario(datosUsuario).subscribe(
 						respuesta => {
 							if (respuesta.status == 409) {
