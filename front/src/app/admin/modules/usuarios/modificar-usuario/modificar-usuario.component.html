@@ -32,10 +32,20 @@
                                     id="aMaterno" placeholder="Apellido materno" (keypress)="soloLetras($event)">
                             </div>
 
-                            <div class="col-lg-12 col-md-6">
+                            <div class="col-lg-8 col-md-6">
                                 <label for="correo" class="form-label required">Correo:</label>
                                 <input formControlName="correo" type="email" class="form-control" id="correo"
                                     placeholder="Correo" (keypress)="soloTexto($event)">
+                            </div>
+
+                            <div class="col-lg-4 col-md-6">
+                                <label for="perfil" class="form-label required">Perfil:</label>
+                                <select class="form-control" formControlName="perfil" id="perfil">
+                                    <option value="" style="visibility: hidden; display: none;">Seleccione un perfil</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Técnico">Técnico</option>
+                                </select>
                             </div>
 
                             <div *ngIf="pkUsuario == 0" class="col-md-12 d-flex justify-content-center">

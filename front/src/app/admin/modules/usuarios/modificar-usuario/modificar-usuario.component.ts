@@ -43,7 +43,8 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			nombre                  : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
 			aPaterno                : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
 			aMaterno                : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-			correo                  : ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			correo                  : ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
+			perfil					: ['', [Validators.required]],
 			cambioContraseniaPerfil : [''],
 			contraseniaAntigua      : [''],
 			contraseniaNueva        : [''],
@@ -80,6 +81,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 		this.formMoficacionPerfil.get('aPaterno')?.setValue(this.informacionPerfil.aPaterno);
 		this.formMoficacionPerfil.get('aMaterno')?.setValue(this.informacionPerfil.aMaterno);
 		this.formMoficacionPerfil.get('correo')?.setValue(this.informacionPerfil.correo);
+		this.formMoficacionPerfil.get('perfil')?.setValue(this.informacionPerfil.perfil);
 
 		if (this.pkUsuario != 0) {
 			this.formMoficacionPerfil.value.generarOrden = this.informacionPerfil.generarOrden;
@@ -90,6 +92,10 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.value.ordenRetomar = this.informacionPerfil.ordenRetomar;
 			this.formMoficacionPerfil.value.ordenCancelar = this.informacionPerfil.ordenCancelar;
 			this.formMoficacionPerfil.value.ordenEliminar = this.informacionPerfil.ordenEliminar;
+		} else {
+			this.formMoficacionPerfil.get('perfil')?.disable();
+			this.formMoficacionPerfil.get('perfil')?.clearValidators();
+			this.formMoficacionPerfil.get('perfil')?.updateValueAndValidity();
 		}
 	}
 
@@ -108,14 +114,21 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.value.aPaterno == this.informacionPerfil.aPaterno &&
 			this.formMoficacionPerfil.value.aMaterno == this.informacionPerfil.aMaterno &&
 			this.formMoficacionPerfil.value.correo == this.informacionPerfil.correo &&
-			this.formMoficacionPerfil.value.generarOrden == this.informacionPerfil.generarOrden &&
-			this.formMoficacionPerfil.value.detalleOrden == this.informacionPerfil.detalleOrden &&
-			this.formMoficacionPerfil.value.entregarOrden == this.informacionPerfil.entregarOrden &&
-			this.formMoficacionPerfil.value.ordenActualizar == this.informacionPerfil.ordenActualizar &&
-			this.formMoficacionPerfil.value.ordenConcluir == this.informacionPerfil.ordenConcluir &&
-			this.formMoficacionPerfil.value.ordenRetomar == this.informacionPerfil.ordenRetomar &&
-			this.formMoficacionPerfil.value.ordenCancelar == this.informacionPerfil.ordenCancelar &&
-			this.formMoficacionPerfil.value.ordenEliminar == this.informacionPerfil.ordenEliminar &&
+			(
+				(
+					this.pkUsuario != 0 && (
+						this.formMoficacionPerfil.value.perfil == this.informacionPerfil.perfil &&
+						this.formMoficacionPerfil.value.generarOrden == this.informacionPerfil.generarOrden &&
+						this.formMoficacionPerfil.value.detalleOrden == this.informacionPerfil.detalleOrden &&
+						this.formMoficacionPerfil.value.entregarOrden == this.informacionPerfil.entregarOrden &&
+						this.formMoficacionPerfil.value.ordenActualizar == this.informacionPerfil.ordenActualizar &&
+						this.formMoficacionPerfil.value.ordenConcluir == this.informacionPerfil.ordenConcluir &&
+						this.formMoficacionPerfil.value.ordenRetomar == this.informacionPerfil.ordenRetomar &&
+						this.formMoficacionPerfil.value.ordenCancelar == this.informacionPerfil.ordenCancelar &&
+						this.formMoficacionPerfil.value.ordenEliminar == this.informacionPerfil.ordenEliminar
+					)
+				) || this.pkUsuario == 0
+			) &&
 			!this.inputContrasenia
 		) {
 			this.mensajes.mensajeGenericoToast('No hay cambios por guardar', 'info');
@@ -191,6 +204,17 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.value.aPaterno != this.informacionPerfil.aPaterno ||
 			this.formMoficacionPerfil.value.aMaterno != this.informacionPerfil.aMaterno ||
 			this.formMoficacionPerfil.value.correo != this.informacionPerfil.correo ||
+			(this.pkUsuario != 0 && (
+				this.formMoficacionPerfil.value.perfil != this.informacionPerfil.perfil ||
+				this.formMoficacionPerfil.value.generarOrden != this.informacionPerfil.generarOrden ||
+				this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
+				this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
+				this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
+				this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
+				this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
+				this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||
+				this.formMoficacionPerfil.value.ordenEliminar != this.informacionPerfil.ordenEliminar	
+			)) ||
 			this.inputContrasenia
 		) {
 			this.mensajes.mensajeGenerico('Aún tienes cambios pendientes por guardar, antes de cerrar el modal se recomienda guardar cambios para no perder los mismos', 'warning', 'Cambios pendientes');
