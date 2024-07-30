@@ -47,9 +47,10 @@
                                     <option value="Técnico">Técnico</option>
                                 </select>
                             </div>
+
                             <div class="col-12">
-                                <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                    Solo los <b>Administradores</b> pueden validar y aprobar solicitudes
+                                <div *ngIf="formMoficacionPerfil.value.perfil == 'Administrador'" class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    Solo los <b>administradores</b> pueden validar y aprobar solicitudes
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </div>
@@ -101,21 +102,21 @@
         
                                         <div class="form-check form-switch f-left">
                                             <input class="form-check-input" type="checkbox" id="generarOrden"
-                                                [checked]="informacionPerfil.generarOrden == 1" (change)="cambioCheck('generarOrden')">
+                                                [checked]="formMoficacionPerfil.value.generarOrden == 1" (change)="cambioCheck('generarOrden')">
                                             <label class="form-check-label"
                                                 for="generarOrden">Generar orden</label>
                                         </div>
         
                                         <div class="form-check form-switch f-left">
                                             <input class="form-check-input" type="checkbox" id="detalleOrden"
-                                                [checked]="informacionPerfil.detalleOrden == 1" (change)="cambioCheck('detalleOrden')">
+                                                [checked]="formMoficacionPerfil.value.detalleOrden == 1" (change)="cambioCheck('detalleOrden')">
                                             <label class="form-check-label"
                                                 for="detalleOrden">Ver detalle orden</label>
                                         </div>
         
                                         <div class="form-check form-switch f-left">
                                             <input class="form-check-input" type="checkbox" id="entregarOrden"
-                                                [checked]="informacionPerfil.entregarOrden == 1" (change)="cambioCheck('entregarOrden')">
+                                                [checked]="formMoficacionPerfil.value.entregarOrden == 1" (change)="cambioCheck('entregarOrden')">
                                             <label class="form-check-label"
                                                 for="entregarOrden">Entregar orden</label>
                                         </div>
@@ -129,21 +130,21 @@
                                         <div class="col-lg-6">
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenActualizar"
-                                                    [checked]="informacionPerfil.ordenActualizar == 1" (change)="cambioCheck('ordenActualizar')">
+                                                    [checked]="formMoficacionPerfil.value.ordenActualizar == 1" (change)="cambioCheck('ordenActualizar')">
                                                 <label class="form-check-label"
                                                     for="ordenActualizar">Actualizar orden</label>
                                             </div>
         
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenConcluir"
-                                                    [checked]="informacionPerfil.ordenConcluir == 1" (change)="cambioCheck('ordenConcluir')">
+                                                    [checked]="formMoficacionPerfil.value.ordenConcluir == 1" (change)="cambioCheck('ordenConcluir')">
                                                 <label class="form-check-label"
                                                     for="ordenConcluir">Concluir orden</label>
                                             </div>
         
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenRetomar"
-                                                    [checked]="informacionPerfil.ordenRetomar == 1" (change)="cambioCheck('ordenRetomar')">
+                                                    [checked]="formMoficacionPerfil.value.ordenRetomar == 1" (change)="cambioCheck('ordenRetomar')">
                                                 <label class="form-check-label"
                                                     for="ordenRetomar">Retomar orden</label>
                                             </div>
@@ -152,14 +153,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenCancelar"
-                                                    [checked]="informacionPerfil.ordenCancelar == 1" (change)="cambioCheck('ordenCancelar')">
+                                                    [checked]="formMoficacionPerfil.value.ordenCancelar == 1" (change)="cambioCheck('ordenCancelar')">
                                                 <label class="form-check-label"
                                                     for="ordenCancelar">Cancelar orden</label>
                                             </div>
             
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenEliminar"
-                                                    [checked]="informacionPerfil.ordenEliminar == 1" (change)="cambioCheck('ordenEliminar')">
+                                                    [checked]="formMoficacionPerfil.value.ordenEliminar == 1" (change)="cambioCheck('ordenEliminar')">
                                                 <label class="form-check-label"
                                                     for="ordenEliminar">Eliminar orden</label>
                                             </div>
