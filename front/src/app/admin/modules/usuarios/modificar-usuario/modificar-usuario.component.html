@@ -47,8 +47,14 @@
                                     <option value="Técnico">Técnico</option>
                                 </select>
                             </div>
+                            <div class="col-12">
+                                <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    Solo los <b>Administradores</b> pueden validar y aprobar solicitudes
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </div>
 
-                            <div *ngIf="pkUsuario == 0" class="col-md-12 d-flex justify-content-center">
+                            <div *ngIf="pkUsuario == 0" class="col-md-12 d-flex justify-content-center" style="margin-top: 0px;">
                                 <div class="form-check form-switch">
                                     <input formControlName="cambioContraseniaPerfil" class="form-check-input"
                                         type="checkbox" id="cambioContraseniaPerfil"
@@ -58,7 +64,7 @@
                                 </div>
                             </div>
 
-                            <section *ngIf="inputContrasenia" class="row" style="margin-top: 10px !important;">
+                            <section *ngIf="inputContrasenia" class="row" style="margin-top: 15px !important;">
                                 <div class="col-lg-4">
                                     <label for="contraseniaAntigua" class="form-label">Contraseña actual <b
                                             style="color: brown;">*</b>:</label>
@@ -85,12 +91,12 @@
                             <div *ngIf="pkUsuario != 0 && informacionPerfil" class="card" style="margin-bottom: 0px !important;">
                                 <div class="card-body card-w-title">
                                     <section class="col-12 t-center">
-                                        <label for="correo" class="form-label">Permisos</label>
+                                        <label class="form-label">Permisos</label>
                                     </section>
                                     
                                     <div class="col-lg-4">
                                         <section class="col-12 t-center">
-                                            <label for="correo" class="form-label">Generales</label>
+                                            <label class="form-label">Generales</label>
                                         </section>
         
                                         <div class="form-check form-switch f-left">
@@ -117,7 +123,7 @@
         
                                     <div class="col-lg-8">
                                         <section class="col-12 t-center">
-                                            <label for="correo" class="form-label">Específicos orden</label>
+                                            <label class="form-label">Específicos orden</label>
                                         </section>
         
                                         <div class="col-lg-6">
