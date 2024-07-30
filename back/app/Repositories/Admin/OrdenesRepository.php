@@ -225,7 +225,7 @@ class OrdenesRepository
             'correo'                => $this->formatString($orden, 'correo'),
             'direccion'             => $this->formatString($orden, 'direccion'),
             'nota'                  => $this->formatString($orden, 'nota'),
-            'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($orden['token']),
+            'fkUsuarioModificacion' => $orden['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($orden['token']),
             'fechaModificacion'     => Carbon::now(),
         ];
 
@@ -295,14 +295,14 @@ class OrdenesRepository
             break;
             case 2:
                 $update = [
-                    'fkUsuarioConclucion' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
+                    'fkUsuarioConclucion' => $dataCancelacion['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaConclucion' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
             break;
             case 3:
                 $update = [
-                    'fkUsuarioEntrega' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
+                    'fkUsuarioEntrega' => $dataCancelacion['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaEntrega' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
@@ -311,7 +311,7 @@ class OrdenesRepository
                 $update = [
                     'fkUsuarioConclucion' => null,
                     'fechaConclucion' => null,
-                    'fkUsuarioCancelacion' => $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
+                    'fkUsuarioCancelacion' => $dataCancelacion['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($dataCambio['token']),
                     'fechaCancelacion' => Carbon::now(),
                     'status' => $dataCambio['status']
                 ];
@@ -323,10 +323,10 @@ class OrdenesRepository
         return $query->get()[0]->fkTblOrdenServicio ?? 0;
     }
 
-    public function cancelarOrdenServicio ($pkOrden, $token) {
-        TblOrdenesServicio::where('pkTblOrdenServicio', $pkOrden)
+    public function cancelarOrdenServicio ($dataCancelacion) {
+        TblOrdenesServicio::where('pkTblOrdenServicio', $dataCancelacion['pkTblOrdenServicio'])
                           ->update([
-                              'fkUsuarioCancelacion' => $this->usuarioService->obtenerPkPorToken($token),
+                              'fkUsuarioCancelacion' => $dataCancelacion['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($dataCancelacion['token']),
                               'fechaCancelacion' => Carbon::now(),
                               'status' => 4
                           ]);
@@ -372,7 +372,7 @@ class OrdenesRepository
     public function concluirOrdenServicio ($dataConclucion) {
         TblOrdenesServicio::where('pkTblOrdenServicio', $dataConclucion['pkTblOrdenServicio'])
                           ->update([
-                              'fkUsuarioConclucion' => $this->usuarioService->obtenerPkPorToken($dataConclucion['token']),
+                              'fkUsuarioConclucion' => $dataConclucion['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($dataConclucion['token']),
                               'fechaConclucion' => Carbon::now(),
                               'status' => 2
                           ]);
@@ -442,6 +442,10 @@ class OrdenesRepository
     }
 
     public function registrarSolicitudOrden ($solicitud) {
+        if (is_array($solicitud['data'])) {
+            $solicitud['data']['pkSolicitante'] = $this->usuarioService->obtenerPkPorToken($solicitud['token']);
+        }
+
         $registro = new TblSolicitudesOrdenes();
         $registro->fkTblOrdenServicio  = $solicitud['fkTblOrdenServicio'];
         $registro->tipoSolicitud       = $solicitud['tipoSolicitud'];

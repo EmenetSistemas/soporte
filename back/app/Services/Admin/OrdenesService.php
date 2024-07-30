@@ -117,7 +117,7 @@ class OrdenesService
             $this->ordenesRepository->actualizarOrdenServicio($orden);
             foreach ($orden['equipos'] as $equipo) {
                 if (isset($equipo['data']['pkTblDetalleOrdenServicio'])) {
-                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data'], $orden['token']);
+                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data'], $orden['pkSolicitante'] ?? $orden['token']);
                 } else {
                     $this->ordenesRepository->registrarDetalleOrdenServicio($orden['pkTblOrdenServicio'], $equipo['itemType'], $equipo['data']);
                 }
@@ -140,7 +140,7 @@ class OrdenesService
                 $this->ordenesRepository->retomarOrdenServicio($pkOrden);
             }
 
-            if ($dataCambio['status'] == 4) {
+            if ($dataCambio['status'] != 1) {
                 if ($this->ordenesRepository->validaStatusOrden($pkOrden, 1) > 0) {
 
                     DB::commit();
@@ -153,31 +153,28 @@ class OrdenesService
                 }
         
                 if ($this->ordenesRepository->validaStatusOrden($pkOrden, 2) > 0) {
-                    $dataConclucion = [
-                        'pkTblOrdenServicio' => $pkOrden,
-                        'token' => $dataCambio['token']
-                    ];
-
-                    $this->ordenesRepository->concluirOrdenServicio($dataConclucion);
+                    $dataCambio['pkTblOrdenServicio'] = $pkOrden;
+                    $this->ordenesRepository->concluirOrdenServicio($dataCambio);
 
                     DB::commit();
                     return response()->json(
                         [
                             'status' => 300,
-                            'mensaje' => 'Se eliminó el equipo de la orden de servicio y al no quedar servicios pendientes se cocluyó la orden de servicio con éxito'
+                            'mensaje' => 'Se actualizó el status del servicio con éxito y al no quedar servicios pendientes se cocluyó la orden de servicio con éxito'
                         ],
                         200
                     );
                 }
         
                 if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
-                    $this->ordenesRepository->cancelarOrdenServicio($pkOrden, $dataCambio['token']);
-
+                    $dataCambio['pkTblOrdenServicio'] = $pkOrden;
+                    $this->ordenesRepository->cancelarOrdenServicio($dataCambio);
+        
                     DB::commit();
                     return response()->json(
                         [
                             'status' => 300,
-                            'mensaje' => 'Se eliminó el equipo de la orden de servicio y al no quedar servicios pendientes se canceló la orden de servicio con éxito'
+                            'mensaje' => 'Se actualizó el status del servicio con éxito y al no quedar servicios pendientes se canceló la orden de servicio con éxito'
                         ],
                         200
                     );
@@ -195,7 +192,7 @@ class OrdenesService
 
     public function cancelarOrdenServicio ($dataCancelacion) {
         DB::beginTransaction();
-            $this->ordenesRepository->cancelarOrdenServicio($dataCancelacion['pkTblOrdenServicio'], $dataCancelacion['token']);
+            $this->ordenesRepository->cancelarOrdenServicio($dataCancelacion);
             $this->ordenesRepository->cancelarEquiposOrden($dataCancelacion['pkTblOrdenServicio']);
         DB::commit();
 
@@ -257,10 +254,8 @@ class OrdenesService
         }
 
         if ($this->ordenesRepository->validaStatusOrden($pkOrden, 2) > 0) {
-            $dataConclucion = [
-                'pkTblOrdenServicio' => $pkOrden
-            ];
-            $this->ordenesRepository->concluirOrdenServicio($dataConclucion);
+            $dataEliminacion['pkTblOrdenServicio'] = $pkOrden;
+            $this->ordenesRepository->concluirOrdenServicio($dataEliminacion);
             return response()->json(
                 [
                     'status' => 300,
@@ -271,7 +266,9 @@ class OrdenesService
         }
 
         if ($this->ordenesRepository->validaStatusOrden($pkOrden, 4) > 0) {
-            $this->ordenesRepository->cancelarOrdenServicio($pkOrden, $dataEliminacion['token']);
+            $dataEliminacion['pkTblOrdenServicio'] = $pkOrden;
+            $this->ordenesRepository->cancelarOrdenServicio($dataEliminacion);
+
             return response()->json(
                 [
                     'status' => 300,
