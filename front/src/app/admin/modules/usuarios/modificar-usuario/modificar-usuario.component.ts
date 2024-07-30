@@ -213,19 +213,17 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.value.aMaterno != this.informacionPerfil.aMaterno ||
 			this.formMoficacionPerfil.value.correo != this.informacionPerfil.correo ||
 			(
-				(
-					this.pkUsuario != 0 && (
-						this.formMoficacionPerfil.value.perfil != this.informacionPerfil.perfil ||
-						this.formMoficacionPerfil.value.generarOrden != this.informacionPerfil.generarOrden ||
-						this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
-						this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
-						this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
-						this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
-						this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
-						this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||
-						this.formMoficacionPerfil.value.ordenEliminar != this.informacionPerfil.ordenEliminar
-					)
-				) || this.pkUsuario == 0
+				this.pkUsuario != 0 && (
+					this.formMoficacionPerfil.value.perfil != this.informacionPerfil.perfil ||
+					this.formMoficacionPerfil.value.generarOrden != this.informacionPerfil.generarOrden ||
+					this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
+					this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
+					this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
+					this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
+					this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
+					this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||
+					this.formMoficacionPerfil.value.ordenEliminar != this.informacionPerfil.ordenEliminar
+				)
 			) ||
 			this.inputContrasenia
 		) {
