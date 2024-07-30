@@ -85,12 +85,18 @@ class UsuarioService
             );
         }
 
+        $mensaje = 'Se actualizó la información con éxito';
+
         DB::beginTransaction();
             if (isset($datosUsuario['pkUsuario'])) {
+                $mensaje = 'Se actualizó la información con éxito y se cerró toda sesión activa del perfil';
+
                 $this->usuarioRepository->modificarUsuarioPermisos(
                     $datosUsuario['perfilInformacion'],
                     $pkUsuario
-                );   
+                );
+
+                $this->usuarioRepository->cerrarSesionesActivas($pkUsuario);
             } else {
                 $this->usuarioRepository->modificarUsuario(
                     $datosUsuario['perfilInformacion'],
@@ -102,7 +108,7 @@ class UsuarioService
 
         return response()->json(
             [
-                'mensaje' => 'Se actualizó la información con éxito'
+                'mensaje' => $mensaje
             ],
             200
         );

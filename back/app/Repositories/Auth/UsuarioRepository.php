@@ -7,7 +7,7 @@ use App\Models\TblUsuarios;
 
 class UsuarioRepository
 {
-    public function obtenerInformacionUsuarioPorToken( $token ){
+    public function obtenerInformacionUsuarioPorToken ( $token ) {
         $usuario = TblSesiones::select('tblUsuarios.*')
                               ->join('tblUsuarios', 'tblUsuarios.pkTblUsuario', 'tblSesiones.fkTblUsuario')
 							  ->where('tblSesiones.token', $token);
@@ -15,7 +15,7 @@ class UsuarioRepository
         return $usuario->get();
     }
 
-    public function obtenerInformacionUsuarioPorPk( $pkUsuario ){
+    public function obtenerInformacionUsuarioPorPk ( $pkUsuario ) {
         $usuario = TblUsuarios::where('tblUsuarios.pkTblUsuario', $pkUsuario);
 
         return $usuario->get();
@@ -51,7 +51,7 @@ class UsuarioRepository
         return $query->get();
     }
 
-    public function validarCorreoExiste($correo, $idUsuario){
+    public function validarCorreoExiste ($correo, $idUsuario) {
         $validarCorreo = TblUsuarios::where([
                                             ['correo',$correo],
                                             ['pkTblUsuario','!=', $idUsuario]
@@ -59,12 +59,12 @@ class UsuarioRepository
         return $validarCorreo->count();
     }
 
-    public function modificarUsuario($datosUsuario, $idUsuario, $cambioPass){
+    public function modificarUsuario ($datosUsuario, $idUsuario, $cambioPass) {
         $actualizar = [
-            'nombre'   =>  $this->trimValidator($datosUsuario['nombre']),
-            'aPaterno' =>  $this->trimValidator($datosUsuario['aPaterno']),
-            'aMaterno' =>  $this->trimValidator($datosUsuario['aMaterno']),
-            'correo'   =>  $this->trimValidator($datosUsuario['correo'])
+            'nombre'   => $this->trimValidator($datosUsuario['nombre']),
+            'aPaterno' => $this->trimValidator($datosUsuario['aPaterno']),
+            'aMaterno' => $this->trimValidator($datosUsuario['aMaterno']),
+            'correo'   => $this->trimValidator($datosUsuario['correo'])
         ];
 
         if($cambioPass){
@@ -75,12 +75,12 @@ class UsuarioRepository
                    ->update($actualizar);
     }
 
-    public function modificarUsuarioPermisos($datosUsuario, $idUsuario){
+    public function modificarUsuarioPermisos ($datosUsuario, $idUsuario) {
         $actualizar = [
-            'nombre'          =>  $this->trimValidator($datosUsuario['nombre']),
-            'aPaterno'        =>  $this->trimValidator($datosUsuario['aPaterno']),
-            'aMaterno'        =>  $this->trimValidator($datosUsuario['aMaterno']),
-            'correo'          =>  $this->trimValidator($datosUsuario['correo']),
+            'nombre'          => $this->trimValidator($datosUsuario['nombre']),
+            'aPaterno'        => $this->trimValidator($datosUsuario['aPaterno']),
+            'aMaterno'        => $this->trimValidator($datosUsuario['aMaterno']),
+            'correo'          => $this->trimValidator($datosUsuario['correo']),
             'generarOrden'    => $datosUsuario['generarOrden'],
             'detalleOrden'    => $datosUsuario['detalleOrden'],
             'entregarOrden'   => $datosUsuario['entregarOrden'],
@@ -95,7 +95,7 @@ class UsuarioRepository
                    ->update($actualizar);
     }
 
-    public function validarContraseniaActual($idUsuario, $password){
+    public function validarContraseniaActual ($idUsuario, $password) {
         $temporal = TblUsuarios::select(
                                     'password'
                                 )
@@ -103,6 +103,11 @@ class UsuarioRepository
                                 ->first();
 
         return password_verify($password, $temporal->password);
+    }
+
+    public function cerrarSesionesActivas ($pkUsuario) {
+        TblSesiones::where('fkTblUsuario', $pkUsuario)
+                   ->delete();
     }
 
     public function trimValidator ( $value ) {

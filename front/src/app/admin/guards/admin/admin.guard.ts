@@ -56,7 +56,7 @@ export class AdminGuard implements CanActivate {
 					localStorage.removeItem('token_soporte');
 					localStorage.removeItem('permisos_soporte');
 					this.router.navigate(['/login']);
-					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
+					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'warning');
 					return false;
 				}
 			},

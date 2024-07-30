@@ -125,7 +125,10 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 				respuesta => {
 					this.datosTabla = respuesta.data.solicitudes;
 				}, error => {
-					this.mensajes.mensajeGenerico('error', 'error');
+					localStorage.removeItem('token_soporte');
+					localStorage.removeItem('permisos_soporte');
+					this.router.navigate(['/login']);
+					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'warning');
 				}
 			);
 		}

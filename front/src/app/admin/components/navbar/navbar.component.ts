@@ -75,7 +75,7 @@ export class NavbarComponent implements OnDestroy{
 					localStorage.removeItem('token_soporte');
 					localStorage.removeItem('permisos_soporte');
 					this.router.navigate(['/login']);
-					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'error');
+					this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'warning');
 				}
 			)
 		}
@@ -97,7 +97,10 @@ export class NavbarComponent implements OnDestroy{
 			respuesta => {
 				this.solicitudesOrdenes = respuesta.data.solicitudes;
 			}, error => {
-				this.mensajes.mensajeGenerico('error', 'error');
+				localStorage.removeItem('token_soporte');
+				localStorage.removeItem('permisos_soporte');
+				this.router.navigate(['/login']);
+				this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'warning');
 			}
 		);
 	}
@@ -115,10 +118,11 @@ export class NavbarComponent implements OnDestroy{
 						localStorage.removeItem('permisos_soporte');
 						this.router.navigate(['/login']);
 						this.mensajes.mensajeGenerico(respuesta.mensaje, 'info');
-					},
-		
-					error => {
-						this.mensajes.mensajeGenerico('error', 'error');
+					}, error => {
+						localStorage.removeItem('token_soporte');
+						localStorage.removeItem('permisos_soporte');
+						this.router.navigate(['/login']);
+						this.mensajes.mensajeGenerico('Al parecer su sesión expiró, necesita volver a iniciar sesión', 'warning');
 					}
 				);
 			}
