@@ -19,6 +19,39 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 
 	protected informacionPerfil: any;
 
+	protected permisos: any = {
+		'Administrador': {
+			'generarOrden': 1,
+			'detalleOrden': 1,
+			'entregarOrden': 1,
+			'ordenActualizar': 1,
+			'ordenConcluir': 1,
+			'ordenRetomar': 1,
+			'ordenCancelar': 1,
+			'ordenEliminar': 1
+		},
+		'Supervisor': {
+			'generarOrden': 1,
+			'detalleOrden': 1,
+			'entregarOrden': 1,
+			'ordenActualizar': 1,
+			'ordenConcluir': 1,
+			'ordenRetomar': 0,
+			'ordenCancelar': 0,
+			'ordenEliminar': 0
+		},
+		'Técnico': {
+			'generarOrden': 1,
+			'detalleOrden': 1,
+			'entregarOrden': 0,
+			'ordenActualizar': 0,
+			'ordenConcluir': 0,
+			'ordenRetomar': 0,
+			'ordenCancelar': 0,
+			'ordenEliminar': 0
+		}
+	};
+
 	constructor(
 		private mensajes: MensajesService,
 		private fb: FormBuilder,
@@ -104,6 +137,45 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.get('perfil')?.disable();
 			this.formMoficacionPerfil.get('perfil')?.clearValidators();
 			this.formMoficacionPerfil.get('perfil')?.updateValueAndValidity();
+		}
+	}
+
+	protected cambioPermisosPerfil(): void {
+		this.formMoficacionPerfil.get('generarOrden')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].generarOrden);
+		this.formMoficacionPerfil.get('detalleOrden')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].detalleOrden);
+		this.formMoficacionPerfil.get('entregarOrden')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].entregarOrden);
+		this.formMoficacionPerfil.get('ordenActualizar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenActualizar);
+		this.formMoficacionPerfil.get('ordenConcluir')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenConcluir);
+		this.formMoficacionPerfil.get('ordenRetomar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenRetomar);
+		this.formMoficacionPerfil.get('ordenCancelar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenCancelar);
+		this.formMoficacionPerfil.get('ordenEliminar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenEliminar);
+	}
+
+	protected cambioContraseniaPerfil(): void {
+		this.inputContrasenia = this.formMoficacionPerfil.get('cambioContraseniaPerfil')?.value;
+		if (this.inputContrasenia == false) {
+			this.formMoficacionPerfil.controls['contraseniaAntigua']?.disable();
+			this.formMoficacionPerfil.controls['contraseniaNueva']?.disable();
+			this.formMoficacionPerfil.controls['confContraseniaNueva']?.disable();
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValue(null);
+			this.formMoficacionPerfil.get('contraseniaNueva')?.setValue(null);
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValue(null);
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.clearValidators();
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.updateValueAndValidity();
+			this.formMoficacionPerfil.get('contraseniaNueva')?.clearValidators();
+			this.formMoficacionPerfil.get('contraseniaNueva')?.updateValueAndValidity();
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.clearValidators();
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.updateValueAndValidity();
+		} else {
+			this.formMoficacionPerfil.controls['contraseniaNueva']?.enable();
+			this.formMoficacionPerfil.controls['contraseniaAntigua']?.enable();
+			this.formMoficacionPerfil.controls['confContraseniaNueva']?.enable();
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.updateValueAndValidity();
+			this.formMoficacionPerfil.get('contraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('contraseniaNueva')?.updateValueAndValidity();
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.updateValueAndValidity();
 		}
 	}
 
@@ -232,34 +304,6 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 		}
 
 		this.bsModalRef.hide();
-	}
-
-	protected cambioContraseniaPerfil(): void {
-		this.inputContrasenia = this.formMoficacionPerfil.get('cambioContraseniaPerfil')?.value;
-		if (this.inputContrasenia == false) {
-			this.formMoficacionPerfil.controls['contraseniaAntigua']?.disable();
-			this.formMoficacionPerfil.controls['contraseniaNueva']?.disable();
-			this.formMoficacionPerfil.controls['confContraseniaNueva']?.disable();
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValue(null);
-			this.formMoficacionPerfil.get('contraseniaNueva')?.setValue(null);
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValue(null);
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.clearValidators();
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('contraseniaNueva')?.clearValidators();
-			this.formMoficacionPerfil.get('contraseniaNueva')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.clearValidators();
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.updateValueAndValidity();
-		} else {
-			this.formMoficacionPerfil.controls['contraseniaNueva']?.enable();
-			this.formMoficacionPerfil.controls['contraseniaAntigua']?.enable();
-			this.formMoficacionPerfil.controls['confContraseniaNueva']?.enable();
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('contraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
-			this.formMoficacionPerfil.get('contraseniaNueva')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.updateValueAndValidity();
-		}
 	}
 
 	ngOnDestroy(): void {

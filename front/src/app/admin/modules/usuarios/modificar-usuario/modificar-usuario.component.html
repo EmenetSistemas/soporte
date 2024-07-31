@@ -40,7 +40,7 @@
 
                             <div class="col-lg-4 col-md-12">
                                 <label for="perfil" class="form-label required">Perfil:</label>
-                                <select class="form-control" formControlName="perfil" id="perfil">
+                                <select class="form-control" formControlName="perfil" id="perfil" (change)="cambioPermisosPerfil()">
                                     <option value="" style="visibility: hidden; display: none;">Seleccione un perfil</option>
                                     <option value="Administrador">Administrador</option>
                                     <option value="Supervisor">Supervisor</option>
