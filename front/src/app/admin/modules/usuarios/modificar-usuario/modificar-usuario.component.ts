@@ -25,6 +25,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			'detalleOrden': 1,
 			'entregarOrden': 1,
 			'ordenActualizar': 1,
+			'ordenActualizarCantidades': 1,
 			'ordenConcluir': 1,
 			'ordenRetomar': 1,
 			'ordenCancelar': 1,
@@ -35,6 +36,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			'detalleOrden': 1,
 			'entregarOrden': 1,
 			'ordenActualizar': 1,
+			'ordenActualizarCantidades': 0,
 			'ordenConcluir': 1,
 			'ordenRetomar': 0,
 			'ordenCancelar': 0,
@@ -45,6 +47,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			'detalleOrden': 1,
 			'entregarOrden': 0,
 			'ordenActualizar': 0,
+			'ordenActualizarCantidades': 0,
 			'ordenConcluir': 0,
 			'ordenRetomar': 0,
 			'ordenCancelar': 0,
@@ -73,23 +76,24 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 
 	private crearformMoficacionPerfil(): void {
 		this.formMoficacionPerfil = this.fb.group({
-			nombre                  : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-			aPaterno                : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-			aMaterno                : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
-			correo                  : ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
-			perfil					: ['', [Validators.required]],
-			generarOrden            : [''],
-			detalleOrden            : [''],
-			entregarOrden           : [''],
-			ordenActualizar         : [''],
-			ordenConcluir           : [''],
-			ordenRetomar            : [''],
-			ordenCancelar           : [''],
-			ordenEliminar           : [''],
-			cambioContraseniaPerfil : [''],
-			contraseniaAntigua      : [''],
-			contraseniaNueva        : [''],
-			confContraseniaNueva    : ['']
+			nombre                    : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+			aPaterno                  : ['', [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+			aMaterno                  : ['', [Validators.pattern('[a-zA-Zá-úÁ-Ú ]*')]],
+			correo                    : ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
+			perfil					  : ['', [Validators.required]],
+			generarOrden              : [''],
+			detalleOrden              : [''],
+			entregarOrden             : [''],
+			ordenActualizar           : [''],
+			ordenActualizarCantidades : [''],
+			ordenConcluir             : [''],
+			ordenRetomar              : [''],
+			ordenCancelar             : [''],
+			ordenEliminar             : [''],
+			cambioContraseniaPerfil   : [''],
+			contraseniaAntigua        : [''],
+			contraseniaNueva          : [''],
+			confContraseniaNueva      : ['']
 		})
 	}
 
@@ -129,6 +133,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.get('detalleOrden')?.setValue(this.informacionPerfil.detalleOrden);
 			this.formMoficacionPerfil.get('entregarOrden')?.setValue(this.informacionPerfil.entregarOrden);
 			this.formMoficacionPerfil.get('ordenActualizar')?.setValue(this.informacionPerfil.ordenActualizar);
+			this.formMoficacionPerfil.get('ordenActualizarCantidades')?.setValue(this.informacionPerfil.ordenActualizarCantidades);
 			this.formMoficacionPerfil.get('ordenConcluir')?.setValue(this.informacionPerfil.ordenConcluir);
 			this.formMoficacionPerfil.get('ordenRetomar')?.setValue(this.informacionPerfil.ordenRetomar);
 			this.formMoficacionPerfil.get('ordenCancelar')?.setValue(this.informacionPerfil.ordenCancelar);
@@ -145,6 +150,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 		this.formMoficacionPerfil.get('detalleOrden')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].detalleOrden);
 		this.formMoficacionPerfil.get('entregarOrden')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].entregarOrden);
 		this.formMoficacionPerfil.get('ordenActualizar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenActualizar);
+		this.formMoficacionPerfil.get('ordenActualizarCantidades')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenActualizarCantidades);
 		this.formMoficacionPerfil.get('ordenConcluir')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenConcluir);
 		this.formMoficacionPerfil.get('ordenRetomar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenRetomar);
 		this.formMoficacionPerfil.get('ordenCancelar')?.setValue(this.permisos[this.formMoficacionPerfil.value.perfil].ordenCancelar);
@@ -180,7 +186,11 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 	}
 
 	protected cambioCheck(option: string): void {
-		this.formMoficacionPerfil.value[option] = (!this.formMoficacionPerfil.value[option] == true ? 1 : 0);
+		this.formMoficacionPerfil.get(option)?.setValue(!this.formMoficacionPerfil.value[option] == true ? 1 : 0);
+		
+		if (option == 'ordenActualizar' && this.formMoficacionPerfil.value['ordenActualizar'] == 0) {
+			this.formMoficacionPerfil.get('ordenActualizarCantidades')?.setValue(0);
+		}
 	}
 
 	async modificarPerfil(): Promise<any> {
@@ -202,6 +212,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 						this.formMoficacionPerfil.value.detalleOrden == this.informacionPerfil.detalleOrden &&
 						this.formMoficacionPerfil.value.entregarOrden == this.informacionPerfil.entregarOrden &&
 						this.formMoficacionPerfil.value.ordenActualizar == this.informacionPerfil.ordenActualizar &&
+						this.formMoficacionPerfil.value.ordenActualizarCantidades == this.informacionPerfil.ordenActualizarCantidades &&
 						this.formMoficacionPerfil.value.ordenConcluir == this.informacionPerfil.ordenConcluir &&
 						this.formMoficacionPerfil.value.ordenRetomar == this.informacionPerfil.ordenRetomar &&
 						this.formMoficacionPerfil.value.ordenCancelar == this.informacionPerfil.ordenCancelar &&
@@ -291,6 +302,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 					this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
 					this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
 					this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
+					this.formMoficacionPerfil.value.ordenActualizarCantidades != this.informacionPerfil.ordenActualizarCantidades ||
 					this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
 					this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
 					this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||

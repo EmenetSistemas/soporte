@@ -89,7 +89,7 @@
                                 </div>
                             </section>
 
-                            <div *ngIf="pkUsuario != 0 && informacionPerfil" class="card" style="margin-bottom: 0px !important;">
+                            <div *ngIf="pkUsuario != 0 && informacionPerfil" class="card" style="margin-top: 10px !important; margin-bottom: 0px !important;">
                                 <div class="card-body card-w-title">
                                     <section class="col-12 t-center">
                                         <label class="form-label">Permisos</label>
@@ -134,19 +134,21 @@
                                                 <label class="form-check-label"
                                                     for="ordenActualizar">Actualizar orden</label>
                                             </div>
+
+                                            <div class="form-check form-switch f-left">
+                                                <input class="form-check-input" type="checkbox" id="ordenActualizarCantidades"
+                                                    [checked]="formMoficacionPerfil.value.ordenActualizarCantidades == 1"
+                                                    [disabled]="formMoficacionPerfil.value['ordenActualizar'] == 0"
+                                                    (change)="cambioCheck('ordenActualizarCantidades')">
+                                                <label class="form-check-label"
+                                                    for="ordenActualizarCantidades">Actualizar cantidades</label>
+                                            </div>
         
                                             <div class="form-check form-switch f-left">
                                                 <input class="form-check-input" type="checkbox" id="ordenConcluir"
                                                     [checked]="formMoficacionPerfil.value.ordenConcluir == 1" (change)="cambioCheck('ordenConcluir')">
                                                 <label class="form-check-label"
                                                     for="ordenConcluir">Concluir orden</label>
-                                            </div>
-        
-                                            <div class="form-check form-switch f-left">
-                                                <input class="form-check-input" type="checkbox" id="ordenRetomar"
-                                                    [checked]="formMoficacionPerfil.value.ordenRetomar == 1" (change)="cambioCheck('ordenRetomar')">
-                                                <label class="form-check-label"
-                                                    for="ordenRetomar">Retomar orden</label>
                                             </div>
                                         </div>
         
@@ -164,6 +166,13 @@
                                                 <label class="form-check-label"
                                                     for="ordenEliminar">Eliminar orden</label>
                                             </div>
+
+                                            <div class="form-check form-switch f-left">
+                                                <input class="form-check-input" type="checkbox" id="ordenRetomar"
+                                                    [checked]="formMoficacionPerfil.value.ordenRetomar == 1" (change)="cambioCheck('ordenRetomar')">
+                                                <label class="form-check-label"
+                                                    for="ordenRetomar">Retomar orden</label>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -173,6 +182,7 @@
 				                        this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
 				                        this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
 				                        this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
+				                        this.formMoficacionPerfil.value.ordenActualizarCantidades != this.informacionPerfil.ordenActualizarCantidades ||
 				                        this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
 				                        this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
 				                        this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||
