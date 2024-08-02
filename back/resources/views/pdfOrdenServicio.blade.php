@@ -151,7 +151,7 @@
             <table style="margin-top: 15px !important; page-break-inside: avoid;">
                 <thead>
                     <tr>
-                        <th @if($equipo->status == 4) style="background-color: #FF6666 !important;" @endif colspan="2">{{$equipo->nombre}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ {{ number_format($equipo->costoReparacion, 0, ',', ',') }}</th>
+                        <th @if($equipo->status == 4) style="background-color: #FF6666 !important;" @endif colspan="2">{{$equipo->nombre}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ {{ number_format((float)$equipo->costoReparacion, 0, ',', ',') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,7 +168,7 @@
                         <td>{{$equipo->diagnosticoFinal == '' || $equipo->diagnosticoFinal == null ? 'Sin información' : $equipo->diagnosticoFinal}}</td>
                     </tr>
                     @php
-                        $dataOrden['orden']->total += $equipo->costoReparacion;
+                        $dataOrden['orden']->total += (float)$equipo->costoReparacion;
                         $items = [];
                         if ($equipo->base == 1) $items[] = 'Base';
                         if ($equipo->bisagras == 1) $items[] = 'Bisagras';
@@ -222,9 +222,9 @@
                     <tr>
                         <td align="center">{{$dataOrden['orden']->fechaRegistro}}</td>
                         <td align="center">{{$dataOrden['orden']->fechaEntrega ?? 'Pendiente'}}</td>
-                        <td align="center">$ {{ number_format($dataOrden['orden']->total, 0, ',', ',') }}</td>
-                        <td align="center">$ {{ number_format($dataOrden['orden']->aCuenta, 0, ',', ',') }}</td>
-                        <td align="center">{{$dataOrden['orden']->total - $dataOrden['orden']->aCuenta == 0 ? 'Pagado' : '$ '.number_format(($dataOrden['orden']->total - $dataOrden['orden']->aCuenta), 0, ',', ',')}}</td>
+                        <td align="center">$ {{ number_format((float)$dataOrden['orden']->total, 0, ',', ',') }}</td>
+                        <td align="center">$ {{ number_format((float)$dataOrden['orden']->aCuenta, 0, ',', ',') }}</td>
+                        <td align="center">{{(float)$dataOrden['orden']->total - (float)$dataOrden['orden']->aCuenta == 0 ? 'Pagado' : '$ '.number_format((float)($dataOrden['orden']->total - (float)$dataOrden['orden']->aCuenta), 0, ',', ',')}}</td>
                     </tr>
                 </tbody>
             </table>
