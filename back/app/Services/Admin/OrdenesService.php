@@ -4,6 +4,7 @@ namespace App\Services\Admin;
 
 use App\Repositories\Admin\OrdenesRepository;
 use App\Repositories\Auth\UsuarioRepository;
+use App\Services\Auth\UsuarioService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,13 +14,16 @@ class OrdenesService
 {
     protected $ordenesRepository;
     protected $usuarioRepository;
+    protected $usuarioService;
 
     public function __construct(
         OrdenesRepository $OrdenesRepository,
-        UsuarioRepository $UsuarioRepository
+        UsuarioRepository $UsuarioRepository,
+        UsuarioService $UsuarioService
     ) {
         $this->ordenesRepository = $OrdenesRepository;
         $this->usuarioRepository = $UsuarioRepository;
+        $this->usuarioService = $UsuarioService;
     }
 
     public function registrarOrdenServicio ($orden) {
@@ -115,9 +119,11 @@ class OrdenesService
     public function actualizarOrdenServicio ($orden) {
         DB::beginTransaction();
             $this->ordenesRepository->actualizarOrdenServicio($orden);
+            $solicitante = $orden['pkSolicitante'] ?? $this->usuarioService->obtenerPkPorToken($orden['token']);
+
             foreach ($orden['equipos'] as $equipo) {
                 if (isset($equipo['data']['pkTblDetalleOrdenServicio'])) {
-                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data'], $orden['pkSolicitante'] ?? $orden['token']);
+                    $this->ordenesRepository->actualizarDetalleOrdenServicio($equipo['data'], $solicitante);
                 } else {
                     $this->ordenesRepository->registrarDetalleOrdenServicio($orden['pkTblOrdenServicio'], $equipo['itemType'], $equipo['data']);
                 }
@@ -314,6 +320,8 @@ class OrdenesService
     }
 
     public function registrarSolicitudOrden ($solicitud) {
+        Log::alert($solicitud);
+
         $this->ordenesRepository->registrarSolicitudOrden($solicitud);
 
         return response()->json(
@@ -328,14 +336,15 @@ class OrdenesService
         $solicitudes = $this->ordenesRepository->obtenerSolicitudesOrdenes($status, null, $tokenUsuario);
 
         $tituloSolicitud = [
-            'actualizar'      => 'Actualizar orden',
-            'concluir'        => 'Concluir orden',
-            'concluir-equipo' => 'Concluir equipo',
-            'cancelar'        => 'Cancelar orden',
-            'cancelar-equipo' => 'Cancelar equipo',
-            'retomar'         => 'Retomar orden',
-            'retomar-equipo'  => 'Retomar equipo',
-            'eliminar-equipo' => 'Eliminar equipo'
+            'actualizar'            => 'Actualizar orden',
+            'actualizar-cantidades' => 'Actualizar cantidades',
+            'concluir'              => 'Concluir orden',
+            'concluir-equipo'       => 'Concluir equipo',
+            'cancelar'              => 'Cancelar orden',
+            'cancelar-equipo'       => 'Cancelar equipo',
+            'retomar'               => 'Retomar orden',
+            'retomar-equipo'        => 'Retomar equipo',
+            'eliminar-equipo'       => 'Eliminar equipo'
         ];
 
         $statusPosterior = [
@@ -382,7 +391,7 @@ class OrdenesService
                 
             }
             
-            if ($solicitud->actividad != 'actualizar') {
+            if ($solicitud->actividad != 'actualizar' && $solicitud->actividad != 'actualizar-cantidades') {
                 $solicitud->statusPosterior = $statusPosterior[$solicitud->actividad];
                 $solicitud->fondoPosterior  = $bg[$solicitud->actividad];
                 $solicitud->iconoPosterior  = $icon[$solicitud->actividad];
@@ -428,6 +437,7 @@ class OrdenesService
         DB::beginTransaction();
             switch ($solicitud->actividad) {
                 case 'actualizar':
+                case 'actualizar-cantidades':
                     $message = $this->actualizarOrdenServicio($dataCambio);
                 break;
                 case 'retomar':

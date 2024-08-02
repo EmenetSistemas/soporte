@@ -236,7 +236,7 @@ class OrdenesRepository
                           ->update($update);
     }
 
-    public function actualizarDetalleOrdenServicio ($equipo, $token) {
+    public function actualizarDetalleOrdenServicio ($equipo, $solicitante) {
         TblDetalleOrdenServicio::where('pkTblDetalleOrdenServicio', $equipo['pkTblDetalleOrdenServicio'])
                                ->update([
                                    'nombre'                => $this->formatString($equipo, 'equipo'),
@@ -269,7 +269,7 @@ class OrdenesRepository
                                    'detalles'              => $this->formatString($equipo, 'detalles'),
                                    'costoReparacion'       => trim(str_replace(['$', ','], '', $equipo['costoReparacion'])),
                                    'diagnosticoFinal'      => $this->formatString($equipo, 'diagnosticoFinal'),
-                                   'fkUsuarioModificacion' => $this->usuarioService->obtenerPkPorToken($token),
+                                   'fkUsuarioModificacion' => $solicitante,
                                    'fechaModificacion'     => Carbon::now(),
                                ]);
     }
