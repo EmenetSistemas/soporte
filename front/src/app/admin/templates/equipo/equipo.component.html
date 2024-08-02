@@ -142,7 +142,7 @@
                                     (input)="moneyFormat($event)"
                                     [readOnly]="data.datosEquipo != undefined && data.datosEquipo != null && permisos.ordenActualizarCantidades != 1 && !parent.solicitudCambioCantidad"
                                     [ngStyle]="{'background': data.datosEquipo != undefined && data.datosEquipo != null && ((permisos.ordenActualizarCantidades != 1 && !parent.solicitudCambioCantidad) || data.type == 'readonly' || data.status >= 3) ? '#e9ecef' : 'white'}">
-                                <button *ngIf="data.datosEquipo && data.datosEquipo.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{parent.solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
+                                <button *ngIf="data.type != 'readonly' && data.datosEquipo && data.datosEquipo.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{parent.solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
                                     <i *ngIf="!parent.solicitudCambioCantidad" class="bi bi-pencil-square"></i>
                                     <b><i *ngIf="parent.solicitudCambioCantidad" class="bi bi-ban"></i></b>
                                 </button>

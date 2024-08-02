@@ -4,9 +4,9 @@
             <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="orden-ahora" data-bs-toggle="tab" data-bs-target="#bordered-home"
-                        type="button" role="tab" aria-controls="home" aria-selected="true">Ahora</button>
+                        type="button" role="tab" aria-controls="home" aria-selected="true">{{solicitud.status == 1 ? 'Ahora' : 'Cambios aplicados'}}</button>
                 </li>
-                <li *ngIf="!solicitud.type" class="nav-item" role="presentation">
+                <li *ngIf="solicitud.status == 1" class="nav-item" role="presentation">
                     <button class="nav-link" id="orden-despues" data-bs-toggle="tab" data-bs-target="#bordered-profile"
                         type="button" role="tab" aria-controls="profile" aria-selected="false"
                         tabindex="-1">Después</button>
@@ -14,10 +14,10 @@
             </ul>
             <div class="tab-content pt-2" id="borderedTabContent">
                 <div class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="orden-ahora">
-                    <app-orden *ngIf="!solicitud.type" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [solicitante]="solicitud"></app-orden>
-                    <app-orden *ngIf="solicitud.type" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
+                    <app-orden *ngIf="solicitud.status == 1" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [solicitante]="solicitud"></app-orden>
+                    <app-orden *ngIf="!(solicitud.status == 1)" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
-                <div *ngIf="!solicitud.type" class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
+                <div *ngIf="solicitud.status == 1" class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="orden-despues">
                     <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
             </div>
@@ -26,7 +26,7 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button *ngIf="permisos.perfil == 'Administrador' && !solicitud.type" type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
-    <button *ngIf="!solicitud.type" type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">{{permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'}}</button>
+    <button *ngIf="permisos.perfil == 'Administrador' && solicitud.status == 1" type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
+    <button *ngIf="solicitud.status == 1" type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">{{permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'}}</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

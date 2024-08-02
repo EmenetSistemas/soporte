@@ -127,7 +127,7 @@
                                             [readOnly]="pkOrden != 0 && permisos.ordenActualizarCantidades != 1 && !solicitudCambioCantidad"
                                             [ngStyle]="{'background': pkOrden != 0 && ((permisos.ordenActualizarCantidades != 1 && !solicitudCambioCantidad) || (this.pkOrdenSolicitud != 0 || detalleOrden.status >= 3)) ? '#e9ecef' : 'white'}"
                                             (input)="moneyFormat($event)" (input)="writeACuenta()" maxlength="11">
-                                        <button *ngIf="pkOrden != 0 && detalleOrden.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
+                                        <button *ngIf="pkOrdenSolicitud == 0 && pkOrden != 0 && detalleOrden.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
                                             <i *ngIf="!solicitudCambioCantidad" class="bi bi-pencil-square"></i>
                                             <b><i *ngIf="solicitudCambioCantidad" class="bi bi-ban"></i></b>
                                         </button>
@@ -174,10 +174,10 @@
                 </div>
 
                 <div *ngIf="solicitante != null" class="col-12 t-center" style="margin-top: 10px;">
-                    <label *ngIf="permisos.perfil == 'Administrador'" style="color: #008FFF !important;">
+                    Solicitud <label *ngIf="permisos.perfil == 'Administrador'" style="color: #008FFF !important;">
                         {{solicitante.solicitante}}
                     </label>
-                    <span *ngIf="permisos.perfil == 'Administrador'"> | </span>
+                    <br>
                     <label>{{solicitante.fechaSolicitud}}</label>
                 </div>
             </div>
