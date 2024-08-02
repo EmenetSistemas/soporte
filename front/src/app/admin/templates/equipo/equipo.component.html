@@ -125,13 +125,12 @@
                             <textarea class="form-control" placeholder="Diagnóstico final"
                                 formControlName="diagnosticoFinal" (keypress)="soloTexto($event)" rows="2"></textarea>
                         </div>
-                        <div
-                            [ngClass]="{'col-xxl-9 col-lg-8 col-md-8 col-sm-8': data.datosEquipo == undefined || data.datosEquipo == null, 'col-xxl-4 col-lg-4 col-md-8 col-sm-8': data.datosEquipo}">
+                        <div class="{{data.datosEquipo ? 'col-xxl-4 col-lg-4 col-md-8' : 'col-xxl-9 col-lg-8 col-md-8'}}">
                             <label class="form-label">Detalles:</label>
                             <textarea class="form-control" placeholder="Detalles" formControlName="detalles"
                                 (keypress)="soloTexto($event)" rows="2"></textarea>
                         </div>
-                        <div class="col-xxl-3 col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-xxl-3 col-lg-4 col-md-4">
                             <label class="form-label required">Costo:</label>
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control t-center" placeholder="Costo"
