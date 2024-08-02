@@ -140,6 +140,7 @@ export class NavbarComponent implements OnDestroy{
 
 		switch (solicitud.actividad) {
 			case 'actualizar':
+			case 'actualizar-cantidades':
 				this.modal.abrirModalConComponente(ActualizacionOrdenComponent, dataModal, 'modal-xxl');
 			break;
 			default:

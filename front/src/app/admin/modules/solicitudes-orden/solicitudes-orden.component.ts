@@ -55,6 +55,9 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 					'text': 'actualizar',
 					'color': 'info'
 				}, {
+					'text': 'actualizar-cantidades',
+					'color': 'info'
+				}, {
 					'text': 'retomar',
 					'color': 'warning'
 				}, {
@@ -172,6 +175,7 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 	
 			switch (solicitud.actividad) {
 				case 'actualizar':
+				case 'actualizar-cantidades':
 					this.modal.abrirModalConComponente(ActualizacionOrdenComponent, dataModal, 'modal-xxl');
 				break;
 				default:

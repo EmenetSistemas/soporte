@@ -13,12 +13,12 @@
             &nbsp;
 
             <span
-                *ngIf="formEquipo.valid && (!data.datosEquipo || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)"
+                *ngIf="formEquipo.valid && (data.datosEquipo == undefined || data.datosEquipo == null || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)"
                 class="badge bg-success">
                 &nbsp;<i class="bi bi-check-circle me-1"></i>
             </span>
             <span
-                *ngIf="!formEquipo.valid && (!data.datosEquipo || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)"
+                *ngIf="!formEquipo.valid && (data.datosEquipo == undefined || data.datosEquipo == null || data.datosEquipo?.status == 1 || data.datosEquipo?.status == 2)"
                 class="badge bg-warning text-dark">
                 &nbsp;<i class="bi bi-exclamation-triangle me-1"></i>
             </span>
@@ -115,30 +115,39 @@
                             <div *ngFor="let check of checks" class="form-check form-switch f-left">
                                 <input class="form-check-input" type="checkbox" id="{{check.identificador+data.idItem}}"
                                     [checked]="check.checked" (change)="cambioCheck(check)"
-                                    [disabled]="this.data.type == 'readonly' || (this.data.datosEquipo && this.data.datosEquipo.status >= 3)">
+                                    [disabled]="data.type == 'readonly' || (data.datosEquipo && data.datosEquipo.status >= 3)">
                                 <label class="form-check-label"
                                     for="{{check.identificador+data.idItem}}">{{check.label}}</label>
                             </div>
                         </div>
-                        <div *ngIf="data.datosEquipo" class="col-sm-5">
+                        <div *ngIf="data.datosEquipo" class="col-xxl-5 col-lg-4 col-md-12">
                             <label class="form-label">Diagnóstico final:</label>
                             <textarea class="form-control" placeholder="Diagnóstico final"
                                 formControlName="diagnosticoFinal" (keypress)="soloTexto($event)" rows="2"></textarea>
                         </div>
-                        <div [ngClass]="{'col-sm-10': !data.datosEquipo, 'col-sm-5': data.datosEquipo}">
+                        <div
+                            [ngClass]="{'col-xxl-9 col-lg-8 col-md-8 col-sm-8': data.datosEquipo == undefined || data.datosEquipo == null, 'col-xxl-4 col-lg-4 col-md-8 col-sm-8': data.datosEquipo}">
                             <label class="form-label">Detalles:</label>
                             <textarea class="form-control" placeholder="Detalles" formControlName="detalles"
                                 (keypress)="soloTexto($event)" rows="2"></textarea>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-xxl-3 col-lg-4 col-md-4 col-sm-4">
                             <label class="form-label required">Costo:</label>
-                            <input type="text" class="form-control t-center" placeholder="Costo"
-                                formControlName="costoReparacion" (keypress)="soloNumeros($event)" maxlength="11"
-                                (input)="moneyFormat($event)">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control t-center" placeholder="Costo"
+                                    formControlName="costoReparacion" (keypress)="soloNumeros($event)" maxlength="11"
+                                    (input)="moneyFormat($event)"
+                                    [readOnly]="data.datosEquipo != undefined && data.datosEquipo != null && permisos.ordenActualizarCantidades != 1 && !parent.solicitudCambioCantidad"
+                                    [ngStyle]="{'background': data.datosEquipo != undefined && data.datosEquipo != null && ((permisos.ordenActualizarCantidades != 1 && !parent.solicitudCambioCantidad) || data.type == 'readonly' || data.status >= 3) ? '#e9ecef' : 'white'}">
+                                <button *ngIf="data.datosEquipo && data.datosEquipo.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{parent.solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
+                                    <i *ngIf="!parent.solicitudCambioCantidad" class="bi bi-pencil-square"></i>
+                                    <b><i *ngIf="parent.solicitudCambioCantidad" class="bi bi-ban"></i></b>
+                                </button>
+                            </div>
                         </div>
                     </form>
                     <div *ngIf="data.type != 'readonly'" class="col-12" style="margin-top: 15px;">
-                        <section *ngIf="!data.datosEquipo" class="d-flex justify-content-end">
+                        <section *ngIf="data.datosEquipo == undefined || data.datosEquipo == null" class="d-flex justify-content-end">
                             <div class="btn btn-warning me-2" (click)="limpiarFormulario()">Limpiar</div>
                             <div class="btn btn-danger me-2 t-bold" (click)="parent.removeContent(data.idItem)">X</div>
                         </section>

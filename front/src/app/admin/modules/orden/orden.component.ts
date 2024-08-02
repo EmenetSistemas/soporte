@@ -34,6 +34,8 @@ export class OrdenComponent extends FGenerico implements OnInit {
 	protected detalleOrden: any = {};
 	protected equiposOrden: any = [];
 
+	public solicitudCambioCantidad: boolean = false;
+
 	protected status: any = [
 		'pendiente',
 		'concluida',
@@ -258,11 +260,12 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		return this.apiOrdenes.obtenerDetalleOrdenServicio(this.pkOrden).toPromise().then(
 			respuesta => {
 				if (this.cambiosSolicitud != null) {
-					respuesta.data.cliente = this.cambiosSolicitud.cliente;
-					respuesta.data.telefono = this.cambiosSolicitud.telefono;
-					respuesta.data.correo = this.cambiosSolicitud.correo;
-					respuesta.data.direccion = this.cambiosSolicitud.direccion;
-					respuesta.data.nota = this.cambiosSolicitud.nota;
+					respuesta.data.orden.cliente = this.cambiosSolicitud.cliente;
+					respuesta.data.orden.telefono = this.cambiosSolicitud.telefono;
+					respuesta.data.orden.correo = this.cambiosSolicitud.correo;
+					respuesta.data.orden.direccion = this.cambiosSolicitud.direccion;
+					respuesta.data.orden.aCuenta = this.cambiosSolicitud.aCuenta;
+					respuesta.data.orden.nota = this.cambiosSolicitud.nota;
 				
 					this.cambiosSolicitud.equipos.forEach((equipo: any) => {
 						const detalle = respuesta.data.detalleOrden.find((d: any) => d.pkTblDetalleOrdenServicio == equipo.data.pkTblDetalleOrdenServicio);
@@ -315,7 +318,7 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		this.formCliente.get('telefono')?.setValue(data.telefono);
 		this.formCliente.get('correo')?.setValue(data.correo);
 		this.formCliente.get('direccion')?.setValue(data.direccion);
-		this.formCliente.get('aCuenta')?.setValue('$ '+data.aCuenta);
+		this.formCliente.get('aCuenta')?.setValue('$ '+(+data.aCuenta).toLocaleString());
 
 		let aCuenta = parseFloat((this.formCliente.value.aCuenta ?? this.detalleOrden.aCuenta).replace(/[,$]/g, ''));
 		aCuenta = isNaN(aCuenta) ? 0 : aCuenta;
@@ -324,8 +327,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			this.formCliente.get('aCuenta')?.setValue('$ 0');
 			this.mensajes.mensajeGenericoToast('La cantidad a cuenta no puede ser mayor al total', 'warning');
 		}
-
-		if (this.permisos.ordenActualizarCantidades != 1) this.formCliente.get('aCuenta')?.disable();
 
 		this.formCliente.get('nota')?.setValue(data.nota);
 		this.formCliente.get('codigo')?.setValue(data.codigo);
@@ -361,8 +362,9 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			orden.pkTblOrdenServicio = this.pkOrden;
 		}
 
-		if (this.permisos.ordenActualizar != 1) {
-			this.validarCambioOrden('actualizar', orden);
+		if (this.permisos.ordenActualizar != 1 || this.solicitudCambioCantidad) {
+			orden.aCuenta = parseFloat((orden.aCuenta).replace(/[,$]/g, ''));
+			this.validarCambioOrden(this.solicitudCambioCantidad ? 'actualizar-cantidades' : 'actualizar', orden);
 			return;
 		}
 
@@ -412,20 +414,6 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		} else {
 			return true;
 		}
-	}
-
-	private resetForm(): void {
-		this.formCliente.reset();
-		this.formCliente.get('total')?.setValue('$ 0');
-		this.formCliente.get('aCuenta')?.setValue('$ 0');
-		this.formCliente.get('restante')?.setValue('$ 0');
-
-		this.listaEquipos.forEach(equipo => {
-			equipo.component.destroy();
-		});
-
-		this.listaEquipos = [];
-		this.count = 0;
 	}
 
 	protected cancelarOrdenServicio(): void {
@@ -574,6 +562,19 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				mensaje = '¿Estás seguro de solicitar la actualización de la orden en cuestión?';
 				confirmacion = 'Se envió la solicitud para autorizar actualización';
 			break;
+			case 'actualizar-cantidades':
+				cargaSolicitud = {
+					fkTblOrdenServicio: this.pkOrden,
+					tipoSolicitud: 'orden',
+					actividad,
+					data,
+					token: localStorage.getItem('token_soporte')
+				};
+
+				titulo = 'Solicitar autorización actualización <b>cantidades</b>';
+				mensaje = '¿Estás seguro de solicitar la actualización de <b>cantidades</b> de la orden en cuestión?';
+				confirmacion = 'Se envió la solicitud para autorizar actualización de <b>cantidades</b>';
+			break;
 			case 'concluir':
 				cargaSolicitud = {
 					fkTblOrdenServicio: this.pkOrden,
@@ -705,5 +706,31 @@ export class OrdenComponent extends FGenerico implements OnInit {
 				}
 			);
 		});
+	}
+
+	public solicitarModificarCantidades(): void {
+		this.solicitudCambioCantidad = !this.solicitudCambioCantidad;
+
+		if (this.solicitudCambioCantidad) {
+			this.mensajes.mensajeGenericoToast('Se solicitará autorización para modificar cantidades', 'info');
+		} else {
+			this.formCliente.get('aCuenta')?.setValue('$ '+this.detalleOrden.aCuenta);
+			this.mensajes.cerrarMensajes();
+		}
+	}
+
+	private resetForm(): void {
+		this.formCliente.reset();
+		this.formCliente.get('total')?.setValue('$ 0');
+		this.formCliente.get('aCuenta')?.setValue('$ 0');
+		this.formCliente.get('restante')?.setValue('$ 0');
+
+		this.listaEquipos.forEach(equipo => {
+			equipo.component.destroy();
+		});
+
+		this.listaEquipos = [];
+		this.count = 0;
+		this.solicitudCambioCantidad = false;
 	}
 }

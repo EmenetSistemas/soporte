@@ -14,7 +14,8 @@
             </h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li *ngIf="pkOrdenSolicitud == 0" class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes de servicio</li>
+                    <li *ngIf="pkOrdenSolicitud == 0" class="breadcrumb-item" [routerLink]="'/consulta-ordenes'">Ordenes
+                        de servicio</li>
                     <li class="breadcrumb-item active">{{solicitante != null ? 'Solicitud' : 'Detalle orden'}}</li>
                 </ol>
             </nav>
@@ -113,18 +114,26 @@
                     <div class="card">
                         <div class="card-body card-w-title">
                             <form class="row g-3" autocomplete="off" [formGroup]="formCliente">
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-sm-6">
                                     <label class="form-label">Total:</label>
                                     <input type="text" class="form-control t-center" placeholder="Total"
                                         formControlName="total" [value]="obtenerTotalItems()">
                                 </div>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-sm-6">
                                     <label class="form-label">A cuenta:</label>
-                                    <input type="text" class="form-control t-center" placeholder="A cuenta"
-                                        formControlName="aCuenta" (keypress)="soloNumeros($event)"
-                                        (input)="moneyFormat($event)" (input)="writeACuenta()" maxlength="11">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control t-center" placeholder="A cuenta"
+                                            formControlName="aCuenta" (keypress)="soloNumeros($event)"
+                                            [readOnly]="pkOrden != 0 && permisos.ordenActualizarCantidades != 1 && !solicitudCambioCantidad"
+                                            [ngStyle]="{'background': pkOrden != 0 && ((permisos.ordenActualizarCantidades != 1 && !solicitudCambioCantidad) || (this.pkOrdenSolicitud != 0 || detalleOrden.status >= 3)) ? '#e9ecef' : 'white'}"
+                                            (input)="moneyFormat($event)" (input)="writeACuenta()" maxlength="11">
+                                        <button *ngIf="pkOrden != 0 && detalleOrden.status < 3 && permisos.ordenActualizarCantidades != 1" class="btn btn-{{solicitudCambioCantidad ? 'danger' : 'warning'}}" (click)="solicitarModificarCantidades()">
+                                            <i *ngIf="!solicitudCambioCantidad" class="bi bi-pencil-square"></i>
+                                            <b><i *ngIf="solicitudCambioCantidad" class="bi bi-ban"></i></b>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 col-sm-6">
+                                <div class="col-sm-12">
                                     <label class="form-label">Restante:</label>
                                     <input type="text" class="form-control t-center" placeholder="Restante"
                                         formControlName="restante" [value]="obtenerRestanteItems()">
@@ -134,7 +143,8 @@
                                     <textarea class="form-control" placeholder="Nota" formControlName="nota"
                                         (keypress)="soloTexto($event)" rows="2"></textarea>
                                 </div>
-                                <div *ngIf="pkOrdenSolicitud == 0 && pkOrden != 0 && detalleOrden.status < 3" class="col-12">
+                                <div *ngIf="pkOrdenSolicitud == 0 && pkOrden != 0 && detalleOrden.status < 3"
+                                    class="col-12">
                                     <label class="form-label">Código:</label>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-primary" (click)="enviarCodigo()">Envíar</button>
@@ -146,14 +156,17 @@
                                     </div>
                                 </div>
                             </form>
-                            <div *ngIf="pkOrdenSolicitud == 0 && pkOrden != 0 && detalleOrden.status == 3" class="row g-3" style="margin-top: 5px;">
+                            <div *ngIf="pkOrdenSolicitud == 0 && pkOrden != 0 && detalleOrden.status == 3"
+                                class="row g-3" style="margin-top: 5px;">
                                 <div class="col-sm-6">
                                     <label class="form-label">Código:</label>
-                                    <input type="text" class="form-control t-center" placeholder="Código" [value]="detalleOrden.codigo" disabled>
+                                    <input type="text" class="form-control t-center" placeholder="Código"
+                                        [value]="detalleOrden.codigo" disabled>
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="form-label">Ticket:</label>
-                                    <input type="text" class="form-control t-center" placeholder="Ticket" [value]="detalleOrden.folioTicket ?? ''" disabled>
+                                    <input type="text" class="form-control t-center" placeholder="Ticket"
+                                        [value]="detalleOrden.folioTicket ?? ''" disabled>
                                 </div>
                             </div>
                         </div>
@@ -174,21 +187,22 @@
     <div class="col-xxl-9 col-lg-8 col-12">
         <div class="row d-flex justify-content-center items-rep">
             <div class="col-12 t-center sticky-img-100" style="height: 50px;">
-                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)" (click)="addContent('laptop')"
-                    class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png" alt=""
-                    style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)" (click)="addContent('impresora')"
-                    class="shadow-image" src="https://m-net.mx/scosm/images/impresora.png" alt=""
-                    style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)" (click)="addContent('pc')" class="shadow-image"
-                    src="https://m-net.mx/scosm/images/pc.png" alt="" style="z-index: 1005; margin-right: 22px;"
+                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)"
+                    (click)="addContent('laptop')" class="shadow-image" src="https://m-net.mx/scosm/images/laptop.png"
+                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)"
+                    (click)="addContent('impresora')" class="shadow-image"
+                    src="https://m-net.mx/scosm/images/impresora.png" alt="" style="z-index: 1005; margin-right: 22px;"
                     width="50px">
-                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)" (click)="addContent('monitor')"
-                    class="shadow-image" src="https://m-net.mx/scosm/images/monitor.png" alt=""
+                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)"
+                    (click)="addContent('pc')" class="shadow-image" src="https://m-net.mx/scosm/images/pc.png" alt=""
                     style="z-index: 1005; margin-right: 22px;" width="50px">
-                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)" (click)="addContent('otro')" class="shadow-image"
-                    src="https://m-net.mx/scosm/images/otro.png" alt="" style="z-index: 1005; margin-right: 22px;"
-                    width="50px">
+                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)"
+                    (click)="addContent('monitor')" class="shadow-image" src="https://m-net.mx/scosm/images/monitor.png"
+                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
+                <img *ngIf="pkOrdenSolicitud == 0 && (pkOrden == 0 || detalleOrden.status == 1)"
+                    (click)="addContent('otro')" class="shadow-image" src="https://m-net.mx/scosm/images/otro.png"
+                    alt="" style="z-index: 1005; margin-right: 22px;" width="50px">
                 <div *ngIf="pkOrden != 0" class="t-center" [ngClass]="{'f-right': detalleOrden.status <= 2}"
                     [ngStyle]="{'margin-top': xor(equiposSinCancelar() > 0, equiposCancelados() > 0) ? '10px' : '-4px'}">
                     <span *ngIf="equiposSinCancelar() > 0" class="badge bg-primary">Concluidos: {{detalleOrden.status >
@@ -205,13 +219,15 @@
             <div *ngIf="pkOrdenSolicitud == 0 && detalleOrden.status" class="items-footer">
                 <div class="card">
                     <div class="card-body card-w-title sp-buttons">
-                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;" (click)="abrirModalOrdenPdf(detalleOrden.pkTblOrdenServicio)">
+                        <div class="btn btn-info" [ngClass]="{'me-2': detalleOrden.status != 3}" style="color: white;"
+                            (click)="abrirModalOrdenPdf(detalleOrden.pkTblOrdenServicio)">
                             <i class="bi bi-filetype-pdf"></i>
                         </div>
 
                         <div *ngIf="detalleOrden.status <= 2" class="btn btn-warning me-2" (click)="actualizarOrden()">
                             Actualizar</div>
-                        <div *ngIf="detalleOrden.status == 2 && permisos.entregarOrden == 1" class="btn btn-primary me-2"
+                        <div *ngIf="detalleOrden.status == 2 && permisos.entregarOrden == 1"
+                            class="btn btn-primary me-2"
                             (click)="child.entregarEquipo(detalleOrden.pkTblOrdenServicio, detalleOrden.codigo)">
                             Entregar equipo(s)</div>
                         <div *ngIf="detalleOrden.status == 2 || detalleOrden.status == 4" class="btn btn-warning"

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrdenComponent } from '../../modules/orden/orden.component';
 import FGenerico from 'src/shared/util/funciones-genericas';
@@ -333,17 +333,23 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	}
 
 	protected enviarCambios(): void {
-		this.formEquipo.value.formValid = this.formEquipo.valid;
+		const cambios: any = {...this.formEquipo.value};
+
+		cambios.formValid = this.formEquipo.valid;
+
 		if (this.data.datosEquipo) {
-			this.formEquipo.value.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
-			this.formEquipo.value.costoReparacion = this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0';
-			this.formEquipo.value.status = this.data.datosEquipo.status;
-			this.formEquipo.value.costoReparacion = this.formEquipo.value.costoReparacion ?? this.data.datosEquipo.costoReparacion;
+			cambios.pkTblDetalleOrdenServicio = this.data.datosEquipo.pkTblDetalleOrdenServicio;
+			cambios.costoReparacion = this.data.datosEquipo.status != 4 ? '$ '+ (this.formEquipo.value.costoReparacion ?? this.data.datosEquipo.costoReparacion).toLocaleString() : '$ 0';
+			cambios.status = this.data.datosEquipo.status;
+		}
+
+		if (cambios.costoReparacion) {
+			cambios.costoReparacion = (cambios.costoReparacion).replace(/[,$]/g, '');
 		}
 
 		const data = {
 			token: localStorage.getItem('token_soporte'),
-			...this.formEquipo.value,
+			...cambios,
 			...this.checks.reduce((acc: any, item: any) => {
 				acc[item.identificador] = item.checked;
 				return acc;
@@ -363,34 +369,28 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 	// modificación componente
 
 	private cargarFormularioEquipo(): void {
-		const carga: any = {
-			equipo: this.data.datosEquipo.nombre,
-			noSerie: this.data.datosEquipo.noSerie,
-			descripcionFalla: this.data.datosEquipo.descripcionFalla,
-			observaciones: this.data.datosEquipo.observaciones,
-			detalles: this.data.datosEquipo.detalles,
-			diagnosticoFinal: this.data.datosEquipo.diagnosticoFinal ?? null,
-			costoReparacion: '$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString()
-		};
+		this.formEquipo.get('equipo')?.setValue(this.data.datosEquipo.nombre);
+		this.formEquipo.get('noSerie')?.setValue(this.data.datosEquipo.noSerie);
+		this.formEquipo.get('descripcionFalla')?.setValue(this.data.datosEquipo.descripcionFalla);
+		this.formEquipo.get('observaciones')?.setValue(this.data.datosEquipo.observaciones);
+		this.formEquipo.get('detalles')?.setValue(this.data.datosEquipo.detalles);
+		this.formEquipo.get('diagnosticoFinal')?.setValue(this.data.datosEquipo.diagnosticoFinal ?? null);
+		this.formEquipo.get('costoReparacion')?.setValue('$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString());
 
 		if ( this.data.itemType != 'impresora' && this.data.itemType != 'monitor' ) {
-			carga.password = this.data.datosEquipo.password;
+			this.formEquipo.get('password')?.setValue(this.data.datosEquipo.password);
 		}
-
-		this.formEquipo.patchValue(carga);
 
 		this.checks.forEach(check => {
 			check.checked = this.data.datosEquipo[check.identificador] == 1;
 		});
 
-		if (this.data.type == 'readonly' || this.data.status >= 3) this.formEquipo.disable();
+		if (this.data.type == 'readonly' || this.data.status >= 3 || this.data.datosEquipo.status == 4) this.formEquipo.disable();
 
 		this.parent.cacharDatosComponent(
 			{costoReparacion : this.data.datosEquipo.status != 4 ? this.formEquipo.value.costoReparacion : '$ 0'},
 			this.data.idItem
 		);
-
-		if (this.permisos.ordenActualizarCantidades != 1) this.formEquipo.get('costoReparacion')?.disable();
 	}
 
 	protected cambioStatusServicio(tipoCambio: string, status: number): void {
@@ -465,6 +465,12 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 				);
 			}
 		);
+	}
+
+	protected solicitarModificarCantidades(): void {
+		this.parent.solicitarModificarCantidades();
+
+		if (!this.parent.solicitudCambioCantidad) this.formEquipo.get('costoReparacion')?.setValue('$ ' + (+this.data.datosEquipo.costoReparacion).toLocaleString());
 	}
 
 	ngOnDestroy(): void {
