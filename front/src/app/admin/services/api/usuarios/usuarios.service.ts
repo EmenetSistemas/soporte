@@ -22,4 +22,8 @@ export class UsuariosService {
 	public validarContraseniaActual(credenciales: any): Observable<any> {
 		return this.http.post<any>(api + '/usuarios/validarContraseniaActual', credenciales);
 	}
+
+	public cambiarStatusSesion(pkUsuario: number): Observable<any> {
+		return this.http.get<any>(api + `/usuarios/cambiarStatusSesion/${pkUsuario}`);
+	}
 }

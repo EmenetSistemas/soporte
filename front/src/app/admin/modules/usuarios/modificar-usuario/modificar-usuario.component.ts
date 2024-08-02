@@ -289,6 +289,26 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 		)
 	}
 
+	protected cambiarStatusSesion(title: string, action: string): void {
+		this.mensajes.mensajeConfirmacionCustom(`¿Está seguro de ${action} la sesión en cuestión?`, 'question', `${title} sesión`).then(
+			res => {
+				if (!res.isConfirmed) return;
+
+				this.mensajes.mensajeEsperar();
+
+				this.apiUsuarios.cambiarStatusSesion(this.pkUsuario).subscribe(
+					respuesta => {
+						this.obtenerDetallePerfilPorToken().then(() => {
+							this.mensajes.mensajeGenericoToast(respuesta.mensaje, 'success');
+						});
+					}, error => {
+						this.mensajes.mensajeGenerico('error', 'error');
+					}
+				);
+			}
+		);
+	}
+
 	protected cerrarModal(): void {
 		if (
 			this.formMoficacionPerfil.value.nombre != this.informacionPerfil.nombre ||

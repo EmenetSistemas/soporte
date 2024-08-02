@@ -177,16 +177,16 @@
                                     </div>
 
                                     <div *ngIf="
-                                        this.formMoficacionPerfil.value.perfil != this.informacionPerfil.perfil ||
-				                        this.formMoficacionPerfil.value.generarOrden != this.informacionPerfil.generarOrden ||
-				                        this.formMoficacionPerfil.value.detalleOrden != this.informacionPerfil.detalleOrden ||
-				                        this.formMoficacionPerfil.value.entregarOrden != this.informacionPerfil.entregarOrden ||
-				                        this.formMoficacionPerfil.value.ordenActualizar != this.informacionPerfil.ordenActualizar ||
-				                        this.formMoficacionPerfil.value.ordenActualizarCantidades != this.informacionPerfil.ordenActualizarCantidades ||
-				                        this.formMoficacionPerfil.value.ordenConcluir != this.informacionPerfil.ordenConcluir ||
-				                        this.formMoficacionPerfil.value.ordenRetomar != this.informacionPerfil.ordenRetomar ||
-				                        this.formMoficacionPerfil.value.ordenCancelar != this.informacionPerfil.ordenCancelar ||
-				                        this.formMoficacionPerfil.value.ordenEliminar != this.informacionPerfil.ordenEliminar
+                                        formMoficacionPerfil.value.perfil != informacionPerfil.perfil ||
+				                        formMoficacionPerfil.value.generarOrden != informacionPerfil.generarOrden ||
+				                        formMoficacionPerfil.value.detalleOrden != informacionPerfil.detalleOrden ||
+				                        formMoficacionPerfil.value.entregarOrden != informacionPerfil.entregarOrden ||
+				                        formMoficacionPerfil.value.ordenActualizar != informacionPerfil.ordenActualizar ||
+				                        formMoficacionPerfil.value.ordenActualizarCantidades != informacionPerfil.ordenActualizarCantidades ||
+				                        formMoficacionPerfil.value.ordenConcluir != informacionPerfil.ordenConcluir ||
+				                        formMoficacionPerfil.value.ordenRetomar != informacionPerfil.ordenRetomar ||
+				                        formMoficacionPerfil.value.ordenCancelar != informacionPerfil.ordenCancelar ||
+				                        formMoficacionPerfil.value.ordenEliminar != informacionPerfil.ordenEliminar
                                     " class="col-12" style="margin-top: 10px; margin-bottom: -10px;">
                                         <div class="alert alert-info alert-dismissible fade show" role="alert" style="margin-top: 10px;">
                                             <b>Importante!</b> si se realizan cambios en los permisos, se cerrará toda sesión del perfil en cuestión con el fin de aplicar los cambios antes de continuar navegando dentro del sistema
@@ -205,6 +205,8 @@
 
 <div class="modal-footer" style="text-align: center;">
     <button type="button" class="btn btn-primary" (click)="modificarPerfil()">Actualizar</button>
+    <button *ngIf="informacionPerfil.activo == 1" type="button" class="btn btn-warning" (click)="cambiarStatusSesion('Inactivar', 'inactivar')">Inactivar</button>
+    <button *ngIf="informacionPerfil.activo != 1" type="button" class="btn btn-info" (click)="cambiarStatusSesion('Reactivar', 'reactivar')">Reactivar</button>
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
         (click)="cerrarModal()">Cerrar</button>
 </div>

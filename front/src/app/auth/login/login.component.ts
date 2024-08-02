@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 		this.apiLogin.login(this.formLogin.value).subscribe(
 			respuesta => {
 				if (respuesta.status != 200) {
-					this.mensajes.mensajeGenerico(respuesta.mensaje, 'warning');
+					this.mensajes.mensajeGenerico(respuesta.mensaje, 'warning', respuesta.title ?? '');
 					return;
 				}
 
