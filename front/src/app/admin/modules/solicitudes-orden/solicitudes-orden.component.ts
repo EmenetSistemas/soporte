@@ -53,10 +53,10 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 			'dadgesCases': [
 				{
 					'text': 'actualizar',
-					'color': 'info'
+					'color': 'success'
 				}, {
 					'text': 'actualizar-cantidades',
-					'color': 'info'
+					'color': 'success'
 				}, {
 					'text': 'retomar',
 					'color': 'warning'
@@ -69,6 +69,9 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 				}, {
 					'text': 'cancelar-equipo',
 					'color': 'danger'
+				}, {
+					'text': 'eliminar-equipo',
+					'color': 'info'
 				}, {
 					'text': 'concluir',
 					'color': 'primary'
