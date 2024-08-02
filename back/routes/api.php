@@ -33,6 +33,7 @@ Route::get('/ordenes/eliminarSolicitudOrden/{pkSolicitud}', 'App\Http\Controller
 Route::get('/usuarios/obtenerListaUsuarios/{status}', 'App\Http\Controllers\Auth\UsuarioController@obtenerListaUsuarios');
 Route::post('/usuarios/validarContraseniaActual', 'App\Http\Controllers\Auth\UsuarioController@validarContraseniaActual');
 Route::post('/usuarios/modificarUsuario', 'App\Http\Controllers\Auth\UsuarioController@modificarUsuario');
+Route::get('/usuarios/cambiarStatusSesion/{pkUsuario}', 'App\Http\Controllers\Auth\UsuarioController@cambiarStatusSesion');
 
 // utileria sistema
 Route::get('/pdfs/generarPdfOrdenServicio/{pkOrden}', 'App\Http\Controllers\Admin\PDFs\PdfController@generarPdfOrdenServicio');

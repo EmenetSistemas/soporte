@@ -110,6 +110,13 @@ class UsuarioRepository
                    ->delete();
     }
 
+    public function cambiarStatusSesion ($pkUsuario, $activo) {
+        TblUsuarios::where('pkTblUsuario', $pkUsuario)
+                   ->update([
+                      'activo' => $activo
+                   ]);
+    }
+
     public function trimValidator ( $value ) {
 		return $value != null && trim($value) != '' ? trim($value) : null;
 	}

@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Repositories\Auth\UsuarioRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioService
 {
@@ -114,7 +115,21 @@ class UsuarioService
         );
     }
 
-    function formatearFecha($fecha) {
+    public function cambiarStatusSesion ($pkUsuario) {
+        $activo = $this->usuarioRepository->obtenerInformacionUsuarioPorPk( $pkUsuario )[0]->activo;
+
+        $this->usuarioRepository->cambiarStatusSesion($pkUsuario, $activo == 1 ? 0 : 1);
+        $this->usuarioRepository->cerrarSesionesActivas($pkUsuario);
+
+        return response()->json(
+            [
+                'mensaje' => 'Se cambio status de la sesión en cuestión con éxito'
+            ],
+            200
+        );
+    }
+
+    public function formatearFecha($fecha) {
         if ($fecha == null || trim($fecha) == '' || trim($fecha) == '0000-00-00 00:00:00') return null;
 
         $carbon = Carbon::parse($fecha);

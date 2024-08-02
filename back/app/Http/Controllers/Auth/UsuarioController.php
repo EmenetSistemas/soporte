@@ -92,4 +92,19 @@ class UsuarioController extends Controller
             );
         }
     }
+
+    public function cambiarStatusSesion ($pkUsuario) {
+        try{
+            return $this->usuariosService->cambiarStatusSesion($pkUsuario);
+        }catch( \Throwable $error ) {
+            Log::alert($error);
+            return response()->json(
+                [
+                    'error' => $error,
+                    'mensaje' => 'Ocurrió un error interno'
+                ], 
+                500
+            );
+        }
+    }
 }

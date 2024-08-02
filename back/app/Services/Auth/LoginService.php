@@ -21,6 +21,7 @@ class LoginService
             return response()->json(
                 [
                     'mensaje' => 'Upss! Al parecer las credenciales no son correctas para poder ingresar',
+                    'title' => 'Credenciales incorrectas',
                     'status' => 204
                 ],
                 200
@@ -32,7 +33,8 @@ class LoginService
         if(is_null($usuarioActivo)){
             return response()->json(
                 [
-                    'mensaje' => 'Upss! Al parecer tu cuenta esta actualmente supendida',
+                    'mensaje' => 'Upss! Al parecer tu cuenta esta actualmente supendida, favor de comunicarse con el DTIC de Emenet Comunicaciones',
+                    'title' => 'Cuenta suspendida',
                     'status' => 409
                 ],
                 200
