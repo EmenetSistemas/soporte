@@ -42,6 +42,7 @@
                                 <label for="perfil" class="form-label required">Perfil:</label>
                                 <select class="form-control" formControlName="perfil" id="perfil" (change)="cambioPermisosPerfil()">
                                     <option value="" style="visibility: hidden; display: none;">Seleccione un perfil</option>
+                                    <option value="Superadministrador" style="visibility: hidden; display: none;">Superadministrador</option>
                                     <option value="Administrador">Administrador</option>
                                     <option value="Supervisor">Supervisor</option>
                                     <option value="Técnico">Técnico</option>
@@ -49,7 +50,7 @@
                             </div>
 
                             <div class="col-12">
-                                <div *ngIf="formMoficacionPerfil.value.perfil == 'Administrador'" class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                <div *ngIf="formMoficacionPerfil.value.perfil == 'Administrador' || formMoficacionPerfil.value.perfil == 'Superadministrador'" class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-top: 10px;">
                                     Solo los <b>administradores</b> pueden validar y aprobar solicitudes
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>

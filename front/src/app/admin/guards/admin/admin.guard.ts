@@ -82,7 +82,7 @@ export class AdminGuard implements CanActivate {
 				retorno = false;
 			}
 
-			if (url === '/usuarios' && permisos.perfil != 'Administrador') {
+			if (url === '/usuarios' && (permisos.perfil != 'Administrador' && permisos.perfil != 'Superadministrador')) {
 				retorno = false;
 			}
 	

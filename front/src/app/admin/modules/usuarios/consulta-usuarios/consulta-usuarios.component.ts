@@ -11,6 +11,8 @@ import { UsuariosService as UsuariosServiceAuth } from 'src/app/auth/services/us
 	styleUrls: ['./consulta-usuarios.component.css']
 })
 export class ConsultaUsuariosComponent implements OnInit{
+	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
+
 	protected statusSelect: any[] = [
 		{
 			label: 'Activos',
@@ -88,7 +90,9 @@ export class ConsultaUsuariosComponent implements OnInit{
 	}
 
 	protected obtenerListaUsuarios(status: number): Promise<any> {
-		return this.apiUsuarios.obtenerListaUsuarios(status).toPromise().then(
+		const tipo = this.permisos.perfil == 'Superadministrador' ? 'complex' : 'simple';
+
+		return this.apiUsuarios.obtenerListaUsuarios(status, tipo).toPromise().then(
 			respuesta => {
 				this.datosTabla = respuesta.data.listaUsuarios;
 			}, error => {

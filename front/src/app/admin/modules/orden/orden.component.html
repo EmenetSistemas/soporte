@@ -174,7 +174,7 @@
                 </div>
 
                 <div *ngIf="solicitante != null" class="col-12 t-center" style="margin-top: 10px;">
-                    Solicitud <label *ngIf="permisos.perfil == 'Administrador'" style="color: #008FFF !important;">
+                    Solicitud <label *ngIf="permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador'" style="color: #008FFF !important;">
                         {{solicitante.solicitante}}
                     </label>
                     <br>

@@ -40,7 +40,7 @@ export class NavbarComponent implements OnDestroy{
 
 	private repetitiveInstruction(): void {
 		this.intervalo = setInterval(async () => {
-			if (this.informacionUsuario.perfil == 'Administrador') {
+			if (this.informacionUsuario.perfil == 'Administrador' || this.informacionUsuario.perfil == 'Superadministrador') {
 				await this.obtenerSolicitudesOrdenes();
 			} else {
 				await this.obtenerMisSolicitudesOrdenes();
@@ -62,7 +62,7 @@ export class NavbarComponent implements OnDestroy{
 
 					this.nombre = this.informacionUsuario.nombre+' '+this.informacionUsuario.aPaterno;
 
-					if (this.informacionUsuario.perfil == 'Administrador') {
+					if (this.informacionUsuario.perfil == 'Administrador' || this.informacionUsuario.perfil == 'Superadministrador') {
 						this.obtenerSolicitudesOrdenes().then(() => {
 							this.repetitiveInstruction();
 						});

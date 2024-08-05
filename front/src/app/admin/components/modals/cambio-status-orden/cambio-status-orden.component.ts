@@ -46,7 +46,7 @@ export class CambioStatusOrdenComponent {
 	}
 
 	public eliminarSolicitud(pkSolicitud: number = this.solicitud.pkTblSolicitudOrden): void {
-		this.mensajes.mensajeConfirmacionCustom(`¿Está seguro de ${this.permisos.perfil == 'Administrador' ? 'eliminar' : 'cancelar'} la solicitud en cuestión?`, 'question', `${this.permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'} solicitud`).then(
+		this.mensajes.mensajeConfirmacionCustom(`¿Está seguro de ${(this.permisos.perfil == 'Administrador' || this.permisos.perfil == 'Superadministrador') ? 'eliminar' : 'cancelar'} la solicitud en cuestión?`, 'question', `${(this.permisos.perfil == 'Administrador' || this.permisos.perfil == 'Superadministrador') ? 'Eliminar' : 'Cancelar'} solicitud`).then(
 			res => {
 				if (!res.isConfirmed) return;
 
@@ -55,7 +55,7 @@ export class CambioStatusOrdenComponent {
 
 				this.apiOrdenes.eliminarSolicitudOrden(pkSolicitud).subscribe(
 					respuesta => {
-						this.mensajes.mensajeGenerico(this.permisos.perfil == 'Administrador' ? respuesta.mensaje : 'Se canceló la solicitud con éxito', 'success');
+						this.mensajes.mensajeGenerico((this.permisos.perfil == 'Administrador' || this.permisos.perfil == 'Superadministrador') ? respuesta.mensaje : 'Se canceló la solicitud con éxito', 'success');
 					}, error => {
 						this.mensajes.mensajeGenerico('error', 'error');
 					}

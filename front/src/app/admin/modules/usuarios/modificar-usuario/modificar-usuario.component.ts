@@ -176,11 +176,11 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 			this.formMoficacionPerfil.controls['contraseniaNueva']?.enable();
 			this.formMoficacionPerfil.controls['contraseniaAntigua']?.enable();
 			this.formMoficacionPerfil.controls['confContraseniaNueva']?.enable();
-			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('contraseniaAntigua')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]);
 			this.formMoficacionPerfil.get('contraseniaAntigua')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('contraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('contraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]);
 			this.formMoficacionPerfil.get('contraseniaNueva')?.updateValueAndValidity();
-			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]);
+			this.formMoficacionPerfil.get('confContraseniaNueva')?.setValidators([Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]);
 			this.formMoficacionPerfil.get('confContraseniaNueva')?.updateValueAndValidity();
 		}
 	}

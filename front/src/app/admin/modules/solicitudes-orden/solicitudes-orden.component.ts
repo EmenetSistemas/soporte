@@ -110,14 +110,14 @@ export class SolicitudesOrdenComponent implements OnInit, OnDestroy{
 	) {}
 
 	ngOnInit(): void {
-		if (this.permisos.perfil != 'Administrador') {
+		if (this.permisos.perfil != 'Administrador' && this.permisos.perfil != 'Administrador') {
 			delete this.columnasTabla.solicitante;
 			delete this.tableConfig.solicitante;
 		}
 	}
 
 	private obtenerSolicitudesOrdenes(): Promise<any> {
-		if (this.permisos.perfil == 'Administrador') {
+		if (this.permisos.perfil == 'Administrador' || this.permisos.perfil == 'Superadministrador') {
 			return this.apiOrdenes.obtenerSolicitudesOrdenes(this.status).toPromise().then(
 				respuesta => {
 					this.datosTabla = respuesta.data.solicitudes;

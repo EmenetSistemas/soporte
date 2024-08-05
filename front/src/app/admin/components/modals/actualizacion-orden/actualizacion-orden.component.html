@@ -26,7 +26,7 @@
 </div>
 
 <div class="modal-footer" style="text-align: center;">
-    <button *ngIf="permisos.perfil == 'Administrador' && solicitud.status == 1" type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
-    <button *ngIf="solicitud.status == 1" type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">{{permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'}}</button>
+    <button *ngIf="(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador') && solicitud.status == 1" type="button" class="btn btn-primary" (click)="patern.aprobarSolicitud(solicitud.pkTblSolicitudOrden)">Aprobar</button>
+    <button *ngIf="solicitud.status == 1" type="button" class="btn btn-warning" (click)="patern.eliminarSolicitud(solicitud.pkTblSolicitudOrden)">{{(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador') ? 'Eliminar' : 'Cancelar'}}</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

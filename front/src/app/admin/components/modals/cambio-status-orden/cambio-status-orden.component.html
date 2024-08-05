@@ -12,10 +12,10 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-12 t-center" style="margin-top: -10px; margin-bottom: 15px;">
-                    <label *ngIf="permisos.perfil == 'Administrador'" style="color: #008FFF !important;">
+                    <label *ngIf="(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador')" style="color: #008FFF !important;">
                         {{solicitud.solicitante}}
                     </label>
-                    <span *ngIf="permisos.perfil == 'Administrador'"> | </span>
+                    <span *ngIf="(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador')"> | </span>
                     <label>{{solicitud.fechaSolicitud}}</label>
                 </div>
 
@@ -73,7 +73,7 @@
 
 <div class="modal-footer" style="text-align: center;">
     <button *ngIf="!solicitud.type" type="button" class="btn btn-success" (click)="verOrden()">Ver orden</button>
-    <button *ngIf="permisos.perfil == 'Administrador' && !solicitud.type" type="button" class="btn btn-primary" (click)="aprobarSolicitud()">Aprobar</button>
-    <button *ngIf="!solicitud.type" type="button" class="btn btn-warning" (click)="eliminarSolicitud()">{{permisos.perfil == 'Administrador' ? 'Eliminar' : 'Cancelar'}}</button>
+    <button *ngIf="(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador') && !solicitud.type" type="button" class="btn btn-primary" (click)="aprobarSolicitud()">Aprobar</button>
+    <button *ngIf="!solicitud.type" type="button" class="btn btn-warning" (click)="eliminarSolicitud()">{{(permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador') ? 'Eliminar' : 'Cancelar'}}</button>
     <button type="button" class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
 </div>

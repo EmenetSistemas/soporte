@@ -11,8 +11,8 @@ export class UsuariosService {
 		private http: HttpClient
 	) { }
 
-	public obtenerListaUsuarios(status: number): Observable<any> {
-		return this.http.get<any>(`${api}/usuarios/obtenerListaUsuarios/${status}`);
+	public obtenerListaUsuarios(status: number, tipo: string): Observable<any> {
+		return this.http.get<any>(`${api}/usuarios/obtenerListaUsuarios/${status}/${tipo}`);
 	}
 
 	public modificarUsuario(datosUsuarioModificacion: any): Observable<any> {

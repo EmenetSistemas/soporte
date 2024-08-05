@@ -80,14 +80,14 @@ export class OrdenComponent extends FGenerico implements OnInit {
 
 	private crearFormCliente(): void {
 		this.formCliente = this.fb.group({
-			cliente   : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			cliente   : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
 			telefono  : [null, [Validators.required, Validators.pattern('[0-9 .]*'), Validators.maxLength(12)]],
-			correo    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
-			direccion : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			correo    : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
+			direccion : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
 			total     : [{ value: '$ 0', disabled: true }],
 			aCuenta   : ['$ 0', [Validators.pattern('[0-9 $,.]*'), Validators.maxLength(11)]],
 			restante  : [{ value: '$ 0', disabled: true }],
-			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-@#$%&+{}()?¿!¡]*')]],
+			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡]*')]],
 			codigo    : [{ value: null, disabled: true }]
 		});
 	}
