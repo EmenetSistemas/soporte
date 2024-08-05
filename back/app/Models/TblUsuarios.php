@@ -19,6 +19,16 @@ class TblUsuarios extends Model
         'aMaterno',
         'correo',
         'password',
+        'perfil',
+        'generarOrden',
+        'entregarOrden',
+        'detalleOrden',
+        'ordenActualizarCantidades',
+        'ordenActualizar',
+        'ordenConcluir',
+        'ordenCancelar',
+        'ordenRetomar',
+        'ordenEliminar',
         'fechaAlta',
         'activo'
     ];

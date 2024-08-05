@@ -21,7 +21,7 @@ class UsuarioRepository
         return $usuario->get();
     }
 
-    public function obtenerListaUsuarios ($status = null) {
+    public function obtenerListaUsuarios ($status = null, $type) {
         $query = TblUsuarios::select(
                                 'tblUsuarios.pkTblUsuario',
                                 'tblUsuarios.nombre',
@@ -47,6 +47,11 @@ class UsuarioRepository
                             ->distinct();
 
         if ($status != null) $query->where('tblUsuarios.activo', $status);
+
+        if ($type == 'simple') $query->where([
+                                                ['tblUsuarios.perfil', '!=', 'Administrador'],
+                                                ['tblUsuarios.perfil', '!=', 'Superadministrador']
+                                            ]);
 
         return $query->get();
     }

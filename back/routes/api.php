@@ -30,7 +30,7 @@ Route::post('/ordenes/obtenerMisSolicitudesOrdenes', 'App\Http\Controllers\Admin
 Route::get('/ordenes/aprobarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@aprobarSolicitudOrden');
 Route::get('/ordenes/eliminarSolicitudOrden/{pkSolicitud}', 'App\Http\Controllers\Admin\OrdenesController@eliminarSolicitudOrden');
 
-Route::get('/usuarios/obtenerListaUsuarios/{status}', 'App\Http\Controllers\Auth\UsuarioController@obtenerListaUsuarios');
+Route::get('/usuarios/obtenerListaUsuarios/{status}/{tipo}', 'App\Http\Controllers\Auth\UsuarioController@obtenerListaUsuarios');
 Route::post('/usuarios/validarContraseniaActual', 'App\Http\Controllers\Auth\UsuarioController@validarContraseniaActual');
 Route::post('/usuarios/modificarUsuario', 'App\Http\Controllers\Auth\UsuarioController@modificarUsuario');
 Route::get('/usuarios/cambiarStatusSesion/{pkUsuario}', 'App\Http\Controllers\Auth\UsuarioController@cambiarStatusSesion');

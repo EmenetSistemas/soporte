@@ -30,8 +30,8 @@ class UsuarioService
         return $this->usuarioRepository->obtenerInformacionUsuarioPorToken( $token )[0]->pkTblUsuario;
     }
 
-    public function obtenerListaUsuarios ($status) {
-        $listaUsuarios = $this->usuarioRepository->obtenerListaUsuarios($status);
+    public function obtenerListaUsuarios ($status, $tipo) {
+        $listaUsuarios = $this->usuarioRepository->obtenerListaUsuarios($status, $tipo);
 
         foreach ($listaUsuarios as $usuario) {
             $usuario->fechaAlta = $this->formatearFecha($usuario->fechaAlta);

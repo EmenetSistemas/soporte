@@ -48,9 +48,9 @@ class UsuarioController extends Controller
         }
     }
 
-    public function obtenerListaUsuarios($status){
+    public function obtenerListaUsuarios($status, $tipo){
         try{
-            return $this->usuariosService->obtenerListaUsuarios($status);
+            return $this->usuariosService->obtenerListaUsuarios($status, $tipo);
         } catch( \Throwable $error ) {
             Log::alert($error);
             return response()->json(
