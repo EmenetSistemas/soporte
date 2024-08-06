@@ -206,8 +206,8 @@
 
 <div class="modal-footer" style="text-align: center;">
     <button type="button" class="btn btn-primary" (click)="modificarPerfil()">Actualizar</button>
-    <button *ngIf="informacionPerfil.activo == 1" type="button" class="btn btn-warning" (click)="cambiarStatusSesion('Inactivar', 'inactivar')">Inactivar</button>
-    <button *ngIf="informacionPerfil.activo != 1" type="button" class="btn btn-info" (click)="cambiarStatusSesion('Reactivar', 'reactivar')">Reactivar</button>
+    <button *ngIf="informacionPerfil && informacionPerfil.activo == 1" type="button" class="btn btn-warning" (click)="cambiarStatusSesion('Inactivar', 'inactivar')">Inactivar</button>
+    <button *ngIf="informacionPerfil && informacionPerfil.activo != 1" type="button" class="btn btn-info" (click)="cambiarStatusSesion('Reactivar', 'reactivar')">Reactivar</button>
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
         (click)="cerrarModal()">Cerrar</button>
 </div>

@@ -186,7 +186,7 @@ export class ModificarUsuarioComponent extends FGenerico implements OnInit, OnDe
 	}
 
 	protected cambioCheck(option: string): void {
-		this.formMoficacionPerfil.get(option)?.setValue(!this.formMoficacionPerfil.value[option] == true ? 1 : 0);
+		this.formMoficacionPerfil.get(option)?.setValue(this.formMoficacionPerfil.value[option] == 1 ? 0 : 1);
 		
 		if (option == 'ordenActualizar' && this.formMoficacionPerfil.value['ordenActualizar'] == 0) {
 			this.formMoficacionPerfil.get('ordenActualizarCantidades')?.setValue(0);
