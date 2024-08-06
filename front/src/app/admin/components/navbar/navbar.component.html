@@ -15,7 +15,7 @@
                     <span class="badge bg-danger badge-number">{{solicitudesOrdenes.length}}</span>
                 </a>
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
                     style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-25px, 35px);"
                     data-popper-placement="bottom-end">
                     <section *ngIf="solicitudesOrdenes.length > 0">
@@ -30,15 +30,14 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li class="message-item" (click)="detalleSolicitud(solicitud)">
-                                <a href="javascript:void(0);">
-                                    <div>
-                                        <h4 *ngIf="informacionUsuario.perfil == 'Administrador' || informacionUsuario.perfil == 'Superadministrador'">{{solicitud.solicitante}}</h4>
-                                        <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
-                                        <hr style="margin-top: 4px; margin-bottom: 4px;">
-                                        <p>{{solicitud.motivo}}</p>
-                                    </div>
-                                </a>
+                            <li class="notification-item" (click)="detalleSolicitud(solicitud)">
+                                <i class="bi {{solicitud.iconoPosterior}} text-{{solicitud.fondoPosterior}}"></i>
+                                <div>
+                                    <h4 *ngIf="informacionUsuario.perfil == 'Administrador' || informacionUsuario.perfil == 'Superadministrador'">{{solicitud.solicitante}}</h4>
+                                    <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
+                                    <hr style="margin-top: 4px; margin-bottom: 4px;">
+                                    <p>{{solicitud.motivo}}</p>
+                                </div>
                             </li>
                         </section>
 
@@ -65,7 +64,7 @@
                     <span class="badge bg-primary badge-number">{{solicitudesOrdenes.length}}</span>
                 </a>
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages"
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
                     style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-25px, 35px);"
                     data-popper-placement="bottom-end">
                     <section *ngIf="solicitudesOrdenes.length > 0">
@@ -81,15 +80,14 @@
                                 <hr class="dropdown-divider">
                             </li>
                             
-                            <li class="message-item" (click)="detalleSolicitud(solicitud)">
-                                <a href="javascript:void(0);">
-                                    <div>
-                                        <h4>{{solicitud.solicitante}}</h4>
-                                        <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
-                                        <hr style="margin-top: 4px; margin-bottom: 4px;">
-                                        <p>{{solicitud.motivo}}</p>
-                                    </div>
-                                </a>
+                            <li class="notification-item" (click)="detalleSolicitud(solicitud)">
+                                <i class="bi {{solicitud.iconoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'bi bi-currency-dollar' : 'bi-pencil-square')}} text-{{solicitud.fondoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'success' : 'info')}}"></i>
+                                <div>
+                                    <h4>{{solicitud.solicitante}}</h4>
+                                    <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
+                                    <hr style="margin-top: 4px; margin-bottom: 4px;">
+                                    <p>{{solicitud.motivo}}</p>
+                                </div>
                             </li>
                         </section>
 
@@ -98,7 +96,7 @@
                         </li>
 
                         <li *ngIf="solicitudesOrdenes.length > 3" class="dropdown-footer">
-                            <a href="javascript:void(0);">Ver todas las solicitudes</a>
+                            <a href="javascript:void(0);" [routerLink]="['solicitudes-orden']">Ver todas las solicitudes</a>
                         </li>
                     </section>
 
