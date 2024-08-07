@@ -19,21 +19,36 @@
                 </li>
             </ul>
             <div class="tab-content pt-2" id="borderedTabContent">
-                <div class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="orden-ahora">
+                <div style="margin-top: 10px;" class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="orden-ahora">
                     <app-orden *ngIf="solicitud.status == 1" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"
                         [solicitante]="solicitud"></app-orden>
                     <app-orden *ngIf="!(solicitud.status == 1)" [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio"
                         [cambiosSolicitud]="solicitud.data" [solicitante]="solicitud"></app-orden>
                 </div>
-                <div *ngIf="solicitud.status == 1" class="tab-pane fade" id="bordered-profile" role="tabpanel"
+                <div style="margin-top: 10px;" *ngIf="solicitud.status == 1" class="tab-pane fade" id="bordered-profile" role="tabpanel"
                     aria-labelledby="orden-despues">
                     <app-orden [pkOrdenSolicitud]="solicitud.fkTblOrdenServicio" [cambiosSolicitud]="solicitud.data"
                         [solicitante]="solicitud"></app-orden>
                 </div>
                 <div class="tab-pane fade" id="bordered-contact" role="tabpanel" aria-labelledby="contact-tab">
-                    <div class="card" style="margin-bottom: 0px;">
-                        <div class="card-body card-w-title t-center">
-                            {{solicitud.motivo}}
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card" style="margin-bottom: 0px; margin-top: 15px !important;">
+                                <div class="card-body card-w-title t-center">
+                                    Solicitud <label *ngIf="permisos.perfil == 'Administrador' || permisos.perfil == 'Superadministrador'" style="color: #008FFF !important;">
+                                        {{solicitud.solicitante}}
+                                    </label>
+                                    <br>
+                                    <label>{{solicitud.fechaSolicitud}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="card" style="margin-bottom: 0px; margin-top: 15px !important;">
+                                <div class="card-body card-w-title t-center">
+                                    {{solicitud.motivo}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
