@@ -374,6 +374,8 @@ class OrdenesService
         $icon = [
             'concluir'        => 'bi-clipboard-check',
             'concluir-equipo' => 'bi-clipboard-check',
+            'entregar'        => 'bi bi-truck',
+            'entregar-equipo' => 'bi bi-truck',
             'cancelar'        => 'bi-clipboard-x',
             'cancelar-equipo' => 'bi-clipboard-x',
             'retomar'         => 'bi-bar-chart-fill',
