@@ -84,6 +84,7 @@ export class NavbarComponent implements OnDestroy{
 	private obtenerSolicitudesOrdenes(): Promise<any> {
 		return this.apiOrdenes.obtenerSolicitudesOrdenes(1).toPromise().then(
 			respuesta => {
+				console.log(respuesta.data.solicitudes);
 				this.solicitudesOrdenes = respuesta.data.solicitudes;
 			}, error => {
 				this.mensajes.mensajeGenerico('error', 'error');

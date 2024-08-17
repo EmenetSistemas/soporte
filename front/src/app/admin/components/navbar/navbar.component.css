@@ -4,5 +4,10 @@
 }
 
 .dropdown-menu {
-    min-width: 320px !important;
+    min-width: 340px !important;
+}
+
+.notification-item {
+    padding-right: 35px !important;
+    width: 100%;
 }

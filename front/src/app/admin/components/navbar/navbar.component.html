@@ -33,10 +33,10 @@
                             <li class="notification-item" (click)="detalleSolicitud(solicitud)">
                                 <i class="bi {{solicitud.iconoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'bi bi-currency-dollar' : 'bi-pencil-square')}} text-{{solicitud.fondoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'success' : 'info')}}"></i>
                                 <div>
-                                    <h4 *ngIf="informacionUsuario.perfil == 'Administrador' || informacionUsuario.perfil == 'Superadministrador'">{{solicitud.solicitante}}</h4>
+                                    <h4>Orden #{{solicitud.data.pkTblOrdenServicio}}</h4>
                                     <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
                                     <hr style="margin-top: 4px; margin-bottom: 4px;">
-                                    <p>{{solicitud.motivo}}</p>
+                                    <p style="text-align: justify;">{{solicitud.motivo}}</p>
                                 </div>
                             </li>
                         </section>
@@ -83,10 +83,10 @@
                             <li class="notification-item" (click)="detalleSolicitud(solicitud)">
                                 <i class="bi {{solicitud.iconoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'bi bi-currency-dollar' : 'bi-pencil-square')}} text-{{solicitud.fondoPosterior ?? (solicitud.actividad == 'actualizar-cantidades' ? 'success' : 'info')}}"></i>
                                 <div>
-                                    <h4>{{solicitud.solicitante}}</h4>
+                                    <h4>{{solicitud.solicitante}} | Orden #{{solicitud.data.pkTblOrdenServicio}}</h4>
                                     <p>{{solicitud.fechaSolicitud}} | {{solicitud.tituloSolicitud}}</p>
                                     <hr style="margin-top: 4px; margin-bottom: 4px;">
-                                    <p>{{solicitud.motivo}}</p>
+                                    <p style="text-align: justify;">{{solicitud.motivo}}</p>
                                 </div>
                             </li>
                         </section>
