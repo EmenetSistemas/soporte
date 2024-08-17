@@ -76,6 +76,9 @@ export class DashboardComponent implements OnInit{
 					'color': 'danger'
 				}
 			]
+		},
+		'dias': {
+			'center': true,
 		}
 	};
 

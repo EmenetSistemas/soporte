@@ -29,21 +29,21 @@
                     <tr>
                         <th class="inputs" *ngFor="let columna of getColumnKeys()">
                             <ng-container *ngIf="tableConfig[columna]?.dateRange; else selectColumn">
-                                <input type="date" class="form-control" [(ngModel)]="filterValues[columna + '_inicio']"
+                                <input type="date" [ngClass]="{'t-center': tableConfig[columna]?.center}" class="form-control" [(ngModel)]="filterValues[columna + '_inicio']"
                                     (change)="onItemsPerPageChange()" style="width: 100% !important;" />
-                                <input type="date" class="form-control" [(ngModel)]="filterValues[columna + '_fin']"
+                                <input type="date" [ngClass]="{'t-center': tableConfig[columna]?.center}" class="form-control" [(ngModel)]="filterValues[columna + '_fin']"
                                     (change)="onItemsPerPageChange()" style="width: 100% !important;" />
                             </ng-container>
                             <ng-template #selectColumn>
                                 <div *ngIf="tableConfig[columna]?.selectColumn; else defaultColumn"
-                                    class="btn-group group-dropdown-form" role="group">
+                                    [ngClass]="{'t-center': tableConfig[columna]?.center}" class="btn-group group-dropdown-form" role="group">
                                     <app-dropdown [options]="tableConfig[columna].selectOptions ?? []" [font]="columna"
                                         (selectionChange)="actualizarFiltro($event)"></app-dropdown>
                                 </div>
                             </ng-template>
                             <ng-template #defaultColumn>
                                 <input *ngIf="!tableConfig[columna]?.noFilter && !tableConfig[columna]?.selectColumn"
-                                    type="search" class="form-control" [placeholder]="columnasTabla[columna]"
+                                    type="search" [ngClass]="{'t-center': tableConfig[columna]?.center}" class="form-control" [placeholder]="columnasTabla[columna]"
                                     [(ngModel)]="filterValues[columna]" (input)="onItemsPerPageChange()">
                             </ng-template>
                         </th>
