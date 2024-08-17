@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrdenComponent } from '../../modules/orden/orden.component';
 import FGenerico from 'src/shared/util/funciones-genericas';
@@ -12,7 +12,7 @@ import { ChatbotService } from '../../services/api/chatbot/chatbot.service';
   templateUrl: './equipo.component.html',
   styleUrls: ['./equipo.component.css']
 })
-export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
+export class EquipoComponent extends FGenerico implements OnInit, AfterViewInit, OnDestroy{
 	@Input() data: any = null;
 
 	protected permisos: any = JSON.parse(localStorage.getItem('permisos_soporte')+'');
@@ -35,6 +35,16 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 		this.inicializarChecks();
 		this.limpiarFormulario();
 		if (this.data.datosEquipo) this.cargarFormularioEquipo();
+	}
+
+	ngAfterViewInit() {
+		setTimeout(() => {
+			const textareas = document.querySelectorAll('textarea');
+			textareas.forEach((textarea: HTMLTextAreaElement) => {
+				textarea.style.height = 'auto';
+				textarea.style.height = `${(textarea.scrollHeight + 2)}px`;
+			});
+		}, 0);
 	}
 
 	private inicializarChecks(): void {
@@ -309,6 +319,12 @@ export class EquipoComponent extends FGenerico implements OnInit, OnDestroy{
 		this.formEquipo = this.fb.group(elements);
 
 		if (!this.data.datosEquipo) this.enviarCambios();
+	}
+
+	protected adjustTextareaHeight(event: Event): void {
+		const textarea = event.target as HTMLTextAreaElement;
+		textarea.style.height = 'auto';
+		textarea.style.height = (textarea.scrollHeight+ 2) + 'px';
 	}
 
 	protected canSend(): boolean {

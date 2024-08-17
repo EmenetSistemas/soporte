@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import FGenerico from 'src/shared/util/funciones-genericas';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MensajesService } from '../../services/mensajes/mensajes.service';
@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 	templateUrl: './orden.component.html',
 	styleUrls: ['./orden.component.css']
 })
-export class OrdenComponent extends FGenerico implements OnInit {
+export class OrdenComponent extends FGenerico implements OnInit, AfterViewInit {
 	@Input() pkOrdenSolicitud: any = 0;
 	@Input() cambiosSolicitud: any = null;
 	@Input() solicitante: any = null;
@@ -78,6 +78,16 @@ export class OrdenComponent extends FGenerico implements OnInit {
 		}
 	}
 
+	ngAfterViewInit() {
+		setTimeout(() => {
+			const textareas = document.querySelectorAll('textarea');
+			textareas.forEach((textarea: HTMLTextAreaElement) => {
+				textarea.style.height = 'auto';
+				textarea.style.height = `${(textarea.scrollHeight + 1)}px`;
+			});
+		}, 0);
+	}
+
 	private crearFormCliente(): void {
 		this.formCliente = this.fb.group({
 			cliente   : [null, [Validators.required, Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡\n\r\t]*')]],
@@ -90,6 +100,12 @@ export class OrdenComponent extends FGenerico implements OnInit {
 			nota      : [null, [Validators.pattern('[a-zA-Zá-úÁ-Ú0-9 .,-_@#$%&+{}()?¿!¡\n\r\t]*')]],
 			codigo    : [{ value: null, disabled: true }]
 		});
+	}
+
+	protected adjustTextareaHeight(event: Event): void {
+		const textarea = event.target as HTMLTextAreaElement;
+		textarea.style.height = 'auto';
+		textarea.style.height = (textarea.scrollHeight+ 2) + 'px';
 	}
 
 	protected copyToClipboard(): void {
