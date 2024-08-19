@@ -426,7 +426,10 @@ class OrdenesRepository
 
     public function validarSolicitudesOrden ($dataEntregar) {
         $query = TblSolicitudesOrdenes::select('pkTblSolicitudOrden')
-                                      ->where('fkTblOrdenServicio', $dataEntregar['folio']);
+                                      ->where([
+                                          ['fkTblOrdenServicio', $dataEntregar['folio']],
+                                          ['status', 1]
+                                      ]);
 
         return $query->count();
     }
