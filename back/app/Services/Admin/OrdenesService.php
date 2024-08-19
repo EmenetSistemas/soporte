@@ -312,7 +312,7 @@ class OrdenesService
             return response()->json(
                 [
                     'status' => 300,
-                    'mensaje' => 'La orden de servicio no puede ser entregada ya que existen solicitudes pendientes por aprobar de la misma'
+                    'mensaje' => 'La orden de servicio no puede ser entregada ya que existen solicitudes pendientes por aprobar de la misma<br><b>NOTA: comunicar que se aprueben las solicitudes para contniar con la entrega de la orden de servicio</b>'
                 ],
                 200
             );
