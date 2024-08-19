@@ -306,6 +306,18 @@ class OrdenesService
             );
         }
 
+        $solicitudes = $this->ordenesRepository->validarSolicitudesOrden($dataEntregar);
+
+        if ($solicitudes > 0) {
+            return response()->json(
+                [
+                    'status' => 300,
+                    'mensaje' => 'La orden de servicio no puede ser entregada ya que existen solicitudes pendientes por aprobar de la misma'
+                ],
+                200
+            );
+        }
+
         DB::beginTransaction();
             $this->ordenesRepository->entregarOrden($dataEntregar['folio'], $dataEntregar);
             $this->ordenesRepository->entregarEquiposOrden($dataEntregar['folio']);
