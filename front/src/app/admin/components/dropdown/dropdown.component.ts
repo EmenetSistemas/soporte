@@ -60,7 +60,7 @@ export class DropdownComponent implements OnInit, OnChanges {
 		if (searchText === '') {
 			this.filteredOptions = [...this.options];
 		} else {
-			this.filteredOptions = this.options.filter(option => option.label.toLowerCase().includes(searchText.toLowerCase()));
+			this.filteredOptions = this.options.filter(option => option.label.toString().toLowerCase().includes(searchText.toLowerCase()));
 		}
 		this.updateSelectedCount();
 	}
